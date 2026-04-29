@@ -450,14 +450,15 @@ function makeVocabDistractors(correct,pool,field){
 async function searchJisho(q){
   setState({search_loading:true,search_results:[]});
   try{
-    const res=await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(q)}`);
+    const url=`https://corsproxy.io/?url=${encodeURIComponent('https://jisho.org/api/v1/search/words?keyword='+encodeURIComponent(q))}`;
+    const res=await fetch(url);
     const data=await res.json();
     const results=(data.data||[]).slice(0,8).map(e=>{
       const jp=e.japanese&&e.japanese[0]||{},s=e.senses&&e.senses[0]||{};
       return{k:jp.word||jp.reading||"",r:jp.reading||jp.word||"",e:(s.english_definitions||[]).slice(0,2).join("; ")};
     }).filter(w=>w.k||w.r);
     setState({search_loading:false,search_results:results});
-  }catch(e){setState({search_loading:false,search_results:[{k:"エラー",r:"えらー",e:"Search failed"}]});}
+  }catch(e){setState({search_loading:false,search_results:[{k:"エラー",r:"えらー",e:"Search failed — check connection"}]});}
 }
 
 function render(){document.getElementById("app").innerHTML=buildNav()+`<div>${buildScreen()}</div>`;}
@@ -604,7 +605,7 @@ function buildFCConjSearch(){return`<div class="section">
   <div class="section-title">Conjugation Flashcards</div>
   <span class="select-label">Search for a verb</span>
   <div style="display:flex;gap:8px;margin-bottom:10px;">
-    <input class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="e.g. 食べる or たべる" value="${state.search_query||''}" oninput="setState({search_query:this.value})" onkeydown="if(event.key==='Enter')doSearch()">
+    <input id="search-input" class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="e.g. 食べる or たべる" onkeydown="if(event.key==='Enter')doSearch()">
     <button class="btn btn-primary" style="white-space:nowrap;padding:11px 16px;" onclick="doSearch()">Search</button>
   </div>
   ${state.search_loading?'<div class="loading">Searching…</div>':''}
@@ -690,7 +691,7 @@ function buildQZSetup(){
     ${state.qz_mode==='conj'?`
     <div class="select-group"><span class="select-label">Search for a verb</span>
       <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <input class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="e.g. 食べる or たべる" value="${state.search_query||''}" oninput="setState({search_query:this.value})" onkeydown="if(event.key==='Enter')doSearch()">
+        <input id="search-input" class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="e.g. 食べる or たべる" onkeydown="if(event.key==='Enter')doSearch()">
         <button class="btn btn-primary" style="white-space:nowrap;padding:11px 16px;" onclick="doSearch()">Search</button>
       </div>
       ${state.search_loading?'<div class="loading">Searching…</div>':''}
@@ -775,7 +776,7 @@ function buildWords(){return`<div class="section">
   <div class="page-title">My Words</div><div class="page-sub">Add words from Jisho and create custom groups</div>
   <div class="section-title">Add word from Jisho</div>
   <div style="display:flex;gap:8px;margin-bottom:10px;">
-    <input class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="Search in Japanese or English…" value="${state.search_query||''}" oninput="setState({search_query:this.value})" onkeydown="if(event.key==='Enter')doSearch()">
+    <input id="search-input" class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="Search in Japanese or English…" onkeydown="if(event.key==='Enter')doSearch()">
     <button class="btn btn-primary" style="white-space:nowrap;padding:11px 16px;" onclick="doSearch()">Search</button>
   </div>
   ${state.search_loading?'<div class="loading">Searching Jisho…</div>':''}
@@ -816,7 +817,7 @@ function buildWords(){return`<div class="section">
 </div>`;}
 
 window.goTo=(s)=>setState({screen:s,search_results:[],search_query:'',qz_started:false});
-window.doSearch=()=>{if(state.search_query.length>0)searchJisho(state.search_query);};
+window.doSearch=()=>{const el=document.getElementById('search-input');if(el&&el.value.length>0)searchJisho(el.value);};
 window.startVocabFC=()=>{
   let words;
   if(state.fc_cat&&state.fc_cat.startsWith('custom_')){const gi=parseInt(state.fc_cat.replace('custom_',''));words=state.custom_groups[gi]?state.custom_groups[gi].words:[];}
