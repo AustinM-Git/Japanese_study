@@ -9,7 +9,891 @@
 <title>日本語 Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+*{box-sizing:border-box;margin:0;padding:0;<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="日本語 Study">
+<title>日本語 Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
 *{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#000;--bg2:#0d0d0d;--bg3:#1a1a1a;
+  --border:#222;--border2:#333;--border3:#444;
+  --text:#fff;--text2:#999;--text3:#555;
+  --accent:#e8c84a;
+  --red:#e85454;--green:#4ac87a;
+  --radius:12px;--radius-sm:8px;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;}
+.jp{font-family:'Noto Sans JP',sans-serif;}
+button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;font-size:inherit;}
+input{font-family:inherit;font-size:inherit;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+.nav-title{font-size:17px;font-weight:600;}
+.nav-title span{color:var(--accent);}
+.nav-tabs{display:flex;gap:2px;}
+.nav-tab{padding:7px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--text2);transition:all 0.15s;}
+.nav-tab.active{background:var(--bg3);color:var(--text);}
+.nav-tab:hover:not(.active){color:var(--text);}
+.section{padding:20px;}
+.section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;}
+.page-title{font-size:20px;font-weight:600;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.select-group{margin-bottom:18px;}
+.select-label{font-size:12px;color:var(--text2);margin-bottom:8px;display:block;font-weight:500;}
+.select-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{padding:7px 14px;border-radius:20px;border:1px solid var(--border2);font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.15s;background:none;}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
+.pill:hover:not(.active){border-color:var(--border3);color:var(--text);}
+.pill-sm{padding:5px 10px;font-size:12px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;}
+.btn{padding:11px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-block;}
+.btn-primary{background:var(--accent);color:#000;border:none;}
+.btn-primary:hover{background:#f0d060;}
+.btn-primary:disabled{background:var(--bg3);color:var(--text3);cursor:default;}
+.btn-secondary{background:var(--bg3);border:1px solid var(--border2);color:var(--text);}
+.btn-secondary:hover{border-color:var(--border3);}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+.btn-full{width:100%;text-align:center;}
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--text2);font-size:13px;margin-bottom:18px;padding:0;background:none;border:none;}
+.back-btn:hover{color:var(--text);}
+.search-input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 14px;font-size:15px;color:var(--text);outline:none;margin-bottom:10px;}
+.search-input:focus{border-color:var(--accent);}
+.text-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;color:var(--text);outline:none;}
+.text-input:focus{border-color:var(--accent);}
+.search-results{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto;}
+.search-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.15s;}
+.search-result:hover{border-color:var(--border3);}
+.search-result-main{font-size:16px;font-weight:600;}
+.search-result-kana{font-size:12px;color:var(--text3);margin-left:6px;}
+.search-result-en{font-size:12px;color:var(--text2);margin-top:2px;}
+.score-bar{background:var(--bg3);border-radius:2px;height:3px;margin-bottom:14px;}
+.score-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s;}
+.flashcard-scene{width:100%;perspective:1000px;cursor:pointer;margin:16px 0;}
+.flashcard-inner{width:100%;position:relative;transform-style:preserve-3d;transition:transform 0.45s;}
+.flashcard-inner.flipped{transform:rotateY(180deg);}
+.flashcard-face{position:absolute;top:0;left:0;width:100%;backface-visibility:hidden;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.flashcard-back{transform:rotateY(180deg);}
+.flashcard-tap-hint{font-size:11px;color:var(--text3);margin-top:14px;letter-spacing:0.05em;}
+.flashcard-nav{display:flex;align-items:center;justify-content:center;gap:20px;}
+.fc-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.15s;color:var(--text2);}
+.fc-btn:hover{border-color:var(--accent);color:var(--accent);}
+.fc-count{font-size:13px;color:var(--text2);min-width:60px;text-align:center;}
+.quiz-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;text-align:center;}
+.quiz-q-label{font-size:12px;color:var(--text3);margin-bottom:8px;letter-spacing:0.03em;}
+.quiz-q-main{font-size:22px;font-weight:600;}
+.quiz-q-sub{font-size:14px;color:var(--text2);margin-top:6px;}
+.mc-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.mc-option{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:13px;font-size:16px;text-align:center;transition:all 0.15s;font-family:'Noto Sans JP',sans-serif;}
+.mc-option:hover:not(:disabled){border-color:var(--border3);}
+.mc-option.correct{background:#0d2b18;border-color:var(--green);color:var(--green);}
+.mc-option.wrong{background:#2b0d0d;border-color:var(--red);color:var(--red);}
+.mc-option:disabled{cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px;font-size:13px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:48px;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans JP',sans-serif;}
+.match-item:hover:not(.matched):not(.selected){border-color:var(--border3);}
+.match-item.selected{border-color:var(--accent);background:rgba(232,200,74,0.06);}
+.match-item.matched{border-color:var(--green);background:rgba(74,200,122,0.06);color:var(--green);cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:rgba(232,84,84,0.06);}
+.result-screen{text-align:center;padding:48px 20px;}
+.result-score{font-size:64px;font-weight:700;color:var(--accent);margin-bottom:6px;line-height:1;}
+.result-label{font-size:15px;color:var(--text2);margin-bottom:28px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-n5{background:#0d1f3a;color:#4a90e8;}
+.badge-n4{background:#1f0d3a;color:#904ae8;}
+.badge-custom{background:#2a2a0d;color:#e8c84a;}
+.list-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.delete-btn{color:var(--text3);font-size:16px;padding:4px 8px;line-height:1;}
+.delete-btn:hover{color:var(--red);}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.loading{display:flex;align-items:center;justify-content:center;padding:32px;color:var(--text3);font-size:13px;}
+.mb-16{margin-bottom:16px;}
+.conj-section{margin-bottom:20px;}
+.conj-section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.conj-table{width:100%;border-collapse:collapse;font-size:12px;}
+.conj-table th{text-align:left;padding:7px 8px;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap;}
+.conj-table td{padding:7px 8px;border-bottom:1px solid var(--border);}
+.conj-table td.row-label{color:var(--text2);font-size:11px;white-space:nowrap;}
+.sel-btn{padding:3px 8px;border-radius:12px;border:1px solid var(--border2);font-size:11px;color:var(--text3);cursor:pointer;transition:all 0.15s;white-space:nowrap;background:none;}
+.sel-btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
+.sel-btn:hover:not(.active){border-color:var(--border3);}
+.verb-display{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const VOCAB={
+  N5:{
+    "People & Family":[
+      {k:"父",r:"ちち",e:"father (own)"},{k:"母",r:"はは",e:"mother (own)"},
+      {k:"兄",r:"あに",e:"older brother (own)"},{k:"姉",r:"あね",e:"older sister (own)"},
+      {k:"弟",r:"おとうと",e:"younger brother"},{k:"妹",r:"いもうと",e:"younger sister"},
+      {k:"友達",r:"ともだち",e:"friend"},{k:"人",r:"ひと",e:"person"},{k:"子供",r:"こども",e:"child"},
+    ],
+    "Greetings & Expressions":[
+      {k:"ありがとう",r:"ありがとう",e:"thank you"},{k:"すみません",r:"すみません",e:"excuse me / sorry"},
+      {k:"はい",r:"はい",e:"yes"},{k:"いいえ",r:"いいえ",e:"no"},
+      {k:"おはよう",r:"おはよう",e:"good morning"},{k:"こんにちは",r:"こんにちは",e:"good afternoon"},
+      {k:"さようなら",r:"さようなら",e:"goodbye"},{k:"おやすみ",r:"おやすみ",e:"good night"},
+    ],
+    "Numbers & Counting":[
+      {k:"一",r:"いち",e:"one"},{k:"二",r:"に",e:"two"},{k:"三",r:"さん",e:"three"},
+      {k:"四",r:"し・よん",e:"four"},{k:"五",r:"ご",e:"five"},{k:"六",r:"ろく",e:"six"},
+      {k:"七",r:"しち・なな",e:"seven"},{k:"八",r:"はち",e:"eight"},{k:"九",r:"く・きゅう",e:"nine"},{k:"十",r:"じゅう",e:"ten"},
+    ],
+    "Time & Dates":[
+      {k:"今日",r:"きょう",e:"today"},{k:"明日",r:"あした",e:"tomorrow"},
+      {k:"昨日",r:"きのう",e:"yesterday"},{k:"今",r:"いま",e:"now"},
+      {k:"朝",r:"あさ",e:"morning"},{k:"昼",r:"ひる",e:"noon / daytime"},
+      {k:"夜",r:"よる",e:"night"},{k:"年",r:"ねん・とし",e:"year"},{k:"月",r:"つき・がつ",e:"month / moon"},
+    ],
+    "Places & Locations":[
+      {k:"家",r:"いえ・うち",e:"house / home"},{k:"学校",r:"がっこう",e:"school"},
+      {k:"駅",r:"えき",e:"station"},{k:"店",r:"みせ",e:"shop / store"},
+      {k:"銀行",r:"ぎんこう",e:"bank"},{k:"病院",r:"びょういん",e:"hospital"},
+      {k:"公園",r:"こうえん",e:"park"},{k:"図書館",r:"としょかん",e:"library"},
+    ],
+    "Food & Drink":[
+      {k:"ご飯",r:"ごはん",e:"rice / meal"},{k:"水",r:"みず",e:"water"},
+      {k:"お茶",r:"おちゃ",e:"tea"},{k:"パン",r:"パン",e:"bread"},
+      {k:"肉",r:"にく",e:"meat"},{k:"魚",r:"さかな",e:"fish"},
+      {k:"野菜",r:"やさい",e:"vegetables"},{k:"卵",r:"たまご",e:"egg"},{k:"果物",r:"くだもの",e:"fruit"},
+    ],
+    "Core Adjectives":[
+      {k:"大きい",r:"おおきい",e:"big"},{k:"小さい",r:"ちいさい",e:"small"},
+      {k:"新しい",r:"あたらしい",e:"new"},{k:"古い",r:"ふるい",e:"old"},
+      {k:"いい",r:"いい",e:"good"},{k:"悪い",r:"わるい",e:"bad"},
+      {k:"高い",r:"たかい",e:"expensive / tall"},{k:"安い",r:"やすい",e:"cheap"},
+    ],
+    "Core Action Verbs":[
+      {k:"食べる",r:"たべる",e:"to eat"},{k:"飲む",r:"のむ",e:"to drink"},
+      {k:"見る",r:"みる",e:"to see / watch"},{k:"聞く",r:"きく",e:"to listen / ask"},
+      {k:"話す",r:"はなす",e:"to speak"},{k:"読む",r:"よむ",e:"to read"},
+      {k:"書く",r:"かく",e:"to write"},{k:"買う",r:"かう",e:"to buy"},
+      {k:"行く",r:"いく",e:"to go"},{k:"来る",r:"くる",e:"to come"},
+    ],
+    "Objects & Household":[
+      {k:"本",r:"ほん",e:"book"},{k:"机",r:"つくえ",e:"desk"},
+      {k:"椅子",r:"いす",e:"chair"},{k:"電話",r:"でんわ",e:"telephone"},
+      {k:"鞄",r:"かばん",e:"bag"},{k:"時計",r:"とけい",e:"clock / watch"},
+      {k:"ドア",r:"ドア",e:"door"},{k:"窓",r:"まど",e:"window"},
+    ],
+    "Colors":[
+      {k:"赤",r:"あか",e:"red"},{k:"青",r:"あお",e:"blue"},
+      {k:"白",r:"しろ",e:"white"},{k:"黒",r:"くろ",e:"black"},
+      {k:"黄色",r:"きいろ",e:"yellow"},{k:"緑",r:"みどり",e:"green"},
+      {k:"茶色",r:"ちゃいろ",e:"brown"},{k:"ピンク",r:"ピンク",e:"pink"},
+    ],
+  },
+  N4:{
+    "Occupations & Roles":[
+      {k:"医者",r:"いしゃ",e:"doctor"},{k:"先生",r:"せんせい",e:"teacher"},
+      {k:"学生",r:"がくせい",e:"student"},{k:"会社員",r:"かいしゃいん",e:"company employee"},
+      {k:"看護師",r:"かんごし",e:"nurse"},{k:"警察官",r:"けいさつかん",e:"police officer"},
+      {k:"運転手",r:"うんてんしゅ",e:"driver"},{k:"店員",r:"てんいん",e:"shop clerk"},
+    ],
+    "Transportation":[
+      {k:"電車",r:"でんしゃ",e:"train"},{k:"バス",r:"バス",e:"bus"},
+      {k:"自転車",r:"じてんしゃ",e:"bicycle"},{k:"タクシー",r:"タクシー",e:"taxi"},
+      {k:"飛行機",r:"ひこうき",e:"airplane"},{k:"乗る",r:"のる",e:"to ride / board"},
+      {k:"降りる",r:"おりる",e:"to get off"},{k:"着く",r:"つく",e:"to arrive"},
+    ],
+    "Nature & Weather":[
+      {k:"天気",r:"てんき",e:"weather"},{k:"雨",r:"あめ",e:"rain"},
+      {k:"雪",r:"ゆき",e:"snow"},{k:"風",r:"かぜ",e:"wind"},
+      {k:"空",r:"そら",e:"sky"},{k:"海",r:"うみ",e:"sea / ocean"},
+      {k:"山",r:"やま",e:"mountain"},{k:"川",r:"かわ",e:"river"},{k:"季節",r:"きせつ",e:"season"},
+    ],
+    "Daily Routines":[
+      {k:"起きる",r:"おきる",e:"to wake up"},{k:"寝る",r:"ねる",e:"to sleep"},
+      {k:"働く",r:"はたらく",e:"to work"},{k:"勉強する",r:"べんきょうする",e:"to study"},
+      {k:"着る",r:"きる",e:"to put on (clothing)"},{k:"洗う",r:"あらう",e:"to wash"},
+      {k:"掃除する",r:"そうじする",e:"to clean"},{k:"休む",r:"やすむ",e:"to rest"},
+    ],
+    "Shopping & Money":[
+      {k:"値段",r:"ねだん",e:"price"},{k:"お金",r:"おかね",e:"money"},
+      {k:"円",r:"えん",e:"yen"},{k:"売る",r:"うる",e:"to sell"},
+      {k:"払う",r:"はらう",e:"to pay"},{k:"安い",r:"やすい",e:"cheap"},
+      {k:"高い",r:"たかい",e:"expensive"},{k:"割引",r:"わりびき",e:"discount"},
+    ],
+    "Health & Body":[
+      {k:"頭",r:"あたま",e:"head"},{k:"目",r:"め",e:"eye"},
+      {k:"耳",r:"みみ",e:"ear"},{k:"口",r:"くち",e:"mouth"},
+      {k:"手",r:"て",e:"hand"},{k:"足",r:"あし",e:"foot / leg"},
+      {k:"病気",r:"びょうき",e:"illness"},{k:"薬",r:"くすり",e:"medicine"},{k:"痛い",r:"いたい",e:"painful"},
+    ],
+    "Feelings & States":[
+      {k:"嬉しい",r:"うれしい",e:"happy"},{k:"悲しい",r:"かなしい",e:"sad"},
+      {k:"怖い",r:"こわい",e:"scary"},{k:"疲れた",r:"つかれた",e:"tired"},
+      {k:"忙しい",r:"いそがしい",e:"busy"},{k:"暇",r:"ひま",e:"free time / bored"},
+      {k:"元気",r:"げんき",e:"healthy / energetic"},{k:"大丈夫",r:"だいじょうぶ",e:"okay / fine"},
+    ],
+    "Existence & Giving":[
+      {k:"ある",r:"ある",e:"to exist (inanimate)"},{k:"いる",r:"いる",e:"to exist (animate)"},
+      {k:"あげる",r:"あげる",e:"to give (to others)"},{k:"くれる",r:"くれる",e:"to give (to me)"},
+      {k:"もらう",r:"もらう",e:"to receive"},{k:"持つ",r:"もつ",e:"to hold / have"},
+      {k:"貸す",r:"かす",e:"to lend"},{k:"借りる",r:"かりる",e:"to borrow"},
+    ],
+    "Thinking & Knowing":[
+      {k:"知る",r:"しる",e:"to come to know"},{k:"分かる",r:"わかる",e:"to understand"},
+      {k:"思う",r:"おもう",e:"to think"},{k:"考える",r:"かんがえる",e:"to consider"},
+      {k:"覚える",r:"おぼえる",e:"to memorize"},{k:"忘れる",r:"わすれる",e:"to forget"},
+      {k:"決める",r:"きめる",e:"to decide"},{k:"信じる",r:"しんじる",e:"to believe"},
+    ],
+    "Leisure & Hobbies":[
+      {k:"音楽",r:"おんがく",e:"music"},{k:"映画",r:"えいが",e:"movie"},
+      {k:"旅行",r:"りょこう",e:"travel"},{k:"スポーツ",r:"スポーツ",e:"sports"},
+      {k:"料理",r:"りょうり",e:"cooking"},{k:"歌う",r:"うたう",e:"to sing"},
+      {k:"遊ぶ",r:"あそぶ",e:"to play"},{k:"楽しい",r:"たのしい",e:"fun / enjoyable"},
+    ],
+    "Motion & Change":[
+      {k:"入る",r:"はいる",e:"to enter"},{k:"出る",r:"でる",e:"to exit / leave"},
+      {k:"帰る",r:"かえる",e:"to return home"},{k:"渡る",r:"わたる",e:"to cross"},
+      {k:"曲がる",r:"まがる",e:"to turn"},{k:"止まる",r:"とまる",e:"to stop"},
+      {k:"始まる",r:"はじまる",e:"to begin"},{k:"終わる",r:"おわる",e:"to end"},
+    ],
+    "Preferences & Intentions":[
+      {k:"好き",r:"すき",e:"like"},{k:"嫌い",r:"きらい",e:"dislike"},
+      {k:"欲しい",r:"ほしい",e:"want (thing)"},{k:"つもり",r:"つもり",e:"intention / plan"},
+      {k:"予定",r:"よてい",e:"schedule / plan"},{k:"目的",r:"もくてき",e:"purpose / goal"},
+      {k:"夢",r:"ゆめ",e:"dream"},{k:"計画",r:"けいかく",e:"plan / project"},
+    ],
+  }
+};
+
+function getVerbType(dict,kana){
+  const w=dict,b=kana||dict;
+  if(w==="する"||w==="来る"||w==="くる") return "irregular";
+  if(w.endsWith("する")) return "suru";
+  if(w.endsWith("くる")||w.endsWith("来る")) return "kuru";
+  if(b.endsWith("る")){if("いきしちにひみりえけせてねへめれぎじびぴでげぜべぺ".includes(b.slice(-2,-1))) return "ichidan";}
+  return "godan";
+}
+
+function conjugate(word,reading){
+  const type=getVerbType(word,reading),base=reading||word,R={};
+  function set(g,row,col,k,r){R[`${g}|${row}|${col}`]={k,r};}
+  function setNA(g,row,col){R[`${g}|${row}|${col}`]=null;}
+  if(type==="ichidan"){
+    const stem=base.slice(0,-1),ks=word.endsWith("る")?word.slice(0,-1):stem;
+    set("plain","present","pos",ks+"る",stem+"る");set("plain","present","neg",ks+"ない",stem+"ない");
+    set("plain","past","pos",ks+"た",stem+"た");set("plain","past","neg",ks+"なかった",stem+"なかった");
+    set("plain","te","pos",ks+"て",stem+"て");setNA("plain","te","neg");
+    set("plain","eba","pos",ks+"れば",stem+"れば");setNA("plain","eba","neg");
+    set("plain","tara","pos",ks+"たら",stem+"たら");setNA("plain","tara","neg");
+    set("plain","volitional","pos",ks+"よう",stem+"よう");setNA("plain","volitional","neg");
+    set("plain","imp+","pos",ks+"ろ",stem+"ろ");setNA("plain","imp+","neg");
+    set("plain","imp-","pos",ks+"るな",stem+"るな");setNA("plain","imp-","neg");
+    set("plain","potential","pos",ks+"られる",stem+"られる");set("plain","potential","neg",ks+"られない",stem+"られない");
+    set("plain","passive","pos",ks+"られる",stem+"られる");set("plain","passive","neg",ks+"られない",stem+"られない");
+    set("plain","causative","pos",ks+"させる",stem+"させる");set("plain","causative","neg",ks+"させない",stem+"させない");
+    set("plain","tai","pos",ks+"たい",stem+"たい");set("plain","tai","neg",ks+"たくない",stem+"たくない");
+    set("plain","teiru","pos",ks+"ている",stem+"ている");set("plain","teiru","neg",ks+"ていない",stem+"ていない");
+    set("plain","temoii","pos",ks+"てもいい",stem+"てもいい");setNA("plain","temoii","neg");
+    set("plain","tewaikenai","pos",ks+"てはいけない",stem+"てはいけない");setNA("plain","tewaikenai","neg");
+    set("plain","nakereba","pos",ks+"なければならない",stem+"なければならない");setNA("plain","nakereba","neg");
+    set("polite","present","pos",ks+"ます",stem+"ます");set("polite","present","neg",ks+"ません",stem+"ません");
+    set("polite","past","pos",ks+"ました",stem+"ました");set("polite","past","neg",ks+"ませんでした",stem+"ませんでした");
+    set("polite","volitional","pos",ks+"ましょう",stem+"ましょう");setNA("polite","volitional","neg");
+    set("polite","potential","pos",ks+"られます",stem+"られます");set("polite","potential","neg",ks+"られません",stem+"られません");
+    set("polite","passive","pos",ks+"られます",stem+"られます");set("polite","passive","neg",ks+"られません",stem+"られません");
+    set("polite","causative","pos",ks+"させます",stem+"させます");set("polite","causative","neg",ks+"させません",stem+"させません");
+    set("polite","tai","pos",ks+"たいです",stem+"たいです");set("polite","tai","neg",ks+"たくないです",stem+"たくないです");
+    set("polite","teiru","pos",ks+"ています",stem+"ています");set("polite","teiru","neg",ks+"ていません",stem+"ていません");
+    set("polite","temoii","pos",ks+"てもいいです",stem+"てもいいです");setNA("polite","temoii","neg");
+    set("polite","tewaikenai","pos",ks+"てはいけません",stem+"てはいけません");setNA("polite","tewaikenai","neg");
+    set("polite","nakereba","pos",ks+"なければなりません",stem+"なければなりません");setNA("polite","nakereba","neg");
+  } else if(type==="godan"){
+    const M={く:{te:"いて",ta:"いた",neg:"か",stem:"き",pot:"け",pass:"か",caus:"か",imp:"け",vol:"こ"},ぐ:{te:"いで",ta:"いだ",neg:"が",stem:"ぎ",pot:"げ",pass:"が",caus:"が",imp:"げ",vol:"ご"},す:{te:"して",ta:"した",neg:"さ",stem:"し",pot:"せ",pass:"さ",caus:"さ",imp:"せ",vol:"そ"},つ:{te:"って",ta:"った",neg:"た",stem:"ち",pot:"て",pass:"た",caus:"た",imp:"て",vol:"と"},ぬ:{te:"んで",ta:"んだ",neg:"な",stem:"に",pot:"ね",pass:"な",caus:"な",imp:"ね",vol:"の"},ぶ:{te:"んで",ta:"んだ",neg:"ば",stem:"び",pot:"べ",pass:"ば",caus:"ば",imp:"べ",vol:"ぼ"},む:{te:"んで",ta:"んだ",neg:"ま",stem:"み",pot:"め",pass:"ま",caus:"ま",imp:"め",vol:"も"},る:{te:"って",ta:"った",neg:"ら",stem:"り",pot:"れ",pass:"ら",caus:"ら",imp:"れ",vol:"ろ"},う:{te:"って",ta:"った",neg:"わ",stem:"い",pot:"え",pass:"わ",caus:"わ",imp:"え",vol:"お"}};
+    const m=M[base.slice(-1)]||M["う"],ks=word.slice(0,-1),rs=base.slice(0,-1);
+    set("plain","present","pos",word,base);set("plain","present","neg",ks+m.neg+"ない",rs+m.neg+"ない");
+    set("plain","past","pos",ks+m.ta,rs+m.ta);set("plain","past","neg",ks+m.neg+"なかった",rs+m.neg+"なかった");
+    set("plain","te","pos",ks+m.te,rs+m.te);setNA("plain","te","neg");
+    set("plain","eba","pos",ks+m.pot+"ば",rs+m.pot+"ば");setNA("plain","eba","neg");
+    set("plain","tara","pos",ks+m.ta+"ら",rs+m.ta+"ら");setNA("plain","tara","neg");
+    set("plain","volitional","pos",ks+m.vol+"う",rs+m.vol+"う");setNA("plain","volitional","neg");
+    set("plain","imp+","pos",ks+m.imp,rs+m.imp);setNA("plain","imp+","neg");
+    set("plain","imp-","pos",word+"な",base+"な");setNA("plain","imp-","neg");
+    set("plain","potential","pos",ks+m.pot+"る",rs+m.pot+"る");set("plain","potential","neg",ks+m.pot+"ない",rs+m.pot+"ない");
+    set("plain","passive","pos",ks+m.pass+"れる",rs+m.pass+"れる");set("plain","passive","neg",ks+m.pass+"れない",rs+m.pass+"れない");
+    set("plain","causative","pos",ks+m.caus+"せる",rs+m.caus+"せる");set("plain","causative","neg",ks+m.caus+"せない",rs+m.caus+"せない");
+    set("plain","tai","pos",ks+m.stem+"たい",rs+m.stem+"たい");set("plain","tai","neg",ks+m.stem+"たくない",rs+m.stem+"たくない");
+    set("plain","teiru","pos",ks+m.te+"いる",rs+m.te+"いる");set("plain","teiru","neg",ks+m.te+"いない",rs+m.te+"いない");
+    set("plain","temoii","pos",ks+m.te+"もいい",rs+m.te+"もいい");setNA("plain","temoii","neg");
+    set("plain","tewaikenai","pos",ks+m.te+"はいけない",rs+m.te+"はいけない");setNA("plain","tewaikenai","neg");
+    set("plain","nakereba","pos",ks+m.neg+"なければならない",rs+m.neg+"なければならない");setNA("plain","nakereba","neg");
+    set("polite","present","pos",ks+m.stem+"ます",rs+m.stem+"ます");set("polite","present","neg",ks+m.stem+"ません",rs+m.stem+"ません");
+    set("polite","past","pos",ks+m.stem+"ました",rs+m.stem+"ました");set("polite","past","neg",ks+m.stem+"ませんでした",rs+m.stem+"ませんでした");
+    set("polite","volitional","pos",ks+m.stem+"ましょう",rs+m.stem+"ましょう");setNA("polite","volitional","neg");
+    set("polite","potential","pos",ks+m.pot+"ます",rs+m.pot+"ます");set("polite","potential","neg",ks+m.pot+"ません",rs+m.pot+"ません");
+    set("polite","passive","pos",ks+m.pass+"れます",rs+m.pass+"れます");set("polite","passive","neg",ks+m.pass+"れません",rs+m.pass+"れません");
+    set("polite","causative","pos",ks+m.caus+"せます",rs+m.caus+"せます");set("polite","causative","neg",ks+m.caus+"せません",rs+m.caus+"せません");
+    set("polite","tai","pos",ks+m.stem+"たいです",rs+m.stem+"たいです");set("polite","tai","neg",ks+m.stem+"たくないです",rs+m.stem+"たくないです");
+    set("polite","teiru","pos",ks+m.te+"います",rs+m.te+"います");set("polite","teiru","neg",ks+m.te+"いません",rs+m.te+"いません");
+    set("polite","temoii","pos",ks+m.te+"もいいです",rs+m.te+"もいいです");setNA("polite","temoii","neg");
+    set("polite","tewaikenai","pos",ks+m.te+"はいけません",rs+m.te+"はいけません");setNA("polite","tewaikenai","neg");
+    set("polite","nakereba","pos",ks+m.neg+"なければなりません",rs+m.neg+"なければなりません");setNA("polite","nakereba","neg");
+  } else if(type==="suru"){
+    const pk=word.slice(0,-2),pr=base.slice(0,-2);
+    const pl=(row,col,k,r)=>set("plain",row,col,pk+k,pr+r);
+    const po=(row,col,k,r)=>set("polite",row,col,pk+k,pr+r);
+    pl("present","pos","する","する");pl("present","neg","しない","しない");
+    pl("past","pos","した","した");pl("past","neg","しなかった","しなかった");
+    pl("te","pos","して","して");setNA("plain","te","neg");
+    pl("eba","pos","すれば","すれば");setNA("plain","eba","neg");
+    pl("tara","pos","したら","したら");setNA("plain","tara","neg");
+    pl("volitional","pos","しよう","しよう");setNA("plain","volitional","neg");
+    pl("imp+","pos","しろ","しろ");setNA("plain","imp+","neg");
+    pl("imp-","pos","するな","するな");setNA("plain","imp-","neg");
+    pl("potential","pos","できる","できる");pl("potential","neg","できない","できない");
+    pl("passive","pos","される","される");pl("passive","neg","されない","されない");
+    pl("causative","pos","させる","させる");pl("causative","neg","させない","させない");
+    pl("tai","pos","したい","したい");pl("tai","neg","したくない","したくない");
+    pl("teiru","pos","している","している");pl("teiru","neg","していない","していない");
+    pl("temoii","pos","してもいい","してもいい");setNA("plain","temoii","neg");
+    pl("tewaikenai","pos","してはいけない","してはいけない");setNA("plain","tewaikenai","neg");
+    pl("nakereba","pos","しなければならない","しなければならない");setNA("plain","nakereba","neg");
+    po("present","pos","します","します");po("present","neg","しません","しません");
+    po("past","pos","しました","しました");po("past","neg","しませんでした","しませんでした");
+    po("volitional","pos","しましょう","しましょう");setNA("polite","volitional","neg");
+    po("potential","pos","できます","できます");po("potential","neg","できません","できません");
+    po("passive","pos","されます","されます");po("passive","neg","されません","されません");
+    po("causative","pos","させます","させます");po("causative","neg","させません","させません");
+    po("tai","pos","したいです","したいです");po("tai","neg","したくないです","したくないです");
+    po("teiru","pos","しています","しています");po("teiru","neg","していません","していません");
+    po("temoii","pos","してもいいです","してもいいです");setNA("polite","temoii","neg");
+    po("tewaikenai","pos","してはいけません","してはいけません");setNA("polite","tewaikenai","neg");
+    po("nakereba","pos","しなければなりません","しなければなりません");setNA("polite","nakereba","neg");
+  } else {
+    set("plain","present","pos","来る","くる");set("plain","present","neg","来ない","こない");
+    set("plain","past","pos","来た","きた");set("plain","past","neg","来なかった","こなかった");
+    set("plain","te","pos","来て","きて");setNA("plain","te","neg");
+    set("plain","eba","pos","来れば","くれば");setNA("plain","eba","neg");
+    set("plain","tara","pos","来たら","きたら");setNA("plain","tara","neg");
+    set("plain","volitional","pos","来よう","こよう");setNA("plain","volitional","neg");
+    set("plain","imp+","pos","来い","こい");setNA("plain","imp+","neg");
+    set("plain","imp-","pos","来るな","くるな");setNA("plain","imp-","neg");
+    set("plain","potential","pos","来られる","こられる");set("plain","potential","neg","来られない","こられない");
+    set("plain","passive","pos","来られる","こられる");set("plain","passive","neg","来られない","こられない");
+    set("plain","causative","pos","来させる","こさせる");set("plain","causative","neg","来させない","こさせない");
+    set("plain","tai","pos","来たい","きたい");set("plain","tai","neg","来たくない","きたくない");
+    set("plain","teiru","pos","来ている","きている");set("plain","teiru","neg","来ていない","きていない");
+    set("plain","temoii","pos","来てもいい","きてもいい");setNA("plain","temoii","neg");
+    set("plain","tewaikenai","pos","来てはいけない","きてはいけない");setNA("plain","tewaikenai","neg");
+    set("plain","nakereba","pos","来なければならない","こなければならない");setNA("plain","nakereba","neg");
+    set("polite","present","pos","来ます","きます");set("polite","present","neg","来ません","きません");
+    set("polite","past","pos","来ました","きました");set("polite","past","neg","来ませんでした","きませんでした");
+    set("polite","volitional","pos","来ましょう","きましょう");setNA("polite","volitional","neg");
+    set("polite","potential","pos","来られます","こられます");set("polite","potential","neg","来られません","こられません");
+    set("polite","passive","pos","来られます","こられます");set("polite","passive","neg","来られません","こられません");
+    set("polite","causative","pos","来させます","こさせます");set("polite","causative","neg","来させません","こさせません");
+    set("polite","tai","pos","来たいです","きたいです");set("polite","tai","neg","来たくないです","きたくないです");
+    set("polite","teiru","pos","来ています","きています");set("polite","teiru","neg","来ていません","きていません");
+    set("polite","temoii","pos","来てもいいです","きてもいいです");setNA("polite","temoii","neg");
+    set("polite","tewaikenai","pos","来てはいけません","きてはいけません");setNA("polite","tewaikenai","neg");
+    set("polite","nakereba","pos","来なければなりません","こなければなりません");setNA("polite","nakereba","neg");
+  }
+  return R;
+}
+
+const PLAIN_ROWS=[
+  {id:"present",label:"Present"},{id:"past",label:"Past"},
+  {id:"te",label:"Te-form",single:true},{id:"eba",label:"Eba conditional",single:true},
+  {id:"tara",label:"Tara conditional",single:true},{id:"volitional",label:"Volitional",single:true},
+  {id:"imp+",label:"Imperative (positive)",single:true},{id:"imp-",label:"Imperative (negative)",single:true},
+  {id:"potential",label:"Potential"},{id:"passive",label:"Passive"},{id:"causative",label:"Causative"},
+  {id:"tai",label:"Tai (want to)"},{id:"teiru",label:"Te-iru (ongoing)"},
+  {id:"temoii",label:"Te-mo-ii (permission)",single:true},
+  {id:"tewaikenai",label:"Te-wa-ikenai (prohibition)",single:true},
+  {id:"nakereba",label:"Nakereba (must)",single:true},
+];
+const POLITE_ROWS=[
+  {id:"present",label:"Present"},{id:"past",label:"Past"},
+  {id:"volitional",label:"Volitional",single:true},
+  {id:"potential",label:"Potential"},{id:"passive",label:"Passive"},{id:"causative",label:"Causative"},
+  {id:"tai",label:"Tai (want to)"},{id:"teiru",label:"Te-iru (ongoing)"},
+  {id:"temoii",label:"Te-mo-ii (permission)",single:true},
+  {id:"tewaikenai",label:"Te-wa-ikenai (prohibition)",single:true},
+  {id:"nakereba",label:"Nakereba (must)",single:true},
+];
+
+function getConjLabel(g,row,col){
+  const rowObj=[...PLAIN_ROWS,...POLITE_ROWS].find(r=>r.id===row)||{label:row};
+  const gL=g==="plain"?"Plain":"Polite",cL=col==="pos"?"Positive":"Negative";
+  return rowObj.single?`${gL} ${rowObj.label}`:`${gL} ${rowObj.label} ${cL}`;
+}
+
+let state={
+  screen:"home",
+  fc_mode:null,fc_front:"kanji",fc_level:"N5",fc_cat:null,fc_cards:[],fc_idx:0,fc_flipped:false,
+  fc_verb:null,fc_selected_conjs:[],fc_conj_cards:[],
+  qz_mode:null,qz_type:null,qz_level:"N5",qz_cat:null,qz_front:"kanji",
+  qz_questions:[],qz_idx:0,qz_score:0,qz_answered:false,qz_done:false,qz_selected:null,
+  qz_match_left:[],qz_match_right:[],qz_match_sel_left:null,qz_match_sel_right:null,qz_match_matched:[],
+  qz_verb:null,qz_selected_conjs:[],
+  custom_words:[],custom_groups:[],search_query:"",search_results:[],search_loading:false,new_group_name:"",
+};
+function setState(u){Object.assign(state,u);render();}
+function getAllWords(l,c){return(VOCAB[l]&&VOCAB[l][c])||[];}
+function getAllWordsForLevel(l){return Object.keys(VOCAB[l]||{}).flatMap(c=>VOCAB[l][c]);}
+function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
+
+function makeNearMisses(correct,verb){
+  const conjs=conjugate(verb.k,verb.r);
+  const pool=Object.values(conjs).filter(v=>v&&v.r!==correct).map(v=>v.r);
+  const opts=[correct,...shuffle(pool).slice(0,3)];
+  while(opts.length<4){const t=correct.slice(0,-1)+rand(["た","て","ない","ます","った","って","なかった"]);if(!opts.includes(t))opts.push(t);}
+  return shuffle(opts.slice(0,4));
+}
+function makeVocabDistractors(correct,pool,field){
+  return shuffle([correct,...shuffle(pool.map(w=>w[field]).filter(v=>v&&v!==correct)).slice(0,3)]).slice(0,4);
+}
+
+async function searchJisho(q){
+  setState({search_loading:true,search_results:[]});
+  try{
+    const res=await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(q)}`);
+    const data=await res.json();
+    const results=(data.data||[]).slice(0,8).map(e=>{
+      const jp=e.japanese&&e.japanese[0]||{},s=e.senses&&e.senses[0]||{};
+      return{k:jp.word||jp.reading||"",r:jp.reading||jp.word||"",e:(s.english_definitions||[]).slice(0,2).join("; ")};
+    }).filter(w=>w.k||w.r);
+    setState({search_loading:false,search_results:results});
+  }catch(e){setState({search_loading:false,search_results:[{k:"エラー",r:"えらー",e:"Search failed"}]});}
+}
+
+function render(){document.getElementById("app").innerHTML=buildNav()+`<div>${buildScreen()}</div>`;}
+
+function buildNav(){
+  if(state.screen==="home") return`<div class="nav"><button class="nav-title" onclick="goTo('home')" style="background:none;border:none;cursor:pointer;padding:0;">日本語 <span>Study</span></button><div style="font-size:12px;color:var(--text3);">N5 · N4</div></div>`;
+  return`<div class="nav"><button class="nav-title" onclick="goTo('home')" style="background:none;border:none;cursor:pointer;padding:0;">日本語 <span>Study</span></button><div class="nav-tabs">
+    <button class="nav-tab ${state.screen==='flashcards'?'active':''}" onclick="goTo('flashcards')">Cards</button>
+    <button class="nav-tab ${state.screen==='quiz'?'active':''}" onclick="goTo('quiz')">Quiz</button>
+    <button class="nav-tab ${state.screen==='words'?'active':''}" onclick="goTo('words')">Words</button>
+  </div></div>`;
+}
+function buildScreen(){
+  switch(state.screen){case"home":return buildHome();case"flashcards":return buildFC();case"quiz":return buildQuiz();case"words":return buildWords();default:return buildHome();}
+}
+
+function buildHome(){return`<div class="section">
+  <div style="margin-bottom:28px;">
+    <div class="page-title">おはようございます</div>
+    <div class="page-sub">What would you like to study today?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <button class="card" style="text-align:left;cursor:pointer;" onclick="goTo('flashcards')">
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Flashcards</div>
+        <div style="font-size:12px;color:var(--text2);">Vocab and conjugation drills</div>
+      </button>
+      <button class="card" style="text-align:left;cursor:pointer;" onclick="goTo('quiz')">
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Quiz</div>
+        <div style="font-size:12px;color:var(--text2);">Multiple choice and matching</div>
+      </button>
+    </div>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;" onclick="goTo('words')">
+      <div style="font-size:14px;font-weight:600;margin-bottom:4px;">My Words</div>
+      <div style="font-size:12px;color:var(--text2);">Add words from Jisho and create custom groups</div>
+    </button>
+  </div>
+  <div>${["N5","N4"].map(level=>`<div style="margin-bottom:14px;"><div class="section-title">${level} categories</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;">${Object.keys(VOCAB[level]).map(cat=>`<span class="badge badge-${level.toLowerCase()}">${cat}</span>`).join("")}</div>
+  </div>`).join("")}</div>
+</div>`;}
+
+function buildConjSelector(sel,toggleFn,selectAllFn){
+  function row(rows,group){return rows.map(row=>{
+    if(row.single){const key=`${group}|${row.id}|pos`,s=sel.includes(key);
+      return`<tr><td class="row-label">${row.label}</td><td colspan="2"><button class="sel-btn ${s?'active':''}" onclick="${toggleFn}('${group}','${row.id}','pos')">${s?'Selected':'Select'}</button></td></tr>`;}
+    const kP=`${group}|${row.id}|pos`,kN=`${group}|${row.id}|neg`,sP=sel.includes(kP),sN=sel.includes(kN);
+    return`<tr><td class="row-label">${row.label}</td>
+      <td><button class="sel-btn ${sP?'active':''}" onclick="${toggleFn}('${group}','${row.id}','pos')">${sP?'Selected':'Select'}</button></td>
+      <td><button class="sel-btn ${sN?'active':''}" onclick="${toggleFn}('${group}','${row.id}','neg')">${sN?'Selected':'Select'}</button></td></tr>`;
+  }).join("");}
+  return`<div style="overflow-x:auto;margin-bottom:12px;">
+    <div class="conj-section"><div class="conj-section-title">Plain forms</div>
+      <table class="conj-table"><thead><tr><th>Form</th><th>Positive</th><th>Negative</th></tr></thead><tbody>${row(PLAIN_ROWS,"plain")}</tbody></table></div>
+    <div class="conj-section"><div class="conj-section-title">Polite forms</div>
+      <table class="conj-table"><thead><tr><th>Form</th><th>Positive</th><th>Negative</th></tr></thead><tbody>${row(POLITE_ROWS,"polite")}</tbody></table></div>
+  </div>
+  <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px;margin-bottom:12px;" onclick="${selectAllFn}()">Select all</button>`;
+}
+
+function buildFC(){
+  if(!state.fc_mode) return`<div class="section"><div class="page-title">Flashcards</div><div class="page-sub">Choose a study mode</div>
+    <div class="select-pills">
+      <div class="pill ${state.fc_mode==='vocab'?'active':''}" onclick="setState({fc_mode:'vocab',fc_cards:[],fc_idx:0,fc_flipped:false})">Vocabulary</div>
+      <div class="pill ${state.fc_mode==='conj'?'active':''}" onclick="setState({fc_mode:'conj',fc_conj_cards:[],fc_idx:0,fc_flipped:false,fc_verb:null,fc_selected_conjs:[]})">Conjugation</div>
+    </div></div>`;
+  if(state.fc_mode==="vocab"){
+    if(!state.fc_cards.length) return buildFCVocabSetup();
+    return buildFCVocabStudy();
+  }
+  if(state.fc_mode==="conj"){
+    if(!state.fc_verb) return buildFCConjSearch();
+    if(!state.fc_conj_cards.length) return buildFCConjSelect();
+    return buildFCConjStudy();
+  }
+}
+
+function buildFCVocabSetup(){
+  const cats=state.fc_level==="All"?["All",...Object.keys(VOCAB.N5),...Object.keys(VOCAB.N4)]:["All",...Object.keys(VOCAB[state.fc_level]||{})];
+  const cg=state.custom_groups.map((g,i)=>({name:g.name,key:"custom_"+i}));
+  return`<div class="section">
+    <button class="back-btn" onclick="setState({fc_mode:null})">← Back</button>
+    <div class="section-title">Vocabulary Flashcards</div>
+    <div class="select-group"><span class="select-label">JLPT level</span>
+      <div class="select-pills">${["N5","N4","All"].map(l=>`<div class="pill ${state.fc_level===l?'active':''}" onclick="setState({fc_level:'${l}',fc_cat:null})">${l}</div>`).join("")}</div>
+    </div>
+    <div class="select-group"><span class="select-label">Word group</span>
+      <div class="select-pills">
+        ${cats.map(c=>`<div class="pill ${state.fc_cat===c?'active':''}" onclick="setState({fc_cat:'${c}'})">${c}</div>`).join("")}
+        ${cg.map(g=>`<div class="pill ${state.fc_cat===g.key?'active':''}" onclick="setState({fc_cat:'${g.key}'})">${g.name}</div>`).join("")}
+      </div>
+    </div>
+    <div class="select-group"><span class="select-label">Show on front</span>
+      <div class="select-pills">${["kanji","kana","english"].map(f=>`<div class="pill ${state.fc_front===f?'active':''}" onclick="setState({fc_front:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join("")}</div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="startVocabFC()" ${!state.fc_cat?"disabled":""}>Start flashcards</button>
+  </div>`;}
+
+function buildFCVocabStudy(){
+  const cards=state.fc_cards,idx=state.fc_idx,card=cards[idx],flipped=state.fc_flipped;
+  let front;
+  if(state.fc_front==="kanji") front=card.k;
+  else if(state.fc_front==="kana") front=card.r;
+  else front=card.e;
+  return`<div class="section">
+    <button class="back-btn" onclick="setState({fc_cards:[],fc_idx:0,fc_flipped:false})">← Settings</button>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:12px;color:var(--text2);">${state.fc_cat}</span>
+      <span style="font-size:12px;color:var(--text2);">${idx+1} / ${cards.length}</span>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:${Math.round((idx+1)/cards.length*100)}%"></div></div>
+    <div class="flashcard-scene" style="height:240px;">
+      <div class="flashcard-inner ${flipped?'flipped':''}" style="height:240px;">
+        <div class="flashcard-face" style="height:240px;" onclick="setState({fc_flipped:!state.fc_flipped})">
+          <div class="jp" style="font-size:34px;font-weight:700;">${front}</div>
+          <div class="flashcard-tap-hint">tap to flip</div>
+        </div>
+        <div class="flashcard-face flashcard-back" style="height:240px;" onclick="setState({fc_flipped:false})">
+          <div style="margin-bottom:10px;text-align:center;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Kanji</div>
+            <div class="jp" style="font-size:26px;font-weight:700;">${card.k}</div>
+          </div>
+          <div style="margin-bottom:10px;text-align:center;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Reading</div>
+            <div class="jp" style="font-size:18px;">${card.r}</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Meaning</div>
+            <div style="font-size:15px;color:var(--accent);">${card.e}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="fc-btn" onclick="fcPrev()">←</button>
+      <span class="fc-count">${idx+1} of ${cards.length}</span>
+      <button class="fc-btn" onclick="fcNext()">→</button>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+      <button class="btn btn-secondary" style="font-size:13px;" onclick="setState({fc_cards:shuffle(state.fc_cards),fc_idx:0,fc_flipped:false})">Shuffle</button>
+    </div>
+  </div>`;}
+
+function buildFCConjSearch(){return`<div class="section">
+  <button class="back-btn" onclick="setState({fc_mode:null})">← Back</button>
+  <div class="section-title">Conjugation Flashcards</div>
+  <span class="select-label">Search for a verb</span>
+  <input class="search-input jp" placeholder="e.g. 食べる or たべる" value="${state.search_query||''}" oninput="handleSearch(this.value)">
+  ${state.search_loading?'<div class="loading">Searching…</div>':''}
+  <div class="search-results">${state.search_results.map((w,i)=>`<div class="search-result" onclick="selectFCVerb(${i})">
+    <div><div class="search-result-main jp">${w.k}<span class="search-result-kana jp">${w.r}</span></div><div class="search-result-en">${w.e}</div></div>
+    <span style="color:var(--text3);font-size:13px;">select</span>
+  </div>`).join("")}</div>
+</div>`;}
+
+function buildFCConjSelect(){return`<div class="section">
+  <button class="back-btn" onclick="setState({fc_verb:null,search_results:[],search_query:''})">← Back</button>
+  <div class="verb-display">
+    <div class="jp" style="font-size:20px;font-weight:700;">${state.fc_verb.k}</div>
+    <div class="jp" style="font-size:13px;color:var(--text2);">${state.fc_verb.r}</div>
+    <div style="font-size:13px;color:var(--accent);margin-top:2px;">${state.fc_verb.e}</div>
+  </div>
+  <div class="section-title">Select conjugations to study</div>
+  ${buildConjSelector(state.fc_selected_conjs,'toggleFCConj','selectAllFCConjs')}
+  <button class="btn btn-primary btn-full" onclick="startConjFC()" ${state.fc_selected_conjs.length===0?"disabled":""}>Start flashcards</button>
+</div>`;}
+
+function buildFCConjStudy(){
+  const cards=state.fc_conj_cards,idx=state.fc_idx,card=cards[idx],flipped=state.fc_flipped;
+  return`<div class="section">
+    <button class="back-btn" onclick="setState({fc_conj_cards:[],fc_idx:0,fc_flipped:false})">← Back</button>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:12px;color:var(--text2);">${card.verb.k} conjugation</span>
+      <span style="font-size:12px;color:var(--text2);">${idx+1} / ${cards.length}</span>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:${Math.round((idx+1)/cards.length*100)}%"></div></div>
+    <div class="flashcard-scene" style="height:240px;">
+      <div class="flashcard-inner ${flipped?'flipped':''}" style="height:240px;">
+        <div class="flashcard-face" style="height:240px;" onclick="setState({fc_flipped:!state.fc_flipped})">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Dictionary form</div>
+          <div class="jp" style="font-size:28px;font-weight:700;">${card.verb.k}</div>
+          <div class="jp" style="font-size:14px;color:var(--text2);margin-bottom:10px;">${card.verb.r}</div>
+          <div style="font-size:13px;color:var(--accent);margin-bottom:12px;">${card.verb.e}</div>
+          <div style="background:var(--bg3);border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;">${card.label}</div>
+          <div class="flashcard-tap-hint">tap to flip</div>
+        </div>
+        <div class="flashcard-face flashcard-back" style="height:240px;" onclick="setState({fc_flipped:false})">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">${card.label}</div>
+          <div class="jp" style="font-size:30px;font-weight:700;">${card.val.k}</div>
+          <div class="jp" style="font-size:18px;color:var(--text2);margin-top:6px;">${card.val.r}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="fc-btn" onclick="fcPrev()">←</button>
+      <span class="fc-count">${idx+1} of ${cards.length}</span>
+      <button class="fc-btn" onclick="fcNext()">→</button>
+    </div>
+  </div>`;}
+
+function buildQuiz(){
+  if(!state.qz_mode||!state.qz_type||!state.qz_started) return buildQZSetup();
+  if(state.qz_done) return buildQZResult();
+  if(state.qz_type==="mc") return buildMCQuiz();
+  if(state.qz_type==="match") return buildMatchQuiz();
+  return buildQZSetup();
+}
+
+function buildQZSetup(){
+  const cats=state.qz_level==="All"?["All",...Object.keys(VOCAB.N5),...Object.keys(VOCAB.N4)]:["All",...Object.keys(VOCAB[state.qz_level]||{})];
+  return`<div class="section">
+    <div class="page-title">Quiz</div><div class="page-sub">Configure your quiz</div>
+    <div class="select-group"><span class="select-label">Quiz mode</span>
+      <div class="select-pills">
+        <div class="pill ${state.qz_mode==='vocab'?'active':''}" onclick="setState({qz_mode:'vocab',qz_verb:null,qz_selected_conjs:[]})">Vocabulary</div>
+        <div class="pill ${state.qz_mode==='conj'?'active':''}" onclick="setState({qz_mode:'conj',qz_cat:null})">Conjugation</div>
+      </div>
+    </div>
+    ${state.qz_mode==='vocab'?`
+    <div class="select-group"><span class="select-label">JLPT level</span>
+      <div class="select-pills">${["N5","N4","All"].map(l=>`<div class="pill ${state.qz_level===l?'active':''}" onclick="setState({qz_level:'${l}',qz_cat:null})">${l}</div>`).join("")}</div>
+    </div>
+    <div class="select-group"><span class="select-label">Word group</span>
+      <div class="select-pills">${cats.map(c=>`<div class="pill ${state.qz_cat===c?'active':''}" onclick="setState({qz_cat:'${c}'})">${c}</div>`).join("")}</div>
+    </div>
+    <div class="select-group"><span class="select-label">Quiz focus</span>
+      <div class="select-pills">${["kanji","kana","english"].map(f=>`<div class="pill ${state.qz_front===f?'active':''}" onclick="setState({qz_front:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join("")}</div>
+    </div>`:''}
+    ${state.qz_mode==='conj'?`
+    <div class="select-group"><span class="select-label">Search for a verb</span>
+      <input class="search-input jp" placeholder="e.g. 食べる or たべる" value="${state.search_query||''}" oninput="handleSearch(this.value)">
+      ${state.search_loading?'<div class="loading">Searching…</div>':''}
+      <div class="search-results">${state.search_results.map((w,i)=>`<div class="search-result" onclick="selectQZVerb(${i})">
+        <div><div class="search-result-main jp">${w.k}<span class="search-result-kana jp">${w.r}</span></div><div class="search-result-en">${w.e}</div></div>
+        <span style="color:var(--text3);font-size:13px;">select</span>
+      </div>`).join("")}</div>
+      ${state.qz_verb?`<div class="verb-display" style="margin-top:8px;">
+        <div class="jp" style="font-size:18px;font-weight:700;">${state.qz_verb.k} <span style="font-size:13px;color:var(--text2);">${state.qz_verb.r}</span></div>
+        <div style="font-size:13px;color:var(--accent);">${state.qz_verb.e}</div>
+      </div>`:''}
+      ${state.qz_verb?`<div class="section-title" style="margin-top:12px;">Select conjugations to quiz</div>${buildConjSelector(state.qz_selected_conjs,'toggleQZConj','selectAllQZConjs')}`:''}
+    </div>`:''}
+    <div class="select-group"><span class="select-label">Quiz format</span>
+      <div class="select-pills">
+        <div class="pill ${state.qz_type==='mc'?'active':''}" onclick="setState({qz_type:'mc'})">Multiple choice</div>
+        <div class="pill ${state.qz_type==='match'?'active':''}" onclick="setState({qz_type:'match'})">Matching pairs</div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="startQuiz()"
+      ${(!state.qz_mode||!state.qz_type||(state.qz_mode==='vocab'&&!state.qz_cat)||(state.qz_mode==='conj'&&(!state.qz_verb||state.qz_selected_conjs.length===0)))?"disabled":""}>
+      Start quiz
+    </button>
+  </div>`;}
+
+function buildMCQuiz(){
+  const q=state.qz_questions[state.qz_idx];if(!q)return'';
+  const total=state.qz_questions.length;
+  return`<div class="section">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:12px;color:var(--text2);">Question ${state.qz_idx+1} of ${total}</span>
+      <span style="font-size:12px;color:var(--accent);">Score: ${state.qz_score}</span>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:${Math.round(state.qz_idx/total*100)}%"></div></div>
+    <div class="quiz-q">
+      <div class="quiz-q-label">${q.hint||'Choose the correct answer'}</div>
+      <div class="quiz-q-main jp">${q.q}</div>
+      ${q.q_sub?`<div class="quiz-q-sub">${q.q_sub}</div>`:''}
+    </div>
+    <div class="mc-options">
+      ${q.options.map(opt=>{
+        let cls='mc-option';
+        if(state.qz_answered){if(opt===q.ans)cls+=' correct';else if(opt===state.qz_selected)cls+=' wrong';}
+        return`<button class="${cls}" ${state.qz_answered?'disabled':''} onclick="answerMC('${opt.replace(/'/g,"\\'")}','${q.ans.replace(/'/g,"\\'")}')">${opt}</button>`;
+      }).join("")}
+    </div>
+    ${state.qz_answered?`<div class="btn-row"><button class="btn btn-primary" onclick="nextQ()">Next</button></div>`:''}
+  </div>`;}
+
+function buildMatchQuiz(){
+  const left=state.qz_match_left,right=state.qz_match_right,matched=state.qz_match_matched;
+  return`<div class="section">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+      <span style="font-size:12px;color:var(--text2);">Matching pairs</span>
+      <span style="font-size:12px;color:var(--accent);">Score: ${state.qz_score}</span>
+    </div>
+    <div class="quiz-q" style="margin-bottom:12px;"><div class="quiz-q-label">Match each item with its correct pair</div></div>
+    <div class="match-grid">
+      <div class="match-col">${left.map((p,i)=>{const isM=matched.includes(i),isS=state.qz_match_sel_left===i;
+        return`<button class="match-item ${isM?'matched':''} ${isS?'selected':''}" id="ml-${i}" ${isM?'disabled':''} onclick="selMatchL(${i})">${p.q}</button>`;}).join("")}</div>
+      <div class="match-col">${right.map((r,i)=>{const isM=matched.includes(r.origIdx),isS=state.qz_match_sel_right===i;
+        return`<button class="match-item ${isM?'matched':''} ${isS?'selected':''}" id="mr-${i}" ${isM?'disabled':''} onclick="selMatchR(${i})">${r.ans}</button>`;}).join("")}</div>
+    </div>
+    ${matched.length===left.length?`<div class="btn-row">
+      <button class="btn btn-primary" onclick="nextMatchRound()">Next round</button>
+      <button class="btn btn-secondary" onclick="setState({qz_done:true})">Finish</button>
+    </div>`:''}
+  </div>`;}
+
+function buildQZResult(){
+  const score=state.qz_score,total=state.qz_questions.length||score,pct=total>0?Math.round(score/total*100):100;
+  return`<div class="result-screen">
+    <div class="result-score">${score}/${total}</div>
+    <div class="result-label">${pct>=80?'Excellent work.':pct>=50?'Good effort.':'Keep studying.'}</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="startQuiz()">Try again</button>
+      <button class="btn btn-secondary" onclick="setState({qz_mode:null,qz_type:null,qz_done:false,qz_score:0,qz_idx:0,qz_questions:[],qz_verb:null,qz_selected_conjs:[],search_results:[],search_query:'',qz_started:false})">New settings</button>
+    </div>
+  </div>`;}
+
+function buildWords(){return`<div class="section">
+  <div class="page-title">My Words</div><div class="page-sub">Add words from Jisho and create custom groups</div>
+  <div class="section-title">Add word from Jisho</div>
+  <input class="search-input jp" placeholder="Search in Japanese or English…" value="${state.search_query||''}" oninput="handleSearch(this.value)">
+  ${state.search_loading?'<div class="loading">Searching Jisho…</div>':''}
+  <div class="search-results" style="margin-bottom:20px;">${state.search_results.map((w,i)=>`<div class="search-result" onclick="addWord(${i})">
+    <div><div class="search-result-main jp">${w.k}<span class="search-result-kana jp">${w.r}</span></div><div class="search-result-en">${w.e}</div></div>
+    <span style="color:var(--green);font-size:13px;">add</span>
+  </div>`).join("")}</div>
+  <div class="divider"></div>
+  <div class="section-title">Saved words (${state.custom_words.length})</div>
+  ${state.custom_words.length===0?`<div style="color:var(--text3);font-size:13px;margin-bottom:20px;">No words saved yet.</div>`:''}
+  ${state.custom_words.map((w,i)=>`<div class="list-item">
+    <div><div class="jp" style="font-size:15px;font-weight:600;">${w.k} <span style="font-size:12px;color:var(--text3);">${w.r}</span></div>
+    <div style="font-size:12px;color:var(--text2);">${w.e}</div></div>
+    <button class="delete-btn" onclick="removeWord(${i})">×</button>
+  </div>`).join("")}
+  <div class="divider"></div>
+  <div class="section-title">Custom word groups</div>
+  <div class="card-sm mb-16">
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Create a new group</div>
+    <input class="text-input" placeholder="Group name…" style="margin-bottom:10px;" value="${state.new_group_name||''}" oninput="setState({new_group_name:this.value})" onkeydown="if(event.key==='Enter')createGroup()">
+    <button class="btn btn-primary" style="font-size:13px;padding:8px 18px;" onclick="createGroup()" ${!state.new_group_name?'disabled':''}>Create group</button>
+  </div>
+  ${state.custom_groups.map((g,gi)=>`<div class="card mb-16">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-weight:600;font-size:14px;">${g.name} <span class="badge badge-custom">${g.words.length} words</span></div>
+      <button class="delete-btn" onclick="removeGroup(${gi})">×</button>
+    </div>
+    ${g.words.length===0?`<div style="font-size:12px;color:var(--text3);margin-bottom:10px;">No words yet.</div>`:''}
+    ${g.words.map((w,wi)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+      <div class="jp" style="font-size:13px;">${w.k} <span style="font-size:11px;color:var(--text2);">${w.e}</span></div>
+      <button class="delete-btn" onclick="removeWordFromGroup(${gi},${wi})">×</button>
+    </div>`).join("")}
+    ${state.custom_words.length>0?`<div style="margin-top:10px;">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Add from saved words:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">${state.custom_words.map((w,wi)=>`<button class="pill pill-sm" onclick="addWordToGroup(${gi},${wi})">${w.k}</button>`).join("")}</div>
+    </div>`:''}
+  </div>`).join("")}
+</div>`;}
+
+window.goTo=(s)=>setState({screen:s,search_results:[],search_query:'',qz_started:false});
+let _st;
+window.handleSearch=(v)=>{setState({search_query:v});clearTimeout(_st);if(v.length<1)return setState({search_results:[]});_st=setTimeout(()=>searchJisho(v),600);};
+window.startVocabFC=()=>{
+  let words;
+  if(state.fc_cat&&state.fc_cat.startsWith('custom_')){const gi=parseInt(state.fc_cat.replace('custom_',''));words=state.custom_groups[gi]?state.custom_groups[gi].words:[];}
+  else{words=state.fc_cat==="All"?getAllWordsForLevel(state.fc_level):getAllWords(state.fc_level,state.fc_cat);}
+  setState({fc_cards:shuffle(words),fc_idx:0,fc_flipped:false});
+};
+window.fcNext=()=>{const cards=state.fc_mode==='conj'?state.fc_conj_cards:state.fc_cards;setState({fc_idx:Math.min(state.fc_idx+1,cards.length-1),fc_flipped:false});};
+window.fcPrev=()=>setState({fc_idx:Math.max(state.fc_idx-1,0),fc_flipped:false});
+window.selectFCVerb=(i)=>setState({fc_verb:state.search_results[i],search_results:[],search_query:'',fc_selected_conjs:[]});
+window.toggleFCConj=(g,row,col)=>{const key=`${g}|${row}|${col}`;const sel=state.fc_selected_conjs;setState({fc_selected_conjs:sel.includes(key)?sel.filter(k=>k!==key):[...sel,key]});};
+window.selectAllFCConjs=()=>{const conjs=conjugate(state.fc_verb.k,state.fc_verb.r);setState({fc_selected_conjs:Object.entries(conjs).filter(([,v])=>v!==null).map(([k])=>k)});};
+window.startConjFC=()=>{
+  const conjs=conjugate(state.fc_verb.k,state.fc_verb.r);
+  const cards=shuffle(state.fc_selected_conjs.map(key=>{const[g,row,col]=key.split('|');return{verb:state.fc_verb,group:g,row,col,val:conjs[key],label:getConjLabel(g,row,col)};}).filter(c=>c.val));
+  setState({fc_conj_cards:cards,fc_idx:0,fc_flipped:false});
+};
+window.selectQZVerb=(i)=>setState({qz_verb:state.search_results[i],search_results:[],search_query:'',qz_selected_conjs:[]});
+window.toggleQZConj=(g,row,col)=>{const key=`${g}|${row}|${col}`;const sel=state.qz_selected_conjs;setState({qz_selected_conjs:sel.includes(key)?sel.filter(k=>k!==key):[...sel,key]});};
+window.selectAllQZConjs=()=>{const conjs=conjugate(state.qz_verb.k,state.qz_verb.r);setState({qz_selected_conjs:Object.entries(conjs).filter(([,v])=>v!==null).map(([k])=>k)});};
+window.startQuiz=()=>{
+  if(state.qz_mode==='vocab'){
+    const words=shuffle(state.qz_cat==="All"?getAllWordsForLevel(state.qz_level):getAllWords(state.qz_level,state.qz_cat));
+    if(state.qz_type==='mc'){setState({qz_questions:words.slice(0,10).map(w=>buildMCVocabQ(w,words)),qz_idx:0,qz_score:0,qz_done:false,qz_answered:false,qz_selected:null,qz_started:true});}
+    else{setupVocabMatchRound(words);}
+  } else {
+    const conjs=conjugate(state.qz_verb.k,state.qz_verb.r);
+    const cards=shuffle(state.qz_selected_conjs.map(key=>{const[g,row,col]=key.split('|');return{verb:state.qz_verb,group:g,row,col,val:conjs[key],label:getConjLabel(g,row,col)};}).filter(c=>c.val));
+    if(state.qz_type==='mc'){setState({qz_questions:cards.slice(0,10).map(c=>({q:c.verb.k,q_sub:c.label,ans:c.val.r,options:makeNearMisses(c.val.r,c.verb),hint:`What is the ${c.label} form?`})),qz_idx:0,qz_score:0,qz_done:false,qz_answered:false,qz_selected:null,qz_started:true});}
+    else{setupConjMatchRound(cards);}
+  }
+};
+function buildMCVocabQ(w,pool){
+  if(state.qz_front==='kanji') return{q:w.k,ans:w.r,options:makeVocabDistractors(w.r,pool,'r'),hint:'What is the reading (kana) of this word?'};
+  if(state.qz_front==='kana') return{q:w.r,ans:w.e,options:makeVocabDistractors(w.e,pool,'e'),hint:'What does this word mean?'};
+  return{q:w.e,ans:w.k,options:makeVocabDistractors(w.k,pool,'k'),hint:'What is the kanji for this word?'};
+}
+function setupVocabMatchRound(words){
+  const pairs=shuffle(words).slice(0,6).map(w=>{let q,ans;if(state.qz_front==='kanji'){q=w.k;ans=w.r;}else if(state.qz_front==='kana'){q=w.r;ans=w.e;}else{q=w.e;ans=w.k;}return{q,ans};});
+  const right=shuffle(pairs.map((p,i)=>({ans:p.ans,origIdx:i})));
+  setState({qz_match_left:pairs,qz_match_right:right,qz_match_matched:[],qz_match_sel_left:null,qz_match_sel_right:null,qz_score:0,qz_done:false,qz_questions:pairs,_match_words:words,_match_type:'vocab',qz_started:true});
+}
+function setupConjMatchRound(cards){
+  const pairs=shuffle(cards).slice(0,6).map(c=>({q:c.label,ans:c.val.r}));
+  const right=shuffle(pairs.map((p,i)=>({ans:p.ans,origIdx:i})));
+  setState({qz_match_left:pairs,qz_match_right:right,qz_match_matched:[],qz_match_sel_left:null,qz_match_sel_right:null,qz_score:0,qz_done:false,qz_questions:pairs,_match_cards:cards,_match_type:'conj',qz_started:true});
+}
+window.selMatchL=(i)=>{setState({qz_match_sel_left:i});checkMatch();};
+window.selMatchR=(i)=>{setState({qz_match_sel_right:i});checkMatch();};
+function checkMatch(){
+  const{qz_match_sel_left:l,qz_match_sel_right:r,qz_match_right:right,qz_match_matched:matched}=state;
+  if(l===null||r===null) return;
+  if(right[r].origIdx===l){const nm=[...matched,l];setState({qz_match_matched:nm,qz_match_sel_left:null,qz_match_sel_right:null,qz_score:state.qz_score+1});}
+  else{
+    const ml=document.getElementById('ml-'+l),mr=document.getElementById('mr-'+r);
+    if(ml){ml.classList.add('wrong-flash');setTimeout(()=>ml&&ml.classList.remove('wrong-flash'),500);}
+    if(mr){mr.classList.add('wrong-flash');setTimeout(()=>mr&&mr.classList.remove('wrong-flash'),500);}
+    setState({qz_match_sel_left:null,qz_match_sel_right:null});
+  }
+}
+window.nextMatchRound=()=>{if(state._match_type==='vocab')setupVocabMatchRound(state._match_words);else setupConjMatchRound(state._match_cards);};
+window.answerMC=(opt,ans)=>setState({qz_answered:true,qz_selected:opt,qz_score:opt===ans?state.qz_score+1:state.qz_score});
+window.nextQ=()=>{const next=state.qz_idx+1;if(next>=state.qz_questions.length)setState({qz_done:true,qz_answered:false});else setState({qz_idx:next,qz_answered:false,qz_selected:null});};
+window.addWord=(i)=>{const w=state.search_results[i];if(!state.custom_words.find(x=>x.k===w.k&&x.r===w.r))setState({custom_words:[...state.custom_words,w],search_results:[],search_query:''});};
+window.removeWord=(i)=>setState({custom_words:state.custom_words.filter((_,j)=>j!==i)});
+window.createGroup=()=>{if(!state.new_group_name)return;setState({custom_groups:[...state.custom_groups,{name:state.new_group_name,words:[]}],new_group_name:''});};
+window.removeGroup=(i)=>setState({custom_groups:state.custom_groups.filter((_,j)=>j!==i)});
+window.addWordToGroup=(gi,wi)=>{const groups=[...state.custom_groups];const w=state.custom_words[wi];if(!groups[gi].words.find(x=>x.k===w.k)){groups[gi]={...groups[gi],words:[...groups[gi].words,w]};}setState({custom_groups:groups});};
+window.removeWordFromGroup=(gi,wi)=>{const groups=[...state.custom_groups];groups[gi]={...groups[gi],words:groups[gi].words.filter((_,j)=>j!==wi)};setState({custom_groups:groups});};
+
+render();
+</script>
+</body>
+</html>
+}
 :root{
   --bg:#000;--bg2:#0d0d0d;--bg3:#1a1a1a;
   --border:#222;--border2:#333;--border3:#444;
