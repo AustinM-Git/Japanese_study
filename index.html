@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="日本語 Study">
+<title>日本語 Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#000;--bg2:#0d0d0d;--bg3:#1a1a1a;--border:#222;--border2:#333;--border3:#444;--text:#fff;--text2:#999;--text3:#555;--accent:#e8c84a;--red:#e85454;--green:#4ac87a;--radius:12px;--radius-sm:8px;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;}
+.jp{font-family:'Noto Sans JP',sans-serif;}
+button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;font-size:inherit;}
+input{font-family:inherit;font-size:inherit;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+.nav-title{font-size:17px;font-weight:600;cursor:pointer;background:none;border:none;color:var(--text);padding:0;}
+.nav-title span{color:var(--accent);}
+.nav-tabs{display:flex;gap:2px;}
+.nav-tab{padding:7px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--text2);transition:all 0.15s;}
+.nav-tab.active{background:var(--bg3);color:var(--text);}
+.nav-tab:hover:not(.active){color:var(--text);}
+.section{padding:20px;}
+.section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;}
+.page-title{font-size:20px;font-weight:600;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.select-group{margin-bottom:18px;}
+.select-label{font-size:12px;color:var(--text2);margin-bottom:8px;display:block;font-weight:500;}
+.select-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{padding:7px 14px;border-radius:20px;border:1px solid var(--border2);font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.15s;background:none;}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
+.pill:hover:not(.active){border-color:var(--border3);color:var(--text);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.btn{padding:11px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-block;}
+.btn-primary{background:var(--accent);color:#000;border:none;}
+.btn-primary:hover{background:#f0d060;}
+.btn-primary:disabled{background:var(--bg3);color:var(--text3);cursor:default;}
+.btn-secondary{background:var(--bg3);border:1px solid var(--border2);color:var(--text);}
+.btn-secondary:hover{border-color:var(--border3);}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+.btn-full{width:100%;text-align:center;}
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--text2);font-size:13px;margin-bottom:18px;padding:0;background:none;border:none;}
+.back-btn:hover{color:var(--text);}
+.score-bar{background:var(--bg3);border-radius:2px;height:3px;margin-bottom:14px;}
+.score-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s;}
+.flashcard-scene{width:100%;perspective:1000px;cursor:pointer;margin:16px 0;}
+.flashcard-inner{width:100%;position:relative;transform-style:preserve-3d;transition:transform 0.45s;}
+.flashcard-inner.flipped{transform:rotateY(180deg);}
+.flashcard-face{position:absolute;top:0;left:0;width:100%;backface-visibility:hidden;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.flashcard-back{transform:rotateY(180deg);}
+.flashcard-tap-hint{font-size:11px;color:var(--text3);margin-top:14px;letter-spacing:0.05em;}
+.fc-swipe-hint{font-size:11px;color:var(--text3);text-align:center;margin-top:6px;letter-spacing:0.04em;}
+.flashcard-nav{display:flex;align-items:center;justify-content:center;gap:20px;}
+.fc-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.15s;color:var(--text2);}
+.fc-btn:hover{border-color:var(--accent);color:var(--accent);}
+.fc-count{font-size:13px;color:var(--text2);min-width:60px;text-align:center;}
+.quiz-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;text-align:center;}
+.quiz-q-label{font-size:12px;color:var(--text3);margin-bottom:8px;}
+.quiz-q-main{font-size:22px;font-weight:600;}
+.quiz-q-sub{font-size:14px;color:var(--text2);margin-top:6px;}
+.mc-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.mc-option{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:13px;font-size:15px;text-align:center;transition:all 0.15s;font-family:'Noto Sans JP',sans-serif;}
+.mc-option:hover:not(:disabled){border-color:var(--border3);}
+.mc-option.correct{background:#0d2b18;border-color:var(--green);color:var(--green);}
+.mc-option.wrong{background:#2b0d0d;border-color:var(--red);color:var(--red);}
+.mc-option:disabled{cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px;font-size:17px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:56px;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans JP',sans-serif;}
+.match-item:hover:not(.matched):not(.selected){border-color:var(--border3);}
+.match-item.selected{border-color:var(--accent);background:rgba(232,200,74,0.06);}
+.match-item.matched{border-color:var(--green);background:rgba(74,200,122,0.06);color:var(--green);cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:rgba(232,84,84,0.06);}
+.result-screen{text-align:center;padding:48px 20px;}
+.result-score{font-size:64px;font-weight:700;color:var(--accent);margin-bottom:6px;line-height:1;}
+.result-label{font-size:15px;color:var(--text2);margin-bottom:28px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-n5{background:#0d1f3a;color:#4a90e8;}
+.badge-n4{background:#1f0d3a;color:#904ae8;}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.group-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.group-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all 0.15s;}
+.group-item:hover{border-color:var(--border3);}
+.group-item.selected{border-color:var(--accent);background:rgba(232,200,74,0.06);}
+.group-item-name{font-size:14px;font-weight:500;}
+.group-item-count{font-size:12px;color:var(--text3);}
+.group-item-check{font-size:16px;color:var(--accent);}
+.verb-display{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:16px;}
+.conj-section{margin-bottom:20px;}
+.conj-section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.conj-table{width:100%;border-collapse:collapse;font-size:12px;}
+.conj-table th{text-align:left;padding:7px 8px;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap;}
+.conj-table td{padding:7px 8px;border-bottom:1px solid var(--border);}
+.conj-table td.row-label{color:var(--text2);font-size:11px;white-space:nowrap;}
+.sel-btn{padding:3px 8px;border-radius:12px;border:1px solid var(--border2);font-size:11px;color:var(--text3);cursor:pointer;transition:all 0.15s;white-space:nowrap;background:none;}
+.sel-btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
+.sel-btn:hover:not(.active){border-color:var(--border3);}
+.search-input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 14px;font-size:15px;color:var(--text);outline:none;margin-bottom:10px;}
+.search-input:focus{border-color:var(--accent);}
+.verb-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.15s;margin-bottom:6px;}
+.verb-result:hover{border-color:var(--border3);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var VOCAB_N5 = {
+  nouns: {
+    "People & Pronouns": [{k:"私",r:"わたし",e:"I, me"},{k:"貴方",r:"あなた",e:"you"},{k:"人",r:"ひと",e:"person, someone, somebody"},{k:"男",r:"おとこ",e:"man, male"},{k:"女",r:"おんな",e:"woman, female"},{k:"大人",r:"おとな",e:"adult, grown-up"},{k:"子供",r:"こども",e:"child, children"},{k:"男の子",r:"おとこのこ",e:"boy, son, baby boy"},{k:"女の子",r:"おんなのこ",e:"girl, daughter, baby girl"},{k:"皆さん",r:"みなさん",e:"all, everyone, everybody"},{k:"誰",r:"だれ",e:"who"}],
+    "Family": [{k:"兄",r:"あに",e:"older brother, elder brother"},{k:"姉",r:"あね",e:"older sister, elder sister"},{k:"弟",r:"おとうと",e:"younger brother, little brother, kid brother"},{k:"妹",r:"いもうと",e:"younger sister"},{k:"家族",r:"かぞく",e:"family"},{k:"お父さん",r:"おとうさん",e:"father, dad, papa, pa, pop, daddy, dada"},{k:"お母さん",r:"おかあさん",e:"mother, mom, mum, ma"},{k:"お兄さん",r:"おにいさん",e:"older brother, elder brother"},{k:"お姉さん",r:"おねえさん",e:"older sister, elder sister"},{k:"お祖母さん",r:"おばあさん",e:"grandmother"},{k:"伯母さん",r:"おばさん",e:"aunt"},{k:"友達",r:"ともだち",e:"friend, companion"}],
+    "Food & Drink 1": [{k:"ご飯",r:"ごはん",e:"cooked rice"},{k:"水",r:"みず",e:"water (esp. cool or cold)"},{k:"お茶",r:"おちゃ",e:"tea (esp. green or barley)"},{k:"紅茶",r:"こうちゃ",e:"black tea"},{k:"珈琲",r:"コーヒー",e:"coffee"},{k:"牛乳",r:"ぎゅうにゅう",e:"(cow's) milk"},{k:"お酒",r:"おさけ",e:"alcohol, sake"},{k:"肉",r:"にく",e:"flesh"},{k:"魚",r:"さかな",e:"fish"},{k:"卵",r:"たまご",e:"eggs, egg, spawn, roe"},{k:"野菜",r:"やさい",e:"vegetable"},{k:"果物",r:"くだもの",e:"fruit"},{k:"パン",r:"パン",e:"bread, (sweet) pastry"},{k:"お弁当",r:"おべんとう",e:"bento, Japanese box lunch"}],
+    "Food & Drink 2": [{k:"牛肉",r:"ぎゅうにく",e:"beef"},{k:"鶏肉",r:"とりにく",e:"chicken meat"},{k:"砂糖",r:"さとう",e:"sugar"},{k:"塩",r:"しお",e:"salt, common salt, table salt, sodium chloride"},{k:"朝ご飯",r:"あさごはん",e:"breakfast"},{k:"夕飯",r:"ゆうはん",e:"evening meal, dinner, supper"},{k:"店",r:"みせ",e:"store, shop, establishment, restaurant"},{k:"レストラン",r:"レストラン",e:"restaurant (esp. Western-style)"},{k:"喫茶店",r:"きっさてん",e:"coffee shop, tearoom, coffee lounge, coffeehouse, cafe"},{k:"お皿",r:"おさら",e:"plate, dish"},{k:"茶碗",r:"ちゃわん",e:"rice bowl, tea cup, teacup"},{k:"洋杯",r:"コップ",e:"glass (drinking vessel), tumbler"},{k:"飴",r:"あめ",e:"(hard) candy, toffee"},{k:"料理",r:"りょうり",e:"cooking, cookery, cuisine, food, dish"}],
+    "Home & Rooms": [{k:"家",r:"いえ",e:"house, residence, dwelling, home"},{k:"部屋",r:"へや",e:"room, chamber"},{k:"台所",r:"だいどころ",e:"kitchen"},{k:"お風呂",r:"おふろ",e:"bath"},{k:"トイレ",r:"トイレ",e:"toilet, restroom, bathroom, lavatory"},{k:"お手洗い",r:"おてあらい",e:"toilet, restroom, lavatory, bathroom"},{k:"庭",r:"にわ",e:"garden, yard, courtyard"},{k:"玄関",r:"げんかん",e:"entrance, front door, entryway, entranceway, entry hall, vestibule, porch, foyer, mud room"},{k:"廊下",r:"ろうか",e:"corridor, hallway, passageway"},{k:"階段",r:"かいだん",e:"stairs, stairway, staircase"},{k:"アパート",r:"アパート",e:"apartment building, apartment block, apartment house"},{k:"ベッド",r:"ベッド",e:"bed"},{k:"窓",r:"まど",e:"window"},{k:"ドア",r:"ドア",e:"door"}],
+    "Household Items": [{k:"テレビ",r:"テレビ",e:"television, TV"},{k:"電話",r:"でんわ",e:"telephone call, phone call"},{k:"カメラ",r:"カメラ",e:"camera"},{k:"時計",r:"とけい",e:"clock, watch, timepiece"},{k:"鞄",r:"かばん",e:"bag, satchel, briefcase, basket"},{k:"傘",r:"かさ",e:"umbrella, parasol"},{k:"鍵",r:"かぎ",e:"key"},{k:"電気",r:"でんき",e:"electricity"},{k:"冷蔵庫",r:"れいぞうこ",e:"refrigerator, fridge"},{k:"万年筆",r:"まんねんひつ",e:"fountain pen"},{k:"ボールペン",r:"ボールペン",e:"ball-point pen"},{k:"ノート",r:"ノート",e:"notebook, copy-book, exercise book"},{k:"テープ",r:"テープ",e:"tape"},{k:"机",r:"つくえ",e:"desk"},{k:"椅子",r:"いす",e:"chair, seat, stool, bench"}],
+    "Clothing": [{k:"洋服",r:"ようふく",e:"Western-style clothes (cf. traditional Japanese clothes)"},{k:"シャツ",r:"シャツ",e:"shirt (undergarment), undershirt, singlet"},{k:"洋袴",r:"ズボン",e:"trousers, pants"},{k:"スカート",r:"スカート",e:"skirt"},{k:"コート",r:"コート",e:"coat"},{k:"靴",r:"くつ",e:"shoe, shoes, boots, footwear, footgear"},{k:"靴下",r:"くつした",e:"socks, sock, stockings, stocking"},{k:"帽子",r:"ぼうし",e:"hat, cap"},{k:"ネクタイ",r:"ネクタイ",e:"tie, necktie"},{k:"Ｙシャツ",r:"ワイシャツ",e:"(formal) shirt, dress shirt, business shirt, button-up shirt"},{k:"ポケット",r:"ポケット",e:"pocket"},{k:"釦",r:"ボタン",e:"button (clothing)"}],
+    "Places in Town": [{k:"学校",r:"がっこう",e:"school"},{k:"大学",r:"だいがく",e:"university, college"},{k:"病院",r:"びょういん",e:"hospital, clinic, doctor's office, doctor's surgery, infirmary"},{k:"銀行",r:"ぎんこう",e:"bank, banking institution"},{k:"郵便局",r:"ゆうびんきょく",e:"post office"},{k:"図書館",r:"としょかん",e:"library"},{k:"交番",r:"こうばん",e:"police box, koban, small neighborhood police station"},{k:"デパート",r:"デパート",e:"department store"},{k:"駅",r:"えき",e:"railway station, train station"},{k:"公園",r:"こうえん",e:"(public) park"},{k:"ホテル",r:"ホテル",e:"hotel"},{k:"建物",r:"たてもの",e:"building"},{k:"門",r:"もん",e:"gate"}],
+    "Nature, Animals & Plants": [{k:"山",r:"やま",e:"mountain, hill"},{k:"川",r:"かわ",e:"river, stream"},{k:"海",r:"うみ",e:"sea, ocean, waters"},{k:"池",r:"いけ",e:"pond"},{k:"木",r:"き",e:"tree, shrub, bush"},{k:"花",r:"はな",e:"flower, blossom, bloom, petal"},{k:"鳥",r:"とり",e:"bird"},{k:"犬",r:"いぬ",e:"dog (Canis (lupus) familiaris)"},{k:"猫",r:"ねこ",e:"cat (esp. the domestic cat, Felis catus)"},{k:"魚",r:"さかな",e:"fish"},{k:"動物",r:"どうぶつ",e:"animal"},{k:"空",r:"そら",e:"sky, the air, the heavens"}],
+    "Weather & Seasons": [{k:"天気",r:"てんき",e:"weather"},{k:"飴",r:"あめ",e:"(hard) candy, toffee"},{k:"雪",r:"ゆき",e:"snow, snowfall"},{k:"風邪",r:"かぜ",e:"(common) cold, influenza, flu, ague, inflammatory respiratory system illness (in general)"},{k:"曇り",r:"くもり",e:"cloudiness, cloudy weather"},{k:"春",r:"はる",e:"spring, springtime"},{k:"夏",r:"なつ",e:"summer"},{k:"秋",r:"あき",e:"autumn, fall"},{k:"冬",r:"ふゆ",e:"winter"}],
+    "Time Expressions": [{k:"今",r:"いま",e:"now, the present time, just now, soon, immediately"},{k:"朝",r:"あさ",e:"morning"},{k:"昼",r:"ひる",e:"noon, midday"},{k:"夜",r:"よる",e:"night, evening"},{k:"今日",r:"きょう",e:"today, this day"},{k:"明日",r:"あした",e:"tomorrow"},{k:"昨日",r:"きのう",e:"yesterday"},{k:"明後日",r:"あさって",e:"day after tomorrow"},{k:"一昨日",r:"おととい",e:"day before yesterday"},{k:"今年",r:"ことし",e:"this year"},{k:"来年",r:"らいねん",e:"next year"},{k:"去年",r:"きょねん",e:"last year"},{k:"今週",r:"こんしゅう",e:"this week"},{k:"来週",r:"らいしゅう",e:"next week"},{k:"先週",r:"せんしゅう",e:"last week, the week before"}],
+    "Days & Time": [{k:"日曜日",r:"にちようび",e:"Sunday"},{k:"月曜日",r:"げつようび",e:"Monday"},{k:"火曜日",r:"かようび",e:"Tuesday"},{k:"水曜日",r:"すいようび",e:"Wednesday"},{k:"木曜日",r:"もくようび",e:"Thursday"},{k:"金曜日",r:"きんようび",e:"Friday"},{k:"土曜日",r:"どようび",e:"Saturday"},{k:"午前",r:"ごぜん",e:"morning, a.m."},{k:"午後",r:"ごご",e:"afternoon, p.m."},{k:"時間",r:"じかん",e:"time"},{k:"毎日",r:"まいにち",e:"every day, daily"},{k:"毎朝",r:"まいあさ",e:"every morning"},{k:"毎晩",r:"まいばん",e:"every night"}],
+    "Numbers": [{k:"一",r:"いち",e:"one, 1"},{k:"二",r:"に",e:"two, 2"},{k:"三",r:"さん",e:"three, 3"},{k:"四",r:"し",e:"four, 4"},{k:"五",r:"ご",e:"five, 5"},{k:"六",r:"ろく",e:"six, 6"},{k:"七",r:"しち",e:"seven"},{k:"八",r:"はち",e:"eight, 8"},{k:"九",r:"きゅう",e:"nine, 9"},{k:"十",r:"じゅう",e:"ten, 10"},{k:"百",r:"ひゃく",e:"hundred, 100"},{k:"千",r:"せん",e:"thousand, 1,000"},{k:"万",r:"まん",e:"10,000, ten thousand"},{k:"零",r:"れい",e:"zero, nought"}],
+    "Counters & Quantity": [{k:"一つ",r:"ひとつ",e:"one"},{k:"二つ",r:"ふたつ",e:"two"},{k:"三つ",r:"みっつ",e:"three"},{k:"四つ",r:"よっつ",e:"four, 4"},{k:"五つ",r:"いつつ",e:"five"},{k:"六つ",r:"むっつ",e:"six"},{k:"七つ",r:"ななつ",e:"seven"},{k:"八つ",r:"やっつ",e:"eight"},{k:"九つ",r:"ここのつ",e:"nine"},{k:"幾つ",r:"いくつ",e:"how many"},{k:"幾ら",r:"いくら",e:"how much"}],
+    "Colors": [{k:"赤",r:"あか",e:"red, crimson, scarlet"},{k:"赤い",r:"あかい",e:"red, crimson, scarlet, vermilion"},{k:"青",r:"あお",e:"blue, azure"},{k:"青い",r:"あおい",e:"blue, azure"},{k:"白",r:"しろ",e:"white"},{k:"黒",r:"くろ",e:"black"},{k:"黒い",r:"くろい",e:"black"},{k:"黄色",r:"きいろ",e:"yellow, amber"},{k:"黄色い",r:"きいろい",e:"yellow"},{k:"緑",r:"みどり",e:"green"},{k:"茶色",r:"ちゃいろ",e:"brown, light brown, tawny"}],
+    "School & Study": [{k:"学校",r:"がっこう",e:"school"},{k:"大学",r:"だいがく",e:"university, college"},{k:"教室",r:"きょうしつ",e:"classroom, lecture room"},{k:"先生",r:"せんせい",e:"teacher, instructor, master"},{k:"学生",r:"がくせい",e:"student (esp. a university student)"},{k:"クラス",r:"クラス",e:"class"},{k:"テスト",r:"テスト",e:"test (of ability, knowledge, etc.), exam, examination, quiz"},{k:"勉強",r:"べんきょう",e:"study"},{k:"漢字",r:"かんじ",e:"kanji, Chinese character"},{k:"言葉",r:"ことば",e:"language, dialect"},{k:"問題",r:"もんだい",e:"question , problem"},{k:"宿題",r:"しゅくだい",e:"homework, assignment"},{k:"辞書",r:"じしょ",e:"dictionary, lexicon"},{k:"作文",r:"さくぶん",e:"writing (an essay, prose, etc.), composition"}],
+    "Body": [{k:"頭",r:"あたま",e:"head"},{k:"目",r:"め",e:"eye, eyeball"},{k:"耳",r:"みみ",e:"ear"},{k:"口",r:"くち",e:"mouth"},{k:"手",r:"て",e:"hand, arm"},{k:"足",r:"あし",e:"foot, leg"},{k:"お腹",r:"おなか",e:"belly, abdomen, stomach"},{k:"体",r:"からだ",e:"body"},{k:"紙",r:"かみ",e:"paper"},{k:"歯",r:"は",e:"tooth, teeth"},{k:"下",r:"した",e:"below, down, under, younger"}],
+    "Transportation": [{k:"電車",r:"でんしゃ",e:"train, electric train"},{k:"バス",r:"バス",e:"bus"},{k:"タクシー",r:"タクシー",e:"taxi"},{k:"自転車",r:"じてんしゃ",e:"bicycle, bike"},{k:"車",r:"くるま",e:"car, automobile, vehicle"},{k:"飛行機",r:"ひこうき",e:"airplane, aeroplane, plane, aircraft"},{k:"地下鉄",r:"ちかてつ",e:"subway, metro, underground (railway)"},{k:"駅",r:"えき",e:"railway station, train station"},{k:"切符",r:"きっぷ",e:"ticket"}],
+    "Directions & Location": [{k:"右",r:"みぎ",e:"right, right-hand side"},{k:"左",r:"ひだり",e:"left, left-hand side"},{k:"前",r:"まえ",e:"in front (of), before"},{k:"後ろ",r:"うしろ",e:"back, behind, rear"},{k:"上",r:"うえ",e:"above, over, up"},{k:"下",r:"した",e:"below, down, under, younger"},{k:"中",r:"なか",e:"inside, interior"},{k:"外",r:"そと",e:"outside, exterior"},{k:"隣",r:"となり",e:"next (to), adjoining, adjacent"},{k:"近く",r:"ちかく",e:"near, neighbourhood, neighborhood, vicinity"},{k:"向こう",r:"むこう",e:"over there, the other side"},{k:"此処",r:"ここ",e:"here, this place"},{k:"其処",r:"そこ",e:"there (place relatively near listener)"},{k:"彼処",r:"あそこ",e:"there, over there, that place"},{k:"何処",r:"どこ",e:"where, what place"}],
+    "Society & Work": [{k:"医者",r:"いしゃ",e:"doctor, physician"},{k:"会社",r:"かいしゃ",e:"company, corporation, firm"},{k:"仕事",r:"しごと",e:"work, job, labor, labour, business, task, assignment, occupation, employment"},{k:"お金",r:"おかね",e:"money"},{k:"買い物",r:"かいもの",e:"shopping, purchased goods"},{k:"町",r:"まち",e:"town, block, neighbourhood, neighborhood"},{k:"村",r:"むら",e:"village"},{k:"国",r:"くに",e:"country, state"},{k:"警官",r:"けいかん",e:"police officer, policeman, constable"},{k:"お巡りさん",r:"おまわりさん",e:"police officer"}],
+  },
+  adjadv: {
+    "Size & Shape": [{k:"大きい",r:"おおきい",e:"big, large, great"},{k:"小さい",r:"ちいさい",e:"small, little, tiny"},{k:"長い",r:"ながい",e:"long (distance, length)"},{k:"短い",r:"みじかい",e:"short"},{k:"高い",r:"たかい",e:"high, tall"},{k:"低い",r:"ひくい",e:"low (rank, degree, value, content, quality, etc.)"},{k:"広い",r:"ひろい",e:"spacious, vast, wide"},{k:"狭い",r:"せまい",e:"narrow, confined, small, cramped"},{k:"大きな",r:"おおきな",e:"big, large, great"},{k:"小さな",r:"ちいさな",e:"small, little, tiny"},{k:"丸い",r:"まるい",e:"round, circular, spherical"},{k:"真っ直ぐ",r:"まっすぐ",e:"straight (ahead), direct, upright, erect"},{k:"縦",r:"たて",e:"the vertical, height"},{k:"横",r:"よこ",e:"horizontal (as opposed to vertical)"}],
+    "Temperature & Sensation": [{k:"厚い",r:"あつい",e:"thick, deep, heavy"},{k:"寒い",r:"さむい",e:"cold"},{k:"暖かい",r:"あたたかい",e:"warm, mild, (pleasantly) hot"},{k:"冷たい",r:"つめたい",e:"cold (to the touch), chilly, icy, freezing"},{k:"温い",r:"ぬるい",e:"lukewarm, tepid"},{k:"痛い",r:"いたい",e:"painful, sore"},{k:"涼しい",r:"すずしい",e:"cool, refreshing"},{k:"厚い",r:"あつい",e:"thick, deep, heavy"}],
+    "Quality & Evaluation 1": [{k:"いい",r:"いい",e:"good, excellent, fine, nice, pleasant, agreeable"},{k:"悪い",r:"わるい",e:"bad, poor, undesirable"},{k:"面白い",r:"おもしろい",e:"interesting, fascinating, intriguing, enthralling"},{k:"詰らない",r:"つまらない",e:"dull, uninteresting, boring, tedious"},{k:"楽しい",r:"たのしい",e:"enjoyable, fun, pleasant, happy, delightful"},{k:"難しい",r:"むずかしい",e:"difficult, hard, troublesome, complicated, serious (disease, problem, etc.)"},{k:"易しい",r:"やさしい",e:"easy, plain, simple"},{k:"綺麗",r:"きれい",e:"pretty, lovely, beautiful, fair"},{k:"汚い",r:"きたない",e:"dirty, filthy, foul, unclean"},{k:"危ない",r:"あぶない",e:"dangerous, risky, hazardous, perilous, precarious"},{k:"明るい",r:"あかるい",e:"light, bright, well-lit, well-lighted"},{k:"暗い",r:"くらい",e:"dark, gloomy, murky"}],
+    "Quality & Evaluation 2": [{k:"新しい",r:"あたらしい",e:"new, novel, fresh, recent, latest, up-to-date, modern"},{k:"古い",r:"ふるい",e:"old, aged, ancient, antiquated, antique, timeworn"},{k:"多い",r:"おおい",e:"many, numerous, a lot"},{k:"少ない",r:"すくない",e:"few, little, small (amount), low, scarce, insufficient, seldom, rare"},{k:"早い",r:"はやい",e:"fast, quick, rapid, swift, speedy, brisk, prompt"},{k:"遅い",r:"おそい",e:"slow"},{k:"強い",r:"つよい",e:"strong, potent, competent, domineering, tough"},{k:"弱い",r:"よわい",e:"weak, frail, delicate, tender, unskilled, weak (wine)"},{k:"重い",r:"おもい",e:"heavy, weighty"},{k:"軽い",r:"かるい",e:"light (i.e. not heavy), feeling light (i.e. offering little resistance, moving easily)"},{k:"静か",r:"しずか",e:"quiet, silent"},{k:"賑やか",r:"にぎやか",e:"bustling, busy, crowded, lively, prosperous, thriving"},{k:"有名",r:"ゆうめい",e:"famous, well-known"},{k:"便利",r:"べんり",e:"convenient, handy, useful"}],
+    "Taste & Appearance": [{k:"美味しい",r:"おいしい",e:"good(-tasting), nice, delicious, tasty"},{k:"不味い",r:"まずい",e:"bad-tasting, awful"},{k:"甘い",r:"あまい",e:"sweet-tasting, sweet"},{k:"辛い",r:"からい",e:"spicy, hot"},{k:"面白い",r:"おもしろい",e:"interesting, fascinating, intriguing, enthralling"},{k:"綺麗",r:"きれい",e:"pretty, lovely, beautiful, fair"},{k:"可愛い",r:"かわいい",e:"cute, adorable, charming, lovely, pretty"},{k:"新しい",r:"あたらしい",e:"new, novel, fresh, recent, latest, up-to-date, modern"}],
+    "Degree & Amount": [{k:"迚も",r:"とても",e:"very, awfully, exceedingly"},{k:"もっと",r:"もっと",e:"(some) more, even more, longer, further"},{k:"少し",r:"すこし",e:"a little, a bit, a small amount, a few, some, slightly, somewhat"},{k:"余り",r:"あまり",e:"not very, not much"},{k:"沢山",r:"たくさん",e:"a lot, lots, plenty, many, a large number, much, a great deal, a good deal"},{k:"一番",r:"いちばん",e:"number one, first, first place"},{k:"毛",r:"もう",e:"one-thousandth, 0.03 mm (one-thousandth of a sun), 0.01 percent (one-thousandth of a wari), 3.75 milligrams (one-thousandth of a monme)"},{k:"未だ",r:"まだ",e:"still, as yet, only"},{k:"又",r:"また",e:"again, also, and"},{k:"何時も",r:"いつも",e:"always, all the time, at all times"},{k:"良く",r:"よく",e:"nicely, properly, well, skillfully, skilfully"},{k:"時々",r:"ときどき",e:"sometimes, occasionally, at times, from time to time, now and then, once in a while, at intervals"},{k:"ゆっくり",r:"ゆっくり",e:"slowly, unhurriedly, without haste, leisurely, at one's leisure"}],
+    "Expressions & Greetings": [{k:"はい",r:"はい",e:"yes, that is correct"},{k:"いいえ",r:"いいえ",e:"no"},{k:"どうぞ",r:"どうぞ",e:"please, kindly, pray, I beg (of you)"},{k:"どうも",r:"どうも",e:"thank you, thanks"},{k:"では",r:"では",e:"then, well, so, well then"},{k:"下さい",r:"ください",e:"please (give me)"},{k:"如何して",r:"どうして",e:"how, in what way, by what means"},{k:"何故",r:"なぜ",e:"why, how, for what reason"}],
+  },
+  verbs: {
+    "Coming & Going": [{k:"行く",r:"いく",e:"to go, to move (towards), to head (towards), to leave (for)"},{k:"来る",r:"くる",e:"to come (spatially or temporally), to approach, to arrive"},{k:"帰る",r:"かえる",e:"to return, to come home, to go home, to go back"},{k:"出かける",r:"でかける",e:"to go out , to leave, to depart, to start, to set out"},{k:"出る",r:"でる",e:"to leave, to exit, to go out, to come out, to get out"},{k:"入る",r:"はいる",e:"to enter, to come in, to go in, to get in, to arrive"},{k:"飛ぶ",r:"とぶ",e:"to fly, to soar"},{k:"上る",r:"のぼる",e:"to ascend, to go up, to climb"},{k:"降りる",r:"おりる",e:"to descend , to go down, to come down"},{k:"歩く",r:"あるく",e:"to walk"},{k:"走る",r:"はしる",e:"to run"},{k:"渡る",r:"わたる",e:"to cross over, to go across"},{k:"曲がる",r:"まがる",e:"to bend, to curve, to warp, to wind, to twist"}],
+    "Daily Actions 1": [{k:"食べる",r:"たべる",e:"to eat"},{k:"飲む",r:"のむ",e:"to drink, to swallow, to take (medicine)"},{k:"寝る",r:"ねる",e:"to sleep (lying down)"},{k:"起きる",r:"おきる",e:"to get up, to rise, to blaze up (fire)"},{k:"浴びる",r:"あびる",e:"to take a shower, to bathe in"},{k:"洗う",r:"あらう",e:"to wash, to cleanse, to rinse"},{k:"磨く",r:"みがく",e:"to polish, to brush"},{k:"着る",r:"きる",e:"to wear (from the shoulders down), to put on"},{k:"脱ぐ",r:"ぬぐ",e:"to take off (clothes, shoes, etc.), to undress"},{k:"為る",r:"する",e:"to do, to carry out, to perform"},{k:"遣る",r:"やる",e:"to do, to undertake, to perform, to play (a game), to study"},{k:"働く",r:"はたらく",e:"to work, to labor, to labour"},{k:"休む",r:"やすむ",e:"to be absent, to take a day off"},{k:"使う",r:"つかう",e:"to use (a tool, method, etc.), to make use of, to put to use"}],
+    "Daily Actions 2": [{k:"書く",r:"かく",e:"to write, to compose, to pen"},{k:"読む",r:"よむ",e:"to read"},{k:"見る",r:"みる",e:"to see, to look, to watch"},{k:"聞く",r:"きく",e:"to hear"},{k:"話す",r:"はなす",e:"to talk, to speak, to converse, to chat"},{k:"言う",r:"いう",e:"to say, to tell"},{k:"教える",r:"おしえる",e:"to teach, to instruct"},{k:"習う",r:"ならう",e:"to take lessons in, to be taught, to learn (from a teacher), to study (under a teacher), to get training in"},{k:"覚える",r:"おぼえる",e:"to memorize, to memorise, to commit to memory, to learn by heart, to bear in mind, to remember"},{k:"忘れる",r:"わすれる",e:"to forget, to leave carelessly, to be forgetful of, to forget about, to forget (an article)"},{k:"知る",r:"しる",e:"to know, to be aware (of), to be conscious (of), to learn (of), to find out, to discover"},{k:"分かる",r:"わかる",e:"to understand, to comprehend, to grasp, to see, to get, to follow"},{k:"答える",r:"こたえる",e:"to answer, to reply"}],
+    "Handling & Making": [{k:"作る",r:"つくる",e:"to make, to produce, to manufacture, to build, to construct"},{k:"持つ",r:"もつ",e:"to hold (in one's hand), to take, to carry"},{k:"置く",r:"おく",e:"to put, to place"},{k:"取る",r:"とる",e:"to take, to get"},{k:"出す",r:"だす",e:"to take out, to get out"},{k:"入れる",r:"いれる",e:"to put in, to let in, to take in, to bring in, to insert, to install , to set (a jewel, etc.), to ink in"},{k:"開ける",r:"あける",e:"to open (a door, etc.), to unwrap , to unlock"},{k:"閉める",r:"しめる",e:"to close, to shut"},{k:"押す",r:"おす",e:"to push, to thrust, to shove"},{k:"引く",r:"ひく",e:"to pull, to tug, to lead"},{k:"消す",r:"けす",e:"to erase, to rub out, to rub off, to cross out, to delete"},{k:"付ける",r:"つける",e:"to attach, to join, to connect, to add, to append, to affix, to stick, to glue, to fasten, to sew on, to apply (ointment), to put against"},{k:"掛ける",r:"かける",e:"to hang up , to let hang, to suspend (from), to hoist , to raise"},{k:"書く",r:"かく",e:"to write, to compose, to pen"}],
+    "Buying & Giving": [{k:"買う",r:"かう",e:"to buy, to purchase"},{k:"売る",r:"うる",e:"to sell"},{k:"借りる",r:"かりる",e:"to borrow"},{k:"貸す",r:"かす",e:"to lend, to loan"},{k:"上げる",r:"あげる",e:"to raise, to elevate"},{k:"渡す",r:"わたす",e:"to ferry across , to carry across, to traverse"},{k:"遣る",r:"やる",e:"to do, to undertake, to perform, to play (a game), to study"},{k:"返す",r:"かえす",e:"to return (something), to restore, to put back"}],
+    "Motion & Change": [{k:"成る",r:"なる",e:"to become"},{k:"出来る",r:"できる",e:"to be able to do, can"},{k:"始まる",r:"はじまる",e:"to begin, to start, to commence"},{k:"終わる",r:"おわる",e:"to end, to come to an end, to finish, to close, to be over"},{k:"止まる",r:"とまる",e:"to stop (moving), to come to a stop"},{k:"開く",r:"あく",e:"to open"},{k:"閉まる",r:"しまる",e:"to be shut, to close, to be closed"},{k:"消える",r:"きえる",e:"to disappear, to vanish, to go out of sight, to go away, to become lost"},{k:"無くす",r:"なくす",e:"to lose (something)"},{k:"生まれる",r:"うまれる",e:"to be born"}],
+    "Physical & Leisure": [{k:"泳ぐ",r:"およぐ",e:"to swim"},{k:"座る",r:"すわる",e:"to sit (down), to have a seat, to be seated, to kneel (on the floor)"},{k:"立つ",r:"たつ",e:"to stand (up), to rise, to get to one's feet, to stand on end , to stick up"},{k:"遊ぶ",r:"あそぶ",e:"to play (games, sports), to enjoy oneself, to have a good time"},{k:"待つ",r:"まつ",e:"to wait"},{k:"乗る",r:"のる",e:"to get on (train, plane, bus, ship, etc.), to get in, to board, to take, to embark"},{k:"歌う",r:"うたう",e:"to sing"},{k:"飛ぶ",r:"とぶ",e:"to fly, to soar"},{k:"休む",r:"やすむ",e:"to be absent, to take a day off"}],
+    "Cognitive & Emotional": [{k:"知る",r:"しる",e:"to know, to be aware (of), to be conscious (of), to learn (of), to find out, to discover"},{k:"分かる",r:"わかる",e:"to understand, to comprehend, to grasp, to see, to get, to follow"},{k:"覚える",r:"おぼえる",e:"to memorize, to memorise, to commit to memory, to learn by heart, to bear in mind, to remember"},{k:"忘れる",r:"わすれる",e:"to forget, to leave carelessly, to be forgetful of, to forget about, to forget (an article)"},{k:"困る",r:"こまる",e:"to be troubled, to have difficulty, to be in a fix, to be at a loss, to be stumped, to be embarrassed"},{k:"好き",r:"すき",e:"liking, being fond of, to one's liking, to one's taste, preferred, favourite"},{k:"嫌い",r:"きらい",e:"disliked, hated, disagreeable"},{k:"欲しい",r:"ほしい",e:"wanting (to have), desiring, wishing for"},{k:"頼む",r:"たのむ",e:"to request, to beg, to ask"}],
+  },
+};
+var VOCAB_N4 = {
+  nouns: {
+    "People & Relationships": [{k:"夫",r:"おっと",e:"husband"},{k:"妻",r:"つま",e:"wife"},{k:"息子",r:"むすこ",e:"son"},{k:"娘",r:"むすめ",e:"daughter"},{k:"親",r:"おや",e:"parent, parents, mother and father"},{k:"赤ちゃん",r:"あかちゃん",e:"baby, infant"},{k:"赤ん坊",r:"あかんぼう",e:"baby, infant"},{k:"先輩",r:"せんぱい",e:"senior (at work or school), superior, elder, older graduate, progenitor, old-timer"},{k:"僕",r:"ぼく",e:"I, me"},{k:"お嬢さん",r:"おじょうさん",e:"(another's) daughter"},{k:"ご主人",r:"ごしゅじん",e:"your husband, her husband"}],
+    "Occupations & Roles": [{k:"運転手",r:"うんてんしゅ",e:"driver, chauffeur"},{k:"社長",r:"しゃちょう",e:"company president, manager, director"},{k:"部長",r:"ぶちょう",e:"head (chief, director) of a section or department"},{k:"歯医者",r:"はいしゃ",e:"dentist"},{k:"アナウンサー",r:"アナウンサー",e:"announcer, presenter, broadcaster, reporter"},{k:"床屋",r:"とこや",e:"barbershop, barber shop, barber"},{k:"泥棒",r:"どろぼう",e:"thief, burglar, robber"},{k:"公務員",r:"こうむいん",e:"public employee, government employee, public-sector worker, public servant, civil servant"},{k:"店員",r:"てんいん",e:"employee (of a store), shop assistant, clerk, salesperson"}],
+    "Health & Medical": [{k:"熱",r:"ねつ",e:"heat"},{k:"医学",r:"いがく",e:"medical science, medicine"},{k:"入院",r:"にゅういん",e:"hospitalization, hospitalisation"},{k:"退院",r:"たいいん",e:"leaving hospital, discharge from hospital"},{k:"喉",r:"のど",e:"throat"},{k:"指輪",r:"ゆびわ",e:"(finger) ring"},{k:"腕",r:"うで",e:"arm"},{k:"背中",r:"せなか",e:"back (of the body)"},{k:"髭",r:"ひげ",e:"moustache, mustache, beard, whiskers, sideburns"},{k:"歯医者",r:"はいしゃ",e:"dentist"}],
+    "Home & Daily Objects": [{k:"押入れ",r:"おしいれ",e:"closet (built into the wall, usu. with sliding doors), (built-in) wardrobe"},{k:"畳",r:"たたみ",e:"tatami mat, Japanese straw floor coverings"},{k:"布団",r:"ふとん",e:"futon, Japanese bedding consisting of a mattress and a duvet"},{k:"冷房",r:"れいぼう",e:"air conditioning, air cooling"},{k:"引き出し",r:"ひきだし",e:"drawer"},{k:"ハンドバッグ",r:"ハンドバッグ",e:"handbag, purse"},{k:"アクセサリー",r:"アクセサリー",e:"accessory (fashion), jewelry"},{k:"二階建て",r:"にかいだて",e:"two-storied building"},{k:"屋上",r:"おくじょう",e:"rooftop"},{k:"木綿",r:"もめん",e:"cotton (material)"}],
+    "Food & Cooking": [{k:"味",r:"あじ",e:"flavor, flavour, taste"},{k:"味噌",r:"みそ",e:"miso, fermented condiment usu. made from soybeans"},{k:"葡萄",r:"ぶどう",e:"grape, grapevine"},{k:"ジャム",r:"ジャム",e:"jam"},{k:"ステーキ",r:"ステーキ",e:"steak"},{k:"サラダ",r:"サラダ",e:"salad"},{k:"サンドイッチ",r:"サンドイッチ",e:"sandwich"},{k:"湯",r:"ゆ",e:"hot water"},{k:"ご馳走",r:"ごちそう",e:"treat (esp. food and drink), entertainment, treating someone (to a meal), taking someone to dinner"},{k:"値段",r:"ねだん",e:"price, cost"},{k:"苦い",r:"にがい",e:"bitter"}],
+    "Nature & Environment": [{k:"森",r:"もり",e:"forest"},{k:"湖",r:"みずうみ",e:"lake"},{k:"坂",r:"さか",e:"slope, incline, hill"},{k:"海岸",r:"かいがん",e:"coast, beach"},{k:"虫",r:"むし",e:"insect, bug, cricket, moth"},{k:"葉",r:"は",e:"leaf, blade (of grass), (pine) needle"},{k:"光",r:"ひかり",e:"light"},{k:"田舎",r:"いなか",e:"rural area, countryside, the sticks"},{k:"枝",r:"えだ",e:"branch, bough, limb, twig, sprig, spray"},{k:"星",r:"ほし",e:"star (usu. excluding the Sun), planet (usu. excluding Earth), heavenly body"}],
+    "Transportation & Travel": [{k:"オートバイ",r:"オートバイ",e:"motorcycle, motorbike"},{k:"飛行場",r:"ひこうじょう",e:"airfield, airport"},{k:"港",r:"みなと",e:"harbour, harbor, port"},{k:"乗り物",r:"のりもの",e:"vehicle, conveyance, (means of) transport"},{k:"特急",r:"とっきゅう",e:"limited express (train for which a limited-express ticket is required)"},{k:"旅館",r:"りょかん",e:"ryokan, traditional Japanese inn"},{k:"お土産",r:"おみやげ",e:"local specialty or souvenir bought as a gift while traveling (travelling)"},{k:"途中",r:"とちゅう",e:"on the way, en route"},{k:"乗り換える",r:"のりかえる",e:"to transfer (trains), to change (bus, train)"},{k:"船",r:"ふね",e:"ship, boat, watercraft, vessel, seaplane"}],
+    "City & Infrastructure": [{k:"市",r:"し",e:"city"},{k:"美術館",r:"びじゅつかん",e:"art museum, art gallery"},{k:"神社",r:"じんじゃ",e:"Shinto shrine"},{k:"ビル",r:"ビル",e:"multi-floor building, multi-storey building"},{k:"場所",r:"ばしょ",e:"place, location, spot, position, area"},{k:"工場",r:"こうじょう",e:"factory, plant, mill, workshop"},{k:"林",r:"はやし",e:"wood, woods, forest, grove, copse, thicket"},{k:"受付",r:"うけつけ",e:"reception (desk), information desk, receptionist, information clerk"},{k:"会場",r:"かいじょう",e:"assembly hall, meeting place, venue, site, grounds"},{k:"交通",r:"こうつう",e:"traffic, transportation, communication, exchange (of ideas, etc.), intercourse"}],
+    "Work & Business": [{k:"会議",r:"かいぎ",e:"meeting, conference, session, assembly, council, convention, congress"},{k:"会議室",r:"かいぎしつ",e:"conference room, council room"},{k:"事務所",r:"じむしょ",e:"office"},{k:"貿易",r:"ぼうえき",e:"(foreign) trade, (international) commerce, importing and exporting"},{k:"産業",r:"さんぎょう",e:"industry"},{k:"レポート",r:"レポート",e:"report, paper"},{k:"ＦＡＸ",r:"ファックス",e:"fax, facsimile"},{k:"パソコン",r:"パソコン",e:"personal computer, PC"},{k:"レジ",r:"レジ",e:"(cash) register"},{k:"連絡",r:"れんらく",e:"contacting, (making) contact, getting in touch, communication, correspondence, call, message"}],
+    "Education": [{k:"小学校",r:"しょうがっこう",e:"primary school, elementary school, grade school"},{k:"卒業",r:"そつぎょう",e:"graduation, completion (of a course)"},{k:"入学",r:"にゅうがく",e:"admission (to a school or university), entrance, enrolment, enrollment, matriculation"},{k:"予習",r:"よしゅう",e:"preparation for a lesson"},{k:"復習",r:"ふくしゅう",e:"review (of learned material), revision"},{k:"発音",r:"はつおん",e:"pronunciation"},{k:"文法",r:"ぶんぽう",e:"grammar"},{k:"文学",r:"ぶんがく",e:"literature"}],
+    "Culture & Entertainment": [{k:"漫画",r:"まんが",e:"cartoon, comic, comic strip, manga"},{k:"小説",r:"しょうせつ",e:"novel, story, (work of) fiction"},{k:"お祭り",r:"おまつり",e:"festival, feast, carnival, matsuri"},{k:"文化",r:"ぶんか",e:"culture, civilization, civilisation"},{k:"歴史",r:"れきし",e:"history"},{k:"踊り",r:"おどり",e:"dance"},{k:"花見",r:"はなみ",e:"cherry blossom viewing, flower viewing"},{k:"ピアノ",r:"ピアノ",e:"piano (instrument)"},{k:"番組",r:"ばんぐみ",e:"program , programme"},{k:"翻訳",r:"ほんやく",e:"translation"}],
+    "Society & Law": [{k:"社会",r:"しゃかい",e:"society, public, community, the world"},{k:"政治",r:"せいじ",e:"politics, government"},{k:"法律",r:"ほうりつ",e:"law"},{k:"戦争",r:"せんそう",e:"war"},{k:"自由",r:"じゆう",e:"freedom, liberty"},{k:"人口",r:"じんこう",e:"population"},{k:"国際",r:"こくさい",e:"international"},{k:"放送",r:"ほうそう",e:"broadcasting, broadcast, program, announcement"},{k:"輸出",r:"ゆしゅつ",e:"export, exportation"},{k:"輸入",r:"ゆにゅう",e:"import, importation, introduction"}],
+    "Abstract & Reasoning": [{k:"理由",r:"りゆう",e:"reason, grounds, pretext, excuse, motive"},{k:"訳",r:"わけ",e:"reason, cause, grounds"},{k:"場合",r:"ばあい",e:"case, occasion, situation, circumstances"},{k:"筈",r:"はず",e:"should (be), bound (to be), expected (to be), must (be)"},{k:"以上",r:"いじょう",e:"not less than ..., ... and over, ... and above, ... and upwards, ... or more"},{k:"以下",r:"いか",e:"not exceeding ..., not more than ..., ... and under, ... and below, ... or fewer"},{k:"以内",r:"いない",e:"within, inside of, less than"},{k:"以外",r:"いがい",e:"excluding, except (for), apart from, other than, besides, in addition to"}],
+    "Time & Schedule": [{k:"一度",r:"いちど",e:"once, one time, on one occasion"},{k:"最近",r:"さいきん",e:"recently, lately, these days, nowadays, right now"},{k:"最後",r:"さいご",e:"end, conclusion"},{k:"最初",r:"さいしょ",e:"beginning, outset, first, onset"},{k:"昔",r:"むかし",e:"the old days, the past, former times, a long time ago"},{k:"将来",r:"しょうらい",e:"future, (future) prospects"},{k:"時代",r:"じだい",e:"period, epoch, era, age"},{k:"予定",r:"よてい",e:"plans, arrangement, schedule, program, programme, expectation, estimate"},{k:"予約",r:"よやく",e:"reservation, appointment, booking, advance order"},{k:"間",r:"あいだ",e:"space (between), gap, interval, distance, stretch"},{k:"用事",r:"ようじ",e:"business, things to do, engagement, errand, affairs"},{k:"用意",r:"ようい",e:"preparation, arrangements, provision, getting ready, laying out"}],
+    "Loanwords & Modern": [{k:"パソコン",r:"パソコン",e:"personal computer, PC"},{k:"ＦＡＸ",r:"ファックス",e:"fax, facsimile"},{k:"レジ",r:"レジ",e:"(cash) register"},{k:"レポート",r:"レポート",e:"report, paper"},{k:"アルバイト",r:"アルバイト",e:"part-time job, side job"},{k:"アルコール",r:"アルコール",e:"alcohol"},{k:"エスカレーター",r:"エスカレーター",e:"escalator"},{k:"ステーキ",r:"ステーキ",e:"steak"},{k:"サラダ",r:"サラダ",e:"salad"},{k:"ワープロ",r:"ワープロ",e:"word processor"},{k:"スーツ",r:"スーツ",e:"suit (clothing)"},{k:"スーツケース",r:"スーツケース",e:"suitcase"}],
+  },
+  adjadv: {
+    "Character & Personality": [{k:"真面目",r:"まじめ",e:"serious, earnest, sober, grave"},{k:"優しい",r:"やさしい",e:"tender, kind, gentle, graceful, affectionate, amiable"},{k:"親切",r:"しんせつ",e:"kind, gentle, considerate, generous, friendly, nice"},{k:"遠慮",r:"えんりょ",e:"reserve, constraint, restraint, modesty, diffidence, hesitation, holding back, discretion, tact, thoughtfulness"},{k:"熱心",r:"ねっしん",e:"zealous, enthusiastic, ardent, fervent, keen, eager"},{k:"丁寧",r:"ていねい",e:"polite, courteous, civil"},{k:"恥ずかしい",r:"はずかしい",e:"embarrassing, embarrassed, ashamed, humiliated, shy"},{k:"寂しい",r:"さびしい",e:"lonely, lonesome, solitary, desolate"},{k:"残念",r:"ざんねん",e:"regrettable, unfortunate, disappointing, vexing"},{k:"酷い",r:"ひどい",e:"cruel, heartless, hard, harsh, severe"}],
+    "Appearance & Physical State": [{k:"美しい",r:"うつくしい",e:"beautiful, pretty, lovely, sweet, pure (heart, friendship, etc.)"},{k:"珍しい",r:"めずらしい",e:"rare, uncommon, unusual, curious"},{k:"深い",r:"ふかい",e:"deep"},{k:"浅い",r:"あさい",e:"shallow, superficial"},{k:"柔らかい",r:"やわらかい",e:"soft, tender, supple, flexible, limber, limp"},{k:"複雑",r:"ふくざつ",e:"complex, complicated, intricate, mixed (feelings)"},{k:"変",r:"へん",e:"strange, odd, peculiar, weird, curious, eccentric, funny, suspicious, fishy"},{k:"可笑しい",r:"おかしい",e:"funny, amusing, comical, laughable, ridiculous"},{k:"眠い",r:"ねむい",e:"sleepy, drowsy, somnolent"},{k:"上手い",r:"うまい",e:"skillful; delicious"}],
+    "Evaluation & Necessity": [{k:"凄い",r:"すごい",e:"amazing, great, wonderful"},{k:"十分",r:"じゅうぶん",e:"enough, sufficient, plenty, adequate, satisfactory"},{k:"必要",r:"ひつよう",e:"necessary, needed, essential, indispensable"},{k:"不便",r:"ふべん",e:"inconvenience, inexpediency, unhandiness"},{k:"勿論",r:"もちろん",e:"of course, certainly, naturally"},{k:"是非",r:"ぜひ",e:"certainly, without fail"},{k:"はっきり",r:"はっきり",e:"clearly, plainly, distinctly"},{k:"確か",r:"たしか",e:"sure, certain, positive, definite"}],
+    "Feelings & Emotions": [{k:"嬉しい",r:"うれしい",e:"happy, glad, pleased, delighted, overjoyed"},{k:"悲しい",r:"かなしい",e:"sad, miserable, unhappy, sorrowful"},{k:"吃驚",r:"びっくり",e:"to be surprised, to be amazed, to be frightened, to be astonished, to get startled, to jump"},{k:"安心",r:"あんしん",e:"peace of mind, relief, (sense of) security, safety, assurance, confidence"},{k:"安全",r:"あんぜん",e:"safety, security"},{k:"熱心",r:"ねっしん",e:"zealous, enthusiastic, ardent, fervent, keen, eager"},{k:"恥ずかしい",r:"はずかしい",e:"embarrassing, embarrassed, ashamed, humiliated, shy"},{k:"寂しい",r:"さびしい",e:"lonely, lonesome, solitary, desolate"},{k:"残念",r:"ざんねん",e:"regrettable, unfortunate, disappointing, vexing"},{k:"心配",r:"しんぱい",e:"worry, concern, anxiety, uneasiness, fear"},{k:"宜しい",r:"よろしい",e:"good, OK, all right, fine, very well, will do, may, can"}],
+    "Quantity & Comparison": [{k:"両方",r:"りょうほう",e:"both, both sides, both parties"},{k:"以上",r:"いじょう",e:"not less than ..., ... and over, ... and above, ... and upwards, ... or more"},{k:"以下",r:"いか",e:"not exceeding ..., not more than ..., ... and under, ... and below, ... or fewer"},{k:"以内",r:"いない",e:"within, inside of, less than"},{k:"随分",r:"ずいぶん",e:"very, extremely, surprisingly, fairly, quite, considerably, awfully, terribly"},{k:"最も",r:"もっとも",e:"most, extremely"},{k:"中々",r:"なかなか",e:"very, considerably, easily, readily, fairly, quite, highly, rather"},{k:"割合",r:"わりあい",e:"rate, ratio, percentage, proportion"},{k:"程",r:"ほど",e:"extent, degree, measure"},{k:"倍",r:"ばい",e:"double, twice (as much)"},{k:"殆ど",r:"ほとんど",e:"almost, nearly, mostly, practically, virtually, basically, just about, all but"}],
+    "Manner & Degree": [{k:"すっかり",r:"すっかり",e:"all, completely, totally, entirely, thoroughly"},{k:"非常に",r:"ひじょうに",e:"very, extremely, exceedingly"},{k:"成るべく",r:"なるべく",e:"as (much) as possible, as (much) as one can, wherever practicable, if possible"},{k:"どんどん",r:"どんどん",e:"drumming (noise), beating, pounding, banging, booming, stamping"},{k:"矢張り",r:"やはり",e:"as expected, sure enough, just as one thought"},{k:"漸と",r:"やっと",e:"at last, finally"},{k:"もう直ぐ",r:"もうすぐ",e:"soon, shortly, before long, nearly, almost"},{k:"成る程",r:"なるほど",e:"I see, that's right, indeed"},{k:"若し",r:"もし",e:"if, in case, supposing"},{k:"一生懸命",r:"いっしょうけんめい",e:"very hard, with utmost effort, as hard as one can, with all one's might, for dear life, eagerly, desperately"}],
+    "Conjunctions & Discourse": [{k:"其れで",r:"それで",e:"so, therefore, and, (and) then"},{k:"其れに",r:"それに",e:"besides, in addition, also, moreover"},{k:"お陰で",r:"おかげで",e:"thanks to ..., owing to ..., because of ..."},{k:"又は",r:"または",e:"or, either ... or ..."},{k:"別",r:"べつ",e:"distinction, difference, discrimination"},{k:"そんな",r:"そんな",e:"such, that sort of, that kind of, like that"},{k:"そんなに",r:"そんなに",e:"so much, so, like that"},{k:"あんな",r:"あんな",e:"that sort of, that kind of, like that, such, so"}],
+  },
+  verbs: {
+    "Motion & Direction": [{k:"上がる",r:"あがる",e:"to rise, to go up, to come up, to ascend, to be raised"},{k:"降りる",r:"おりる",e:"to descend , to go down, to come down"},{k:"戻る",r:"もどる",e:"to turn back"},{k:"向かう",r:"むかう",e:"to face"},{k:"進む",r:"すすむ",e:"to advance, to go forward"},{k:"迎える",r:"むかえる",e:"to go out to meet, to receive, to welcome, to greet, to salute, to hail"},{k:"引っ越す",r:"ひっこす",e:"to move (house), to change residence"},{k:"通る",r:"とおる",e:"to go by, to go past, to go along, to travel along, to pass through, to use (a road), to take (a route), to go via, to go by way of"},{k:"寄る",r:"よる",e:"to approach, to draw near, to come near, to be close to"},{k:"参る",r:"まいる",e:"to go, to come, to call"},{k:"居らっしゃる",r:"いらっしゃる",e:"to come, to go, to be (somewhere)"}],
+    "Daily Actions 1": [{k:"始める",r:"はじめる",e:"to start, to begin, to commence, to initiate, to originate"},{k:"続ける",r:"つづける",e:"to continue, to keep up, to keep on"},{k:"止める",r:"やめる",e:"to stop (an activity), to cease, to discontinue, to end, to quit"},{k:"行う",r:"おこなう",e:"to perform, to do, to conduct oneself, to carry out"},{k:"止む",r:"やむ",e:"to cease, to stop, to be over"},{k:"眠る",r:"ねむる",e:"to sleep"},{k:"急ぐ",r:"いそぐ",e:"to hurry, to rush, to hasten, to make something happen sooner"},{k:"遅れる",r:"おくれる",e:"to be late, to be delayed, to fall behind schedule, to be overdue"},{k:"間に合う",r:"まにあう",e:"to be in time (for)"}],
+    "Daily Actions 2": [{k:"送る",r:"おくる",e:"to send, to dispatch, to forward, to transmit, to ship, to remit"},{k:"貰う",r:"もらう",e:"to receive, to take, to accept"},{k:"受ける",r:"うける",e:"to receive, to get"},{k:"払う",r:"はらう",e:"to pay"},{k:"届ける",r:"とどける",e:"to deliver, to forward, to send"},{k:"運ぶ",r:"はこぶ",e:"to carry, to transport, to move, to convey"},{k:"間に合う",r:"まにあう",e:"to be in time (for)"},{k:"手伝う",r:"てつだう",e:"to help, to assist, to aid"},{k:"済む",r:"すむ",e:"to finish, to end, to be completed, to be resolved"},{k:"通う",r:"かよう",e:"to go to and from (a place), to go back and forth between, to run between , to ply between"}],
+    "Communication & Speech": [{k:"知らせる",r:"しらせる",e:"to notify, to advise, to inform"},{k:"調べる",r:"しらべる",e:"to examine, to look up, to investigate, to check up, to sense, to study, to inquire, to search"},{k:"伝える",r:"つたえる",e:"to convey, to report, to transmit, to communicate, to tell, to impart, to propagate, to teach, to bequeath"},{k:"申す",r:"もうす",e:"to say, to be called"},{k:"申し上げる",r:"もうしあげる",e:"to say, to tell, to state, to express, to offer, to extend (greetings, congratulations, etc.)"},{k:"仰る",r:"おっしゃる",e:"to say, to speak, to tell"},{k:"伺う",r:"うかがう",e:"to call on someone, to call at a place, to pay a visit, to wait on someone"},{k:"返事",r:"へんじ",e:"reply, answer, response"},{k:"案内",r:"あんない",e:"guidance, leading (the way), showing around"},{k:"紹介",r:"しょうかい",e:"introduction, presentation, referral, showcase (of a product)"}],
+    "Thinking & Understanding": [{k:"思う",r:"おもう",e:"to think, to consider, to believe, to reckon"},{k:"考える",r:"かんがえる",e:"to think (about, of), to think over, to ponder, to contemplate, to reflect (on), to meditate (on)"},{k:"決める",r:"きめる",e:"to decide, to choose, to determine, to make up one's mind, to resolve, to set one's heart on, to settle, to arrange, to set, to appoint, to fix"},{k:"慣れる",r:"なれる",e:"to get used to, to grow accustomed to, to become familiar with"},{k:"思い出す",r:"おもいだす",e:"to recall, to remember, to recollect"},{k:"比べる",r:"くらべる",e:"to compare, to make a comparison (between)"},{k:"似る",r:"にる",e:"to resemble, to look like, to be like, to be alike, to be similar, to take after"},{k:"別れる",r:"わかれる",e:"to part (usu. of people), to part from, to part with, to be apart from"},{k:"聞こえる",r:"きこえる",e:"to be heard, to be audible, to reach one's ears"},{k:"見える",r:"みえる",e:"to be seen, to be visible, to be in sight"}],
+    "Making & Building": [{k:"建てる",r:"たてる",e:"to build, to construct"},{k:"直す",r:"なおす",e:"to repair, to mend, to fix, to correct (a mistake, bad habit, etc.), to put right, to restore, to straighten , to tidy up (one's hair, make-up, etc.), to revive (one's spirits)"},{k:"治る",r:"なおる",e:"to get better, to get well, to recover (from an illness), to be cured, to be restored, to heal"},{k:"育てる",r:"そだてる",e:"to raise, to rear, to bring up"},{k:"植える",r:"うえる",e:"to plant, to grow, to raise"},{k:"壊す",r:"こわす",e:"to break, to destroy, to demolish"},{k:"塗る",r:"ぬる",e:"to paint, to plaster, to lacquer, to varnish, to spread, to smear, to put up (wallpaper)"},{k:"飾る",r:"かざる",e:"to decorate, to ornament, to adorn"},{k:"片付ける",r:"かたづける",e:"to put in order, to tidy up, to clean up, to put away, to clear away"},{k:"包む",r:"つつむ",e:"to wrap up, to pack, to bundle, to do up"}],
+    "Emotional & Social": [{k:"笑う",r:"わらう",e:"to laugh"},{k:"泣く",r:"なく",e:"to cry, to shed tears, to weep, to sob"},{k:"怒る",r:"おこる",e:"to get angry, to get mad, to lose one's temper"},{k:"喜ぶ",r:"よろこぶ",e:"to be delighted, to be glad, to be pleased, to rejoice"},{k:"驚く",r:"おどろく",e:"to be surprised, to be taken aback, to be amazed, to be astonished, to be shocked"},{k:"謝る",r:"あやまる",e:"to apologize, to apologise"},{k:"褒める",r:"ほめる",e:"to praise, to commend, to compliment, to speak well of, to speak highly of"},{k:"負ける",r:"まける",e:"to lose, to be defeated"},{k:"勝つ",r:"かつ",e:"to win, to gain victory"},{k:"騒ぐ",r:"さわぐ",e:"to make noise, to make racket, to be noisy"},{k:"苛める",r:"いじめる",e:"to ill-treat, to bully, to torment, to pick on, to tease, to be cruel to, to persecute"}],
+    "Giving & Receiving": [{k:"揚げる",r:"あげる",e:"to give; to deep-fry"},{k:"暮れる",r:"くれる",e:"to get dark, to grow dark"},{k:"貰う",r:"もらう",e:"to receive, to take, to accept"},{k:"差し上げる",r:"さしあげる",e:"to lift up, to hold up, to raise"},{k:"頂く",r:"いただく",e:"to receive, to get, to accept, to take, to buy"},{k:"送る",r:"おくる",e:"to send, to dispatch, to forward, to transmit, to ship, to remit"},{k:"下さる",r:"くださる",e:"to give, to confer, to bestow"},{k:"為さる",r:"なさる",e:"to do"},{k:"召し上がる",r:"めしあがる",e:"to eat, to drink"},{k:"致す",r:"いたす",e:"to do"}],
+    "Change of State": [{k:"増える",r:"ふえる",e:"to increase, to multiply"},{k:"無くなる",r:"なくなる",e:"to be lost , to be missing"},{k:"壊れる",r:"こわれる",e:"to be broken, to break, to fall apart, to collapse, to be destroyed, to be damaged"},{k:"落ちる",r:"おちる",e:"to fall, to drop"},{k:"太る",r:"ふとる",e:"to put on weight, to gain weight, to grow fat, to get stout"},{k:"痩せる",r:"やせる",e:"to become thin, to lose weight, to slim"},{k:"濡れる",r:"ぬれる",e:"to get wet"},{k:"乾く",r:"かわく",e:"to get dry"},{k:"汚れる",r:"よごれる",e:"to get dirty, to become dirty"},{k:"冷える",r:"ひえる",e:"to grow cold (from room temperature, e.g. in refrigerator), to get chilly, to cool down"},{k:"割れる",r:"われる",e:"to break, to be smashed"},{k:"焼ける",r:"やける",e:"to burn, to burn down, to go down in flames"}],
+    "Physical Actions": [{k:"滑る",r:"すべる",e:"to slide, to glide, to skate, to ski"},{k:"踏む",r:"ふむ",e:"to step on, to tread on, to trample on"},{k:"投げる",r:"なげる",e:"to throw, to hurl, to fling, to toss, to cast"},{k:"打つ",r:"うつ",e:"to hit, to strike, to knock, to beat, to punch, to slap, to tap, to bang, to clap, to pound"},{k:"折る",r:"おる",e:"to break, to fracture, to break off, to snap off, to pick"},{k:"拾う",r:"ひろう",e:"to pick up, to gather"},{k:"盗む",r:"ぬすむ",e:"to steal"},{k:"逃げる",r:"にげる",e:"to run away, to flee, to get away , to escape, to break out, to leave"},{k:"取り替える",r:"とりかえる",e:"to exchange, to swap, to barter"},{k:"捕まえる",r:"つかまえる",e:"to catch, to capture, to arrest, to seize, to restrain"},{k:"起こす",r:"おこす",e:"to raise, to raise up, to set up, to pick up"}],
+    "Finding & Gathering": [{k:"探す",r:"さがす",e:"to search for, to look for, to hunt for, to seek"},{k:"見つける",r:"みつける",e:"to find, to discover, to come across, to spot, to catch (someone doing)"},{k:"見つかる",r:"みつかる",e:"to be found, to be discovered"},{k:"調べる",r:"しらべる",e:"to examine, to look up, to investigate, to check up, to sense, to study, to inquire, to search"},{k:"集める",r:"あつめる",e:"to collect, to assemble, to gather"},{k:"集まる",r:"あつまる",e:"to gather, to collect, to assemble"},{k:"選ぶ",r:"えらぶ",e:"to choose, to select, to pick (out)"},{k:"付く",r:"つく",e:"to be attached, to be connected with, to adhere, to stick, to cling"},{k:"連れる",r:"つれる",e:"to take (someone) with one, to bring along, to go with, to be accompanied by"},{k:"引き出す",r:"ひきだす",e:"to pull out, to take out, to draw out"}],
+  },
+};
+
+// ============================================================
+// CONJUGATION ENGINE
+// ============================================================
+var GODAN_RU_EXCEPTIONS = new Set([
+“かえる”,“はしる”,“きる”,“いる”,“しる”,“はいる”,“しゃべる”,“ける”,“まいる”,
+“かぎる”,“ちぎる”,“ねじる”,“よじる”,“あせる”,“すべる”,“ちる”,“ふる”,“もる”,
+]);
+var HONORIFIC_I_STEM = new Set([“いらっしゃる”,“おっしゃる”,“くださる”,“なさる”]);
+
+function getVerbType(dict, kana) {
+const w = dict, b = kana || dict;
+if (w === “する” || w === “来る” || w === “くる”) return “irregular”;
+if (w === “有る” || b === “ある”) return “aru”;
+if (w.endsWith(“する”)) return “suru”;
+if (w.endsWith(“くる”) || w.endsWith(“来る”)) return “kuru”;
+if (b.endsWith(“る”)) {
+if (GODAN_RU_EXCEPTIONS.has(b)) return “godan”;
+const prev = b.slice(-2,-1);
+if (“いきしちにひみりえけせてねへめれぎじびぴでげぜべぺ”.includes(prev)) return “ichidan”;
+}
+return “godan”;
+}
+
+function conjugate(word, reading) {
+const type = getVerbType(word, reading);
+const base = reading || word;
+const R = {};
+function set(g,row,col,k,r){R[`${g}|${row}|${col}`]={k,r};}
+function setNA(g,row,col){R[`${g}|${row}|${col}`]=null;}
+
+if (type === “aru”) {
+set(“plain”,“present”,“pos”,“有る”,“ある”); set(“plain”,“present”,“neg”,“ない”,“ない”);
+set(“plain”,“past”,“pos”,“有った”,“あった”); set(“plain”,“past”,“neg”,“無かった”,“なかった”);
+set(“plain”,“te”,“pos”,“有って”,“あって”); setNA(“plain”,“te”,“neg”);
+set(“plain”,“eba”,“pos”,“有れば”,“あれば”); setNA(“plain”,“eba”,“neg”);
+set(“plain”,“tara”,“pos”,“有ったら”,“あったら”); setNA(“plain”,“tara”,“neg”);
+set(“plain”,“volitional”,“pos”,“有ろう”,“あろう”); setNA(“plain”,“volitional”,“neg”);
+set(“plain”,“imp+”,“pos”,“有れ”,“あれ”); setNA(“plain”,“imp+”,“neg”);
+set(“plain”,“imp-”,“pos”,“有るな”,“あるな”); setNA(“plain”,“imp-”,“neg”);
+set(“plain”,“potential”,“pos”,“有れる”,“あれる”); set(“plain”,“potential”,“neg”,“有れない”,“あれない”);
+set(“plain”,“passive”,“pos”,“有られる”,“あられる”); set(“plain”,“passive”,“neg”,“有られない”,“あられない”);
+set(“plain”,“causative”,“pos”,“有らせる”,“あらせる”); set(“plain”,“causative”,“neg”,“有らせない”,“あらせない”);
+set(“plain”,“tai”,“pos”,“有りたい”,“ありたい”); set(“plain”,“tai”,“neg”,“有りたくない”,“ありたくない”);
+set(“plain”,“teiru”,“pos”,“有っている”,“あっている”); set(“plain”,“teiru”,“neg”,“有っていない”,“あっていない”);
+set(“plain”,“temoii”,“pos”,“有ってもいい”,“あってもいい”); setNA(“plain”,“temoii”,“neg”);
+set(“plain”,“tewaikenai”,“pos”,“有ってはいけない”,“あってはいけない”); setNA(“plain”,“tewaikenai”,“neg”);
+set(“plain”,“nakereba”,“pos”,“無ければならない”,“なければならない”); setNA(“plain”,“nakereba”,“neg”);
+set(“polite”,“present”,“pos”,“有ります”,“あります”); set(“polite”,“present”,“neg”,“有りません”,“ありません”);
+set(“polite”,“past”,“pos”,“有りました”,“ありました”); set(“polite”,“past”,“neg”,“有りませんでした”,“ありませんでした”);
+set(“polite”,“volitional”,“pos”,“有りましょう”,“ありましょう”); setNA(“polite”,“volitional”,“neg”);
+set(“polite”,“potential”,“pos”,“有れます”,“あれます”); set(“polite”,“potential”,“neg”,“有れません”,“あれません”);
+set(“polite”,“passive”,“pos”,“有られます”,“あられます”); set(“polite”,“passive”,“neg”,“有られません”,“あられません”);
+set(“polite”,“causative”,“pos”,“有らせます”,“あらせます”); set(“polite”,“causative”,“neg”,“有らせません”,“あらせません”);
+set(“polite”,“tai”,“pos”,“有りたいです”,“ありたいです”); set(“polite”,“tai”,“neg”,“有りたくないです”,“ありたくないです”);
+set(“polite”,“teiru”,“pos”,“有っています”,“あっています”); set(“polite”,“teiru”,“neg”,“有っていません”,“あっていません”);
+set(“polite”,“temoii”,“pos”,“有ってもいいです”,“あってもいいです”); setNA(“polite”,“temoii”,“neg”);
+set(“polite”,“tewaikenai”,“pos”,“有ってはいけません”,“あってはいけません”); setNA(“polite”,“tewaikenai”,“neg”);
+set(“polite”,“nakereba”,“pos”,“無ければなりません”,“なければなりません”); setNA(“polite”,“nakereba”,“neg”);
+return R;
+}
+
+if (type === “ichidan”) {
+const stem=base.slice(0,-1), ks=word.endsWith(“る”)?word.slice(0,-1):stem;
+set(“plain”,“present”,“pos”,ks+“る”,stem+“る”); set(“plain”,“present”,“neg”,ks+“ない”,stem+“ない”);
+set(“plain”,“past”,“pos”,ks+“た”,stem+“た”); set(“plain”,“past”,“neg”,ks+“なかった”,stem+“なかった”);
+set(“plain”,“te”,“pos”,ks+“て”,stem+“て”); setNA(“plain”,“te”,“neg”);
+set(“plain”,“eba”,“pos”,ks+“れば”,stem+“れば”); setNA(“plain”,“eba”,“neg”);
+set(“plain”,“tara”,“pos”,ks+“たら”,stem+“たら”); setNA(“plain”,“tara”,“neg”);
+set(“plain”,“volitional”,“pos”,ks+“よう”,stem+“よう”); setNA(“plain”,“volitional”,“neg”);
+set(“plain”,“imp+”,“pos”,ks+“ろ”,stem+“ろ”); setNA(“plain”,“imp+”,“neg”);
+set(“plain”,“imp-”,“pos”,ks+“るな”,stem+“るな”); setNA(“plain”,“imp-”,“neg”);
+set(“plain”,“potential”,“pos”,ks+“られる”,stem+“られる”); set(“plain”,“potential”,“neg”,ks+“られない”,stem+“られない”);
+set(“plain”,“passive”,“pos”,ks+“られる”,stem+“られる”); set(“plain”,“passive”,“neg”,ks+“られない”,stem+“られない”);
+set(“plain”,“causative”,“pos”,ks+“させる”,stem+“させる”); set(“plain”,“causative”,“neg”,ks+“させない”,stem+“させない”);
+set(“plain”,“tai”,“pos”,ks+“たい”,stem+“たい”); set(“plain”,“tai”,“neg”,ks+“たくない”,stem+“たくない”);
+set(“plain”,“teiru”,“pos”,ks+“ている”,stem+“ている”); set(“plain”,“teiru”,“neg”,ks+“ていない”,stem+“ていない”);
+set(“plain”,“temoii”,“pos”,ks+“てもいい”,stem+“てもいい”); setNA(“plain”,“temoii”,“neg”);
+set(“plain”,“tewaikenai”,“pos”,ks+“てはいけない”,stem+“てはいけない”); setNA(“plain”,“tewaikenai”,“neg”);
+set(“plain”,“nakereba”,“pos”,ks+“なければならない”,stem+“なければならない”); setNA(“plain”,“nakereba”,“neg”);
+set(“polite”,“present”,“pos”,ks+“ます”,stem+“ます”); set(“polite”,“present”,“neg”,ks+“ません”,stem+“ません”);
+set(“polite”,“past”,“pos”,ks+“ました”,stem+“ました”); set(“polite”,“past”,“neg”,ks+“ませんでした”,stem+“ませんでした”);
+set(“polite”,“volitional”,“pos”,ks+“ましょう”,stem+“ましょう”); setNA(“polite”,“volitional”,“neg”);
+set(“polite”,“potential”,“pos”,ks+“られます”,stem+“られます”); set(“polite”,“potential”,“neg”,ks+“られません”,stem+“られません”);
+set(“polite”,“passive”,“pos”,ks+“られます”,stem+“られます”); set(“polite”,“passive”,“neg”,ks+“られません”,stem+“られません”);
+set(“polite”,“causative”,“pos”,ks+“させます”,stem+“させます”); set(“polite”,“causative”,“neg”,ks+“させません”,stem+“させません”);
+set(“polite”,“tai”,“pos”,ks+“たいです”,stem+“たいです”); set(“polite”,“tai”,“neg”,ks+“たくないです”,stem+“たくないです”);
+set(“polite”,“teiru”,“pos”,ks+“ています”,stem+“ています”); set(“polite”,“teiru”,“neg”,ks+“ていません”,stem+“ていません”);
+set(“polite”,“temoii”,“pos”,ks+“てもいいです”,stem+“てもいいです”); setNA(“polite”,“temoii”,“neg”);
+set(“polite”,“tewaikenai”,“pos”,ks+“てはいけません”,stem+“てはいけません”); setNA(“polite”,“tewaikenai”,“neg”);
+set(“polite”,“nakereba”,“pos”,ks+“なければなりません”,stem+“なければなりません”); setNA(“polite”,“nakereba”,“neg”);
+} else if (type === “godan”) {
+const M={く:{te:“いて”,ta:“いた”,neg:“か”,stem:“き”,pot:“け”,pass:“か”,caus:“か”,imp:“け”,vol:“こ”},ぐ:{te:“いで”,ta:“いだ”,neg:“が”,stem:“ぎ”,pot:“げ”,pass:“が”,caus:“が”,imp:“げ”,vol:“ご”},す:{te:“して”,ta:“した”,neg:“さ”,stem:“し”,pot:“せ”,pass:“さ”,caus:“さ”,imp:“せ”,vol:“そ”},つ:{te:“って”,ta:“った”,neg:“た”,stem:“ち”,pot:“て”,pass:“た”,caus:“た”,imp:“て”,vol:“と”},ぬ:{te:“んで”,ta:“んだ”,neg:“な”,stem:“に”,pot:“ね”,pass:“な”,caus:“な”,imp:“ね”,vol:“の”},ぶ:{te:“んで”,ta:“んだ”,neg:“ば”,stem:“び”,pot:“べ”,pass:“ば”,caus:“ば”,imp:“べ”,vol:“ぼ”},む:{te:“んで”,ta:“んだ”,neg:“ま”,stem:“み”,pot:“め”,pass:“ま”,caus:“ま”,imp:“め”,vol:“も”},る:{te:“って”,ta:“った”,neg:“ら”,stem:“り”,pot:“れ”,pass:“ら”,caus:“ら”,imp:“れ”,vol:“ろ”},う:{te:“って”,ta:“った”,neg:“わ”,stem:“い”,pot:“え”,pass:“わ”,caus:“わ”,imp:“え”,vol:“お”}};
+const lk=base.slice(-1), m=M[lk]||M[“う”];
+const ks=word.slice(0,-1), rs=base.slice(0,-1);
+const isH=HONORIFIC_I_STEM.has(base);
+const pStem=isH?rs+“い”:rs+m.stem, pStemK=isH?ks.slice(0,-1)+“い”:ks+m.stem;
+set(“plain”,“present”,“pos”,word,base); set(“plain”,“present”,“neg”,ks+m.neg+“ない”,rs+m.neg+“ない”);
+set(“plain”,“past”,“pos”,ks+m.ta,rs+m.ta); set(“plain”,“past”,“neg”,ks+m.neg+“なかった”,rs+m.neg+“なかった”);
+set(“plain”,“te”,“pos”,ks+m.te,rs+m.te); setNA(“plain”,“te”,“neg”);
+set(“plain”,“eba”,“pos”,ks+m.pot+“ば”,rs+m.pot+“ば”); setNA(“plain”,“eba”,“neg”);
+set(“plain”,“tara”,“pos”,ks+m.ta+“ら”,rs+m.ta+“ら”); setNA(“plain”,“tara”,“neg”);
+set(“plain”,“volitional”,“pos”,ks+m.vol+“う”,rs+m.vol+“う”); setNA(“plain”,“volitional”,“neg”);
+set(“plain”,“imp+”,“pos”,ks+m.imp,rs+m.imp); setNA(“plain”,“imp+”,“neg”);
+set(“plain”,“imp-”,“pos”,word+“な”,base+“な”); setNA(“plain”,“imp-”,“neg”);
+set(“plain”,“potential”,“pos”,ks+m.pot+“る”,rs+m.pot+“る”); set(“plain”,“potential”,“neg”,ks+m.pot+“ない”,rs+m.pot+“ない”);
+set(“plain”,“passive”,“pos”,ks+m.pass+“れる”,rs+m.pass+“れる”); set(“plain”,“passive”,“neg”,ks+m.pass+“れない”,rs+m.pass+“れない”);
+set(“plain”,“causative”,“pos”,ks+m.caus+“せる”,rs+m.caus+“せる”); set(“plain”,“causative”,“neg”,ks+m.caus+“せない”,rs+m.caus+“せない”);
+set(“plain”,“tai”,“pos”,ks+m.stem+“たい”,rs+m.stem+“たい”); set(“plain”,“tai”,“neg”,ks+m.stem+“たくない”,rs+m.stem+“たくない”);
+set(“plain”,“teiru”,“pos”,ks+m.te+“いる”,rs+m.te+“いる”); set(“plain”,“teiru”,“neg”,ks+m.te+“いない”,rs+m.te+“いない”);
+set(“plain”,“temoii”,“pos”,ks+m.te+“もいい”,rs+m.te+“もいい”); setNA(“plain”,“temoii”,“neg”);
+set(“plain”,“tewaikenai”,“pos”,ks+m.te+“はいけない”,rs+m.te+“はいけない”); setNA(“plain”,“tewaikenai”,“neg”);
+set(“plain”,“nakereba”,“pos”,ks+m.neg+“なければならない”,rs+m.neg+“なければならない”); setNA(“plain”,“nakereba”,“neg”);
+set(“polite”,“present”,“pos”,pStemK+“ます”,pStem+“ます”); set(“polite”,“present”,“neg”,pStemK+“ません”,pStem+“ません”);
+set(“polite”,“past”,“pos”,pStemK+“ました”,pStem+“ました”); set(“polite”,“past”,“neg”,pStemK+“ませんでした”,pStem+“ませんでした”);
+set(“polite”,“volitional”,“pos”,pStemK+“ましょう”,pStem+“ましょう”); setNA(“polite”,“volitional”,“neg”);
+set(“polite”,“potential”,“pos”,ks+m.pot+“ます”,rs+m.pot+“ます”); set(“polite”,“potential”,“neg”,ks+m.pot+“ません”,rs+m.pot+“ません”);
+set(“polite”,“passive”,“pos”,ks+m.pass+“れます”,rs+m.pass+“れます”); set(“polite”,“passive”,“neg”,ks+m.pass+“れません”,rs+m.pass+“れません”);
+set(“polite”,“causative”,“pos”,ks+m.caus+“せます”,rs+m.caus+“せます”); set(“polite”,“causative”,“neg”,ks+m.caus+“せません”,rs+m.caus+“せません”);
+set(“polite”,“tai”,“pos”,ks+m.stem+“たいです”,rs+m.stem+“たいです”); set(“polite”,“tai”,“neg”,ks+m.stem+“たくないです”,rs+m.stem+“たくないです”);
+set(“polite”,“teiru”,“pos”,ks+m.te+“います”,rs+m.te+“います”); set(“polite”,“teiru”,“neg”,ks+m.te+“いません”,rs+m.te+“いません”);
+set(“polite”,“temoii”,“pos”,ks+m.te+“もいいです”,rs+m.te+“もいいです”); setNA(“polite”,“temoii”,“neg”);
+set(“polite”,“tewaikenai”,“pos”,ks+m.te+“はいけません”,rs+m.te+“はいけません”); setNA(“polite”,“tewaikenai”,“neg”);
+set(“polite”,“nakereba”,“pos”,ks+m.neg+“なければなりません”,rs+m.neg+“なければなりません”); setNA(“polite”,“nakereba”,“neg”);
+} else if (type === “suru”) {
+const pk=word.slice(0,-2), pr=base.slice(0,-2);
+const pl=(row,col,k,r)=>set(“plain”,row,col,pk+k,pr+r);
+const po=(row,col,k,r)=>set(“polite”,row,col,pk+k,pr+r);
+pl(“present”,“pos”,“する”,“する”); pl(“present”,“neg”,“しない”,“しない”);
+pl(“past”,“pos”,“した”,“した”); pl(“past”,“neg”,“しなかった”,“しなかった”);
+pl(“te”,“pos”,“して”,“して”); setNA(“plain”,“te”,“neg”);
+pl(“eba”,“pos”,“すれば”,“すれば”); setNA(“plain”,“eba”,“neg”);
+pl(“tara”,“pos”,“したら”,“したら”); setNA(“plain”,“tara”,“neg”);
+pl(“volitional”,“pos”,“しよう”,“しよう”); setNA(“plain”,“volitional”,“neg”);
+pl(“imp+”,“pos”,“しろ”,“しろ”); setNA(“plain”,“imp+”,“neg”);
+pl(“imp-”,“pos”,“するな”,“するな”); setNA(“plain”,“imp-”,“neg”);
+pl(“potential”,“pos”,“できる”,“できる”); pl(“potential”,“neg”,“できない”,“できない”);
+pl(“passive”,“pos”,“される”,“される”); pl(“passive”,“neg”,“されない”,“されない”);
+pl(“causative”,“pos”,“させる”,“させる”); pl(“causative”,“neg”,“させない”,“させない”);
+pl(“tai”,“pos”,“したい”,“したい”); pl(“tai”,“neg”,“したくない”,“したくない”);
+pl(“teiru”,“pos”,“している”,“している”); pl(“teiru”,“neg”,“していない”,“していない”);
+pl(“temoii”,“pos”,“してもいい”,“してもいい”); setNA(“plain”,“temoii”,“neg”);
+pl(“tewaikenai”,“pos”,“してはいけない”,“してはいけない”); setNA(“plain”,“tewaikenai”,“neg”);
+pl(“nakereba”,“pos”,“しなければならない”,“しなければならない”); setNA(“plain”,“nakereba”,“neg”);
+po(“present”,“pos”,“します”,“します”); po(“present”,“neg”,“しません”,“しません”);
+po(“past”,“pos”,“しました”,“しました”); po(“past”,“neg”,“しませんでした”,“しませんでした”);
+po(“volitional”,“pos”,“しましょう”,“しましょう”); setNA(“polite”,“volitional”,“neg”);
+po(“potential”,“pos”,“できます”,“できます”); po(“potential”,“neg”,“できません”,“できません”);
+po(“passive”,“pos”,“されます”,“されます”); po(“passive”,“neg”,“されません”,“されません”);
+po(“causative”,“pos”,“させます”,“させます”); po(“causative”,“neg”,“させません”,“させません”);
+po(“tai”,“pos”,“したいです”,“したいです”); po(“tai”,“neg”,“したくないです”,“したくないです”);
+po(“teiru”,“pos”,“しています”,“しています”); po(“teiru”,“neg”,“していません”,“していません”);
+po(“temoii”,“pos”,“してもいいです”,“してもいいです”); setNA(“polite”,“temoii”,“neg”);
+po(“tewaikenai”,“pos”,“してはいけません”,“してはいけません”); setNA(“polite”,“tewaikenai”,“neg”);
+po(“nakereba”,“pos”,“しなければなりません”,“しなければなりません”); setNA(“polite”,“nakereba”,“neg”);
+} else { // kuru
+set(“plain”,“present”,“pos”,“来る”,“くる”); set(“plain”,“present”,“neg”,“来ない”,“こない”);
+set(“plain”,“past”,“pos”,“来た”,“きた”); set(“plain”,“past”,“neg”,“来なかった”,“こなかった”);
+set(“plain”,“te”,“pos”,“来て”,“きて”); setNA(“plain”,“te”,“neg”);
+set(“plain”,“eba”,“pos”,“来れば”,“くれば”); setNA(“plain”,“eba”,“neg”);
+set(“plain”,“tara”,“pos”,“来たら”,“きたら”); setNA(“plain”,“tara”,“neg”);
+set(“plain”,“volitional”,“pos”,“来よう”,“こよう”); setNA(“plain”,“volitional”,“neg”);
+set(“plain”,“imp+”,“pos”,“来い”,“こい”); setNA(“plain”,“imp+”,“neg”);
+set(“plain”,“imp-”,“pos”,“来るな”,“くるな”); setNA(“plain”,“imp-”,“neg”);
+set(“plain”,“potential”,“pos”,“来られる”,“こられる”); set(“plain”,“potential”,“neg”,“来られない”,“こられない”);
+set(“plain”,“passive”,“pos”,“来られる”,“こられる”); set(“plain”,“passive”,“neg”,“来られない”,“こられない”);
+set(“plain”,“causative”,“pos”,“来させる”,“こさせる”); set(“plain”,“causative”,“neg”,“来させない”,“こさせない”);
+set(“plain”,“tai”,“pos”,“来たい”,“きたい”); set(“plain”,“tai”,“neg”,“来たくない”,“きたくない”);
+set(“plain”,“teiru”,“pos”,“来ている”,“きている”); set(“plain”,“teiru”,“neg”,“来ていない”,“きていない”);
+set(“plain”,“temoii”,“pos”,“来てもいい”,“きてもいい”); setNA(“plain”,“temoii”,“neg”);
+set(“plain”,“tewaikenai”,“pos”,“来てはいけない”,“きてはいけない”); setNA(“plain”,“tewaikenai”,“neg”);
+set(“plain”,“nakereba”,“pos”,“来なければならない”,“こなければならない”); setNA(“plain”,“nakereba”,“neg”);
+set(“polite”,“present”,“pos”,“来ます”,“きます”); set(“polite”,“present”,“neg”,“来ません”,“きません”);
+set(“polite”,“past”,“pos”,“来ました”,“きました”); set(“polite”,“past”,“neg”,“来ませんでした”,“きませんでした”);
+set(“polite”,“volitional”,“pos”,“来ましょう”,“きましょう”); setNA(“polite”,“volitional”,“neg”);
+set(“polite”,“potential”,“pos”,“来られます”,“こられます”); set(“polite”,“potential”,“neg”,“来られません”,“こられません”);
+set(“polite”,“passive”,“pos”,“来られます”,“こられます”); set(“polite”,“passive”,“neg”,“来られません”,“こられません”);
+set(“polite”,“causative”,“pos”,“来させます”,“こさせます”); set(“polite”,“causative”,“neg”,“来させません”,“こさせません”);
+set(“polite”,“tai”,“pos”,“来たいです”,“きたいです”); set(“polite”,“tai”,“neg”,“来たくないです”,“きたくないです”);
+set(“polite”,“teiru”,“pos”,“来ています”,“きています”); set(“polite”,“teiru”,“neg”,“来ていません”,“きていません”);
+set(“polite”,“temoii”,“pos”,“来てもいいです”,“きてもいいです”); setNA(“polite”,“temoii”,“neg”);
+set(“polite”,“tewaikenai”,“pos”,“来てはいけません”,“きてはいけません”); setNA(“polite”,“tewaikenai”,“neg”);
+set(“polite”,“nakereba”,“pos”,“来なければなりません”,“こなければなりません”); setNA(“polite”,“nakereba”,“neg”);
+}
+return R;
+}
+
+var PLAIN_ROWS=[
+{id:“present”,label:“Present”},{id:“past”,label:“Past”},
+{id:“te”,label:“Te-form”,single:true},{id:“eba”,label:“Eba conditional”,single:true},
+{id:“tara”,label:“Tara conditional”,single:true},{id:“volitional”,label:“Volitional”,single:true},
+{id:“imp+”,label:“Imperative (+)”,single:true},{id:“imp-”,label:“Imperative (−)”,single:true},
+{id:“potential”,label:“Potential”},{id:“passive”,label:“Passive”},{id:“causative”,label:“Causative”},
+{id:“tai”,label:“Tai (want to)”},{id:“teiru”,label:“Te-iru (ongoing)”},
+{id:“temoii”,label:“Te-mo-ii (may)”,single:true},
+{id:“tewaikenai”,label:“Te-wa-ikenai (must not)”,single:true},
+{id:“nakereba”,label:“Nakereba (must)”,single:true},
+];
+var POLITE_ROWS=[
+{id:“present”,label:“Present”},{id:“past”,label:“Past”},
+{id:“volitional”,label:“Volitional”,single:true},
+{id:“potential”,label:“Potential”},{id:“passive”,label:“Passive”},{id:“causative”,label:“Causative”},
+{id:“tai”,label:“Tai (want to)”},{id:“teiru”,label:“Te-iru (ongoing)”},
+{id:“temoii”,label:“Te-mo-ii (may)”,single:true},
+{id:“tewaikenai”,label:“Te-wa-ikenai (must not)”,single:true},
+{id:“nakereba”,label:“Nakereba (must)”,single:true},
+];
+
+function getConjLabel(g,row,col){
+const rowObj=[…PLAIN_ROWS,…POLITE_ROWS].find(r=>r.id===row)||{label:row};
+const gL=g===“plain”?“Plain”:“Polite”, cL=col===“pos”?“Positive”:“Negative”;
+return rowObj.single?`${gL} ${rowObj.label}`:`${gL} ${rowObj.label} ${cL}`;
+}
+
+// Build verb list from vocabulary
+function buildVerbList() {
+const verbs = [];
+const seen = new Set();
+for(const [pos,cats] of Object.entries(VOCAB_N5)) {
+if(pos!==‘verbs’) continue;
+for(const words of Object.values(cats)) {
+for(const w of words) {
+const key = w.k+’|’+w.r;
+if(!seen.has(key)&&w.e.startsWith(‘to ‘)) { seen.add(key); verbs.push({…w,level:‘N5’}); }
+}
+}
+}
+for(const [pos,cats] of Object.entries(VOCAB_N4)) {
+if(pos!==‘verbs’) continue;
+for(const words of Object.values(cats)) {
+for(const w of words) {
+const key = w.k+’|’+w.r;
+if(!seen.has(key)&&w.e.startsWith(’to ’)) { seen.add(key); verbs.push({…w,level:‘N4’}); }
+}
+}
+}
+return verbs.sort((a,b)=>a.r.localeCompare(b.r,‘ja’));
+}
+var VERB_LIST = buildVerbList();
+
+// Working list persistence
+function loadWorkingList(){try{return JSON.parse(localStorage.getItem(‘jpWorkingList’)||’[]’);}catch(e){return[];}}
+function saveWorkingList(list){try{localStorage.setItem(‘jpWorkingList’,JSON.stringify(list));}catch(e){}}
+
+// ============================================================
+// STATE
+// ============================================================
+var state = {
+screen:‘home’,
+// Shared setup state
+level:‘N5’, pos:‘nouns’, selectedGroups:[],
+workingList: loadWorkingList(),
+completedGroups: JSON.parse(localStorage.getItem(‘jpCompletedGroups’)||’[]’),
+fcFront:‘kanji’, fcMode:‘vocab’,
+qzType:‘mc’, qzFront:‘kanji’, qzMode:‘vocab’,
+// Flashcard state
+fcCards:[], fcIdx:0, fcFlipped:false,
+fcVerb:null, fcSelectedConjs:[], fcConjCards:[],
+fcVerbSearch:’’,
+conjLevel:‘N5’, conjSelectedVerbs:[], conjVerbTab:‘groups’,
+qzConjLevel:‘N5’, qzConjSelectedVerbs:[], qzConjVerbTab:‘groups’,
+// Quiz state
+qzStarted:false, qzDone:false,
+qzQuestions:[], qzIdx:0, qzScore:0,
+qzAnswered:false, qzSelected:null,
+qzMatchLeft:[], qzMatchRight:[],
+qzMatchSelL:null, qzMatchSelR:null,
+qzMatchMatched:[],
+qzVerb:null, qzSelectedConjs:[],
+qzVerbSearch:’’,
+_matchWords:[], _matchType:‘vocab’,
+};
+function setState(u){
+Object.assign(state,u);
+if(u.workingList!==undefined) saveWorkingList(state.workingList);
+if(u.completedGroups!==undefined) try{localStorage.setItem(‘jpCompletedGroups’,JSON.stringify(state.completedGroups));}catch(e){}
+render();
+}
+
+// Helpers
+function shuffle(a){return[…a].sort(()=>Math.random()-0.5);}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
+
+function getVocabData(level) {
+if(level===‘N5’) return VOCAB_N5;
+if(level===‘N4’) return VOCAB_N4;
+return null;
+}
+
+function getWordsForGroups(level, posKey, groupNames) {
+if(level===‘Working’) return state.workingList;
+const words = [];
+const seen = new Set();
+const levels = level===‘All’ ? [‘N5’,‘N4’] : [level];
+for(const lv of levels) {
+const data = getVocabData(lv);
+if(!data||!data[posKey]) continue;
+for(const gName of groupNames) {
+const grp = data[posKey][gName];
+if(!grp) continue;
+for(const w of grp) {
+const key = w.k+’|’+w.r;
+if(!seen.has(key)) { seen.add(key); words.push({…w,level:lv}); }
+}
+}
+}
+return words;
+}
+
+function getGroupsForPOS(level, posKey) {
+const result = [];
+const levels = level===‘All’ ? [‘N5’,‘N4’] : [level];
+for(const lv of levels) {
+const data = getVocabData(lv);
+if(!data||!data[posKey]) continue;
+for(const [name,words] of Object.entries(data[posKey])) {
+result.push({name, count:words.length, level:lv});
+}
+}
+return result;
+}
+
+function makeDistractors(correct, pool, field) {
+const others = shuffle(pool.map(w=>w[field]).filter(v=>v&&v!==correct));
+return shuffle([correct,…others.slice(0,3)]).slice(0,4);
+}
+
+function makeConjDistractors(correct, verb) {
+const conjs = conjugate(verb.k, verb.r);
+const pool = Object.values(conjs).filter(v=>v&&v.r!==correct).map(v=>v.r);
+const opts = [correct,…shuffle(pool).slice(0,3)];
+const suffixes = [“た”,“て”,“ない”,“ます”,“った”,“って”,“なかった”,“れる”,“せる”,“たい”];
+while(opts.length<4){
+const t=correct.slice(0,-1)+rand(suffixes);
+if(!opts.includes(t)) opts.push(t);
+}
+return shuffle(opts.slice(0,4));
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render(){
+document.getElementById(“app”).innerHTML=buildNav()+`<div>${buildScreen()}</div>`;
+initSwipe();
+}
+
+function initSwipe(){
+const scene = document.querySelector(’.flashcard-scene’);
+if(!scene) return;
+let x0=null, y0=null;
+scene.addEventListener(‘touchstart’, e=>{
+x0=e.touches[0].clientX; y0=e.touches[0].clientY;
+}, {passive:true});
+scene.addEventListener(‘touchend’, e=>{
+if(x0===null) return;
+const dx=e.changedTouches[0].clientX-x0;
+const dy=e.changedTouches[0].clientY-y0;
+if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+// Horizontal swipe — navigate cards
+if(dx<0) fcNext(); else fcPrev();
+} else if(Math.abs(dy)<20&&Math.abs(dx)<20){
+// Tiny movement — treat as tap (handled by onclick)
+}
+x0=null; y0=null;
+}, {passive:true});
+}
+
+function buildNav(){
+const homeBtn = `<button class="nav-title" onclick="goHome()">日本語 <span>Study</span></button>`;
+if(state.screen===‘home’) return`<div class="nav">${homeBtn}<div style="font-size:12px;color:var(--text3);">N5 · N4</div></div>`;
+return`<div class="nav">${homeBtn}<div class="nav-tabs">
+<button class="nav-tab ${state.screen==='flashcards'?'active':''}" onclick="goTo('flashcards')">Cards</button>
+<button class="nav-tab ${state.screen==='quiz'?'active':''}" onclick="goTo('quiz')">Quiz</button>
+
+  </div></div>`;
+}
+
+function buildScreen(){
+switch(state.screen){
+case’home’: return buildHome();
+case’flashcards’: return buildFC();
+case’quiz’: return buildQuiz();
+default: return buildHome();
+}
+}
+
+// ============================================================
+// HOME
+// ============================================================
+function buildHome(){
+return`<div class="section"> <div style="margin-bottom:28px;"> <div class="page-title">おはようございます</div> <div class="page-sub">What would you like to study today?</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"> <button class="card" style="text-align:left;cursor:pointer;" onclick="goTo('flashcards')"> <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Flashcards</div> <div style="font-size:12px;color:var(--text2);">Vocab &amp; conjugation</div> </button> <button class="card" style="text-align:left;cursor:pointer;" onclick="goTo('quiz')"> <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Quiz</div> <div style="font-size:12px;color:var(--text2);">Multiple choice &amp; matching</div> </button> </div> </div> <div class="section-title">N5 Categories</div> <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px;"> ${Object.keys(VOCAB_N5.nouns).concat(Object.keys(VOCAB_N5.adjadv)).concat(Object.keys(VOCAB_N5.verbs)).map(c=>`<span class="badge badge-n5">${c}</span>`).join('')} </div> <div class="section-title">N4 Categories</div> <div style="display:flex;flex-wrap:wrap;gap:5px;"> ${Object.keys(VOCAB_N4.nouns).concat(Object.keys(VOCAB_N4.adjadv)).concat(Object.keys(VOCAB_N4.verbs)).map(c=>`<span class="badge badge-n4">${c}</span>`).join(’’)}
+</div>
+
+  </div>`;
+}
+
+// ============================================================
+// SHARED SETUP — Level / POS / Groups
+// ============================================================
+function buildSetup(mode, title, sub, extraOptions) {
+// mode = ‘flashcards’ or ‘quiz’
+const isFC = mode===‘flashcards’;
+const modeKey = isFC ? ‘fcMode’ : ‘qzMode’;
+const modeVal = isFC ? state.fcMode : state.qzMode;
+
+if(modeVal===‘conj’) return isFC ? buildFCConjSetup() : buildQZConjSetup();
+if(state.level===‘Working’) return buildWorkingSetup(mode);
+
+const groups = getGroupsForPOS(state.level, state.pos);
+
+return`<div class="section"> <div class="page-title">${title}</div> <div class="page-sub">${sub}</div> <div class="select-group"> <span class="select-label">Mode</span> <div class="select-pills"> <div class="pill ${modeVal==='vocab'?'active':''}" onclick="setState({${modeKey}:'vocab',selectedGroups:[]})">Vocabulary</div> <div class="pill ${modeVal==='conj'?'active':''}" onclick="setState({${modeKey}:'conj',selectedGroups:[]})">Conjugation</div> </div> </div> <div class="select-group"> <span class="select-label">JLPT Level</span> <div class="select-pills"> ${['N5','N4','All','Working'].map(l=>`<div class="pill ${state.level===l?'active':''}" onclick="setState({level:'${l}',selectedGroups:[]})"> ${l}</div>`).join('')} </div> </div> <div class="select-group"> <span class="select-label">Part of speech</span> <div class="select-pills"> <div class="pill ${state.pos==='nouns'?'active':''}" onclick="setState({pos:'nouns',selectedGroups:[]})">Nouns</div> <div class="pill ${state.pos==='adjadv'?'active':''}" onclick="setState({pos:'adjadv',selectedGroups:[]})">Adj &amp; Adv</div> <div class="pill ${state.pos==='verbs'?'active':''}" onclick="setState({pos:'verbs',selectedGroups:[]})">Verbs</div> </div> </div> ${isFC?`<div class="select-group">
+<span class="select-label">Show on front</span>
+<div class="select-pills">
+${[‘kanji’,‘kana’,‘english’].map(f=>`<div class="pill ${state.fcFront===f?'active':''}" onclick="setState({fcFront:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join(’’)}
+</div>
+</div>`:`<div class="select-group">
+<span class="select-label">Quiz focus</span>
+<div class="select-pills">
+${[‘kanji’,‘kana’,‘english’].map(f=>`<div class="pill ${state.qzFront===f?'active':''}" onclick="setState({qzFront:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join(’’)}
+</div>
+</div>
+<div class="select-group">
+<span class="select-label">Format</span>
+<div class="select-pills">
+<div class="pill ${state.qzType==='mc'?'active':''}" onclick="setState({qzType:'mc'})">Multiple choice</div>
+<div class="pill ${state.qzType==='match'?'active':''}" onclick="setState({qzType:'match'})">Matching pairs</div>
+</div>
+</div>`} <div class="select-group"> <span class="select-label">Word groups — tap to select (${state.selectedGroups.length} selected)</span> <div class="group-list"> ${groups.map(g=>{ const sel=state.selectedGroups.includes(g.name); const cKey=g.name+'|'+(g.level||state.level); const done=state.completedGroups.includes(cKey); return`<div class=“group-item ${sel?‘selected’:’’}” onclick=“toggleGroup(’${g.name.replace(/’/g,”\’”)}’)”>
+<div>
+<span class="group-item-name">${g.name}</span>
+${state.level===‘All’?`<span class="badge badge-${g.level.toLowerCase()}" style="margin-left:6px;">${g.level}</span>`:’’}
+</div>
+<div style="display:flex;align-items:center;gap:8px;">
+<span class="group-item-count">${g.count}</span>
+${sel?`<span class="group-item-check">✓</span>`:’’}
+<button onclick=“toggleCompleted(event,’${g.name.replace(/’/g,”\’”)}’,’${g.level||’’}’)” style=“width:22px;height:22px;border-radius:50%;border:1px solid ${done?‘var(–text3)’:‘var(–border3)’};background:${done?‘var(–border3)’:‘none’};display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;”>${done?’<span style="font-size:11px;color:var(–text);”>✓</span>’:’’}</button>
+</div>
+</div>`;
+}).join(’’)}
+</div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:8px;">
+<button class="btn btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="selectAllGroups()">Select all</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="setState({selectedGroups:[]})">Clear</button>
+</div>
+<button class=“btn btn-primary btn-full” onclick=”${isFC?‘startVocabFC’:‘startQuiz’}()” ${state.selectedGroups.length===0?‘disabled’:’’}>
+${isFC?‘Start flashcards’:‘Start quiz’}
+</button>
+
+  </div>`;
+}
+
+// ============================================================
+// WORKING LIST SETUP
+// ============================================================
+function buildWorkingSetup(mode){
+const isFC = mode===‘flashcards’;
+const wl = state.workingList;
+return`<div class="section"> <div class="page-title">${isFC?'Flashcards':'Quiz'}</div> <div class="page-sub">Your working word list</div> <div class="select-group"> <span class="select-label">Mode</span> <div class="select-pills"> <div class="pill active">Vocabulary</div> <div class="pill" onclick="setState({${isFC?'fcMode':'qzMode'}:'conj'})">Conjugation</div> </div> </div> <div class="select-group"> <span class="select-label">JLPT Level</span> <div class="select-pills"> ${['N5','N4','All','Working'].map(l=>`<div class="pill ${state.level===l?'active':''}" onclick="setState({level:'${l}',selectedGroups:[]})">${l}</div>`).join('')} </div> </div> ${isFC?`<div class="select-group">
+<span class="select-label">Show on front</span>
+<div class="select-pills">
+${[‘kanji’,‘kana’,‘english’].map(f=>`<div class="pill ${state.fcFront===f?'active':''}" onclick="setState({fcFront:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join(’’)}
+</div>
+</div>`:`<div class="select-group">
+<span class="select-label">Quiz focus</span>
+<div class="select-pills">
+${[‘kanji’,‘kana’,‘english’].map(f=>`<div class="pill ${state.qzFront===f?'active':''}" onclick="setState({qzFront:'${f}'})">${f.charAt(0).toUpperCase()+f.slice(1)}</div>`).join(’’)}
+</div>
+</div>
+<div class="select-group">
+<span class="select-label">Format</span>
+<div class="select-pills">
+<div class="pill ${state.qzType==='mc'?'active':''}" onclick="setState({qzType:'mc'})">Multiple choice</div>
+<div class="pill ${state.qzType==='match'?'active':''}" onclick="setState({qzType:'match'})">Matching pairs</div>
+</div>
+</div>`} <div class="select-group"> <span class="select-label">Working list — ${wl.length} word${wl.length===1?'':'s'}</span> ${wl.length===0 ? `<div style="color:var(--text3);font-size:13px;padding:12px 0;">No words yet. Add words from the back of any vocabulary flashcard.</div>`:`<div class="group-list">
+<div class="group-item selected" onclick="">
+<div><span class="group-item-name">My Working List</span></div>
+<span class="group-item-count">${wl.length} words</span>
+</div>
+</div>`
+}
+</div>
+<button class=“btn btn-primary btn-full” onclick=”${isFC?‘startVocabFC’:‘startQuiz’}()” ${wl.length===0?‘disabled’:’’}>
+${isFC?‘Start flashcards’:‘Start quiz’}
+</button>
+
+  </div>`;
+}
+
+// ============================================================
+// FLASHCARDS
+// ============================================================
+function buildFC(){
+if(!state.fcCards.length && !state.fcConjCards.length) return buildSetup(‘flashcards’,‘Flashcards’,‘Choose mode and word groups’);
+if(state.fcMode===‘vocab’) return buildFCVocabStudy();
+return buildFCConjStudy();
+}
+
+function getVerbGroups(level) {
+// Returns [{name, verbs}] for the given level
+const result = [];
+const levels = level===‘All’ ? [‘N5’,‘N4’] : level===‘Working’ ? [] : [level];
+for(const lv of levels) {
+const data = lv===‘N5’ ? VOCAB_N5 : VOCAB_N4;
+if(!data||!data.verbs) continue;
+for(const [name, words] of Object.entries(data.verbs)) {
+const verbs = words.filter(w=>w.e.startsWith(’to ’));
+if(verbs.length>0) result.push({name, verbs, level:lv});
+}
+}
+if(level===‘Working’) {
+const wv = state.workingList.filter(w=>w.e.startsWith(’to ’));
+if(wv.length>0) result.push({name:‘My Working List’, verbs:wv, level:‘Working’});
+}
+if(level===‘All’) {
+const wv = state.workingList.filter(w=>w.e.startsWith(’to ’));
+if(wv.length>0) result.push({name:‘My Working List’, verbs:wv, level:‘Working’});
+}
+return result;
+}
+
+function getVerbsForConjGroups(level, selectedGroups) {
+if(level===‘Working’) {
+return state.workingList.filter(w=>w.e.startsWith(‘to ‘));
+}
+const groups = getVerbGroups(level);
+const verbs = [];
+const seen = new Set();
+for(const g of groups) {
+if(!selectedGroups.includes(g.name)) continue;
+for(const v of g.verbs) {
+const key=v.k+’|’+v.r;
+if(!seen.has(key)) { seen.add(key); verbs.push(v); }
+}
+}
+return verbs;
+}
+
+function buildConjSetupShared(isFC) {
+const lvKey = isFC ? ‘conjLevel’ : ‘qzConjLevel’;
+const selKey = isFC ? ‘conjSelectedVerbs’ : ‘qzConjSelectedVerbs’;
+const tabKey = isFC ? ‘conjVerbTab’ : ‘qzConjVerbTab’;
+const lv = state[lvKey];
+const selVerbs = state[selKey];
+const tab = state[tabKey];
+const fcVerb = isFC ? state.fcVerb : state.qzVerb;
+
+const modeSwitch = `<div class="select-group"><span class="select-label">Mode</span> <div class="select-pills"> <div class="pill" onclick="setState({${isFC?'fcMode':'qzMode'}:'vocab',selectedGroups:[]})">Vocabulary</div> <div class="pill active">Conjugation</div> </div></div>`;
+
+// If a verb is selected from search, show conj selector
+if(fcVerb) {
+return`<div class="section"> <div class="page-title">${isFC?'Conjugation Cards':'Conjugation Quiz'}</div> ${modeSwitch} <div class="verb-display"> <div class="jp" style="font-size:20px;font-weight:700;">${fcVerb.k}</div> <div class="jp" style="font-size:13px;color:var(--text2);">${fcVerb.r}</div> <div style="font-size:13px;color:var(--accent);margin-top:2px;">${fcVerb.e}</div> <button style="font-size:12px;color:var(--text3);margin-top:6px;" onclick="setState({${isFC?'fcVerb':'qzVerb'}:null,${isFC?'fcSelectedConjs':'qzSelectedConjs'}:[],${isFC?'fcVerbSearch':'qzVerbSearch'}:''})">Change verb</button> </div> ${buildConjSelector(isFC?state.fcSelectedConjs:state.qzSelectedConjs,isFC?'toggleFCConj':'toggleQZConj',isFC?'selectAllFCConjs':'selectAllQZConjs')} <button class="btn btn-primary btn-full" onclick="${isFC?'startConjFC':'startConjQuiz'}()" ${(isFC?state.fcSelectedConjs:state.qzSelectedConjs).length===0?'disabled':''}> ${isFC?'Start flashcards':'Start quiz'} </button> </div>`;
+}
+
+const groups = getVerbGroups(lv);
+const verbSearch = (isFC?state.fcVerbSearch:state.qzVerbSearch).toLowerCase();
+const filtered = verbSearch.length>0 ? VERB_LIST.filter(v=>v.k.includes(isFC?state.fcVerbSearch:state.qzVerbSearch)||v.r.includes(verbSearch)||v.e.toLowerCase().includes(verbSearch)) : VERB_LIST;
+
+return`<div class="section"> <div class="page-title">${isFC?'Conjugation Cards':'Conjugation Quiz'}</div> ${modeSwitch} ${!isFC?`<div class="select-group"><span class="select-label">Format</span>
+<div class="select-pills">
+<div class="pill ${state.qzType==='mc'?'active':''}" onclick="setState({qzType:'mc'})">Multiple choice</div>
+<div class="pill ${state.qzType==='match'?'active':''}" onclick="setState({qzType:'match'})">Matching pairs</div>
+</div></div>`:''} <div class="select-group"><span class="select-label">Verb source</span> <div class="select-pills"> <div class="pill ${tab==='groups'?'active':''}" onclick="setState({${tabKey}:'groups'})">By group</div> <div class="pill ${tab==='search'?'active':''}" onclick="setState({${tabKey}:'search'})">Search</div> </div> </div> ${tab==='groups'?`
+<div class="select-group"><span class="select-label">JLPT Level</span>
+<div class="select-pills">
+${[‘N5’,‘N4’,‘All’,‘Working’].map(l=>`<div class="pill ${lv===l?'active':''}" onclick="setState({${lvKey}:'${l}',${selKey}:[]})">${l}</div>`).join(’’)}
+</div>
+</div>
+<div class="select-group">
+<span class="select-label">Verb groups — tap to select (${selVerbs.length} selected)</span>
+<div class="group-list">
+${groups.map(g=>{
+const sel=selVerbs.includes(g.name);
+return`<div class="group-item ${sel?'selected':''}" onclick="toggleConjGroup('${g.name.replace(/'/g,"\'")}','${isFC}')"> <div> <span class="group-item-name">${g.name}</span> ${lv==='All'?`<span class="badge badge-${g.level.toLowerCase()}" style="margin-left:6px;">${g.level}</span>`:''} </div> <div style="display:flex;align-items:center;gap:8px;"> <span class="group-item-count">${g.verbs.length}</span> ${sel?`<span class="group-item-check">✓</span>`:''} </div> </div>`;
+}).join(’’)}
+</div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:8px;">
+<button class="btn btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="selectAllConjGroups('${isFC}')">Select all</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:8px 14px;" onclick="setState({${selKey}:[]})">Clear</button>
+</div>
+${selVerbs.length>0?`<div style="margin-bottom:12px;">${buildConjSelector(isFC?state.fcSelectedConjs:state.qzSelectedConjs,isFC?'toggleFCConj':'toggleQZConj',isFC?'selectAllFCConjs':'selectAllQZConjs')}</div>`:’’}
+<button class=“btn btn-primary btn-full” onclick=”${isFC?‘startConjFC’:‘startConjQuiz’}()”
+${(selVerbs.length===0||(isFC?state.fcSelectedConjs:state.qzSelectedConjs).length===0)?‘disabled’:’’}>
+${isFC?‘Start flashcards’:‘Start quiz’}
+</button>` :`
+<div class="select-group">
+<span class="select-label">Search for a verb</span>
+<div style="display:flex;gap:8px;margin-bottom:10px;">
+<input id="${isFC?'fc':'qz'}VerbInput" class="search-input jp" style="margin-bottom:0;flex:1;" placeholder="e.g. 食べる or たべる" onkeydown="if(event.key==='Enter')${isFC?'searchFCVerb':'searchQZVerb'}()">
+<button class="btn btn-primary" style="padding:11px 16px;" onclick="${isFC?'searchFCVerb':'searchQZVerb'}()">Search</button>
+</div>
+<div style="max-height:300px;overflow-y:auto;">
+${filtered.slice(0,30).map(v=>`<div class="verb-result" onclick="${isFC?'selectFCVerb':'selectQZVerb'}(${VERB_LIST.indexOf(v)})"> <div><span class="jp" style="font-size:16px;font-weight:600;">${v.k}</span> <span class="jp" style="font-size:12px;color:var(--text3);">${v.r}</span> <div style="font-size:12px;color:var(--text2);">${v.e}</div></div> <span class="badge badge-${v.level.toLowerCase()}">${v.level}</span> </div>`).join(’’)}
+</div>
+</div>`}
+
+  </div>`;
+}
+
+function buildFCConjSetup(){ return buildConjSetupShared(true); }
+
+function buildFCVocabStudy(){
+const cards=state.fcCards, idx=state.fcIdx, card=cards[idx], flipped=state.fcFlipped;
+let front;
+if(state.fcFront===‘kanji’) front=card.k||card.r;
+else if(state.fcFront===‘kana’) front=card.r;
+else front=card.e;
+return`<div class="section"> <button class="back-btn" onclick="setState({fcCards:[],fcIdx:0,fcFlipped:false})">← Settings</button> <div style="display:flex;justify-content:space-between;margin-bottom:6px;"> <span style="font-size:12px;color:var(--text2);">${state.selectedGroups.join(', ').substring(0,30)}${state.selectedGroups.join(', ').length>30?'…':''}</span> <span style="font-size:12px;color:var(--text2);">${idx+1} / ${cards.length}</span> </div> <div class="score-bar"><div class="score-fill" style="width:${Math.round((idx+1)/cards.length*100)}%"></div></div> <div class="flashcard-scene" style="height:260px;"> <div class="flashcard-inner ${flipped?'flipped':''}" style="height:260px;"> <div class="flashcard-face" style="height:260px;" onclick="setState({fcFlipped:!state.fcFlipped})"> <div class="jp" style="font-size:34px;font-weight:700;">${front}</div> <div class="flashcard-tap-hint">tap to flip</div> </div> <div class="flashcard-face flashcard-back" style="height:260px;" onclick="setState({fcFlipped:false})"> <div style="margin-bottom:10px;text-align:center;"> <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Kanji</div> <div class="jp" style="font-size:26px;font-weight:700;">${card.k||card.r}</div> </div> <div style="margin-bottom:10px;text-align:center;"> <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Reading</div> <div class="jp" style="font-size:18px;">${card.r}</div> </div> <div style="text-align:center;margin-bottom:12px;"> <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Meaning</div> <div style="font-size:15px;color:var(--accent);">${card.e}</div> </div> ${(()=>{const inW=state.workingList.some(w=>w.k===card.k&&w.r===card.r);return`<button onclick="toggleWorkingWord(event)" style="padding:4px 12px;border-radius:20px;border:1px solid var(--border3);color:var(--text3);font-size:11px;background:none;">${inW?‘Remove’:‘Add’}</button>`;})()}
+</div>
+</div>
+</div>
+<div class="flashcard-nav">
+<button class="fc-btn" onclick="fcPrev()">←</button>
+<span class="fc-count">${idx+1} of ${cards.length}</span>
+<button class="fc-btn" onclick="fcNext()">→</button>
+</div>
+<div style="text-align:center;margin-top:14px;">
+<button class="btn btn-secondary" style="font-size:13px;" onclick="setState({fcCards:shuffle(state.fcCards),fcIdx:0,fcFlipped:false})">Shuffle</button>
+</div>
+
+  </div>`;
+}
+
+function buildFCConjStudy(){
+const cards=state.fcConjCards, idx=state.fcIdx, card=cards[idx], flipped=state.fcFlipped;
+return`<div class="section">
+<button class="back-btn" onclick="setState({fcConjCards:[],fcIdx:0,fcFlipped:false})">← Back</button>
+<div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+<span style="font-size:12px;color:var(--text2);">${card.verb.k} conjugation</span>
+<span style="font-size:12px;color:var(--text2);">${idx+1} / ${cards.length}</span>
+</div>
+<div class="score-bar"><div class="score-fill" style="width:${Math.round((idx+1)/cards.length*100)}%"></div></div>
+<div class="flashcard-scene" style="height:260px;">
+<div class="flashcard-inner ${flipped?'flipped':''}" style="height:260px;">
+<div class="flashcard-face" style="height:260px;" onclick="setState({fcFlipped:!state.fcFlipped})">
+<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Dictionary form</div>
+<div class="jp" style="font-size:28px;font-weight:700;">${card.verb.k}</div>
+<div class="jp" style="font-size:14px;color:var(--text2);margin-top:4px;">${card.verb.r}</div>
+<div style="font-size:13px;color:var(--accent);margin:8px 0;">${card.verb.e}</div>
+<div style="background:var(--bg3);border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;">${card.label}</div>
+<div class="flashcard-tap-hint">tap to flip</div>
+</div>
+<div class="flashcard-face flashcard-back" style="height:260px;" onclick="setState({fcFlipped:false})">
+<div style="font-size:11px;color:var(--text3);margin-bottom:8px;">${card.label}</div>
+<div class="jp" style="font-size:30px;font-weight:700;">${card.val.k}</div>
+<div class="jp" style="font-size:18px;color:var(--text2);margin-top:6px;">${card.val.r}</div>
+</div>
+</div>
+</div>
+<div class="flashcard-nav">
+<button class="fc-btn" onclick="fcPrev()">←</button>
+<span class="fc-count">${idx+1} of ${cards.length}</span>
+<button class="fc-btn" onclick="fcNext()">→</button>
+</div>
+
+  </div>`;
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+function buildQuiz(){
+if(!state.qzStarted) return buildSetup(‘quiz’,‘Quiz’,‘Choose mode and word groups’);
+if(state.qzDone) return buildQZResult();
+if(state.qzType===‘mc’) return buildMCQuiz();
+if(state.qzType===‘match’) return buildMatchQuiz();
+return ‘’;
+}
+
+function buildQZConjSetup(){ return buildConjSetupShared(false); }
+
+function buildMCQuiz(){
+const q=state.qzQuestions[state.qzIdx]; if(!q) return’’;
+const total=state.qzQuestions.length;
+return`<div class="section"> <div style="display:flex;justify-content:space-between;margin-bottom:6px;"> <span style="font-size:12px;color:var(--text2);">Question ${state.qzIdx+1} of ${total}</span> <span style="font-size:12px;color:var(--accent);">Score: ${state.qzScore}</span> </div> <div class="score-bar"><div class="score-fill" style="width:${Math.round(state.qzIdx/total*100)}%"></div></div> <div class="quiz-q"> <div class="quiz-q-label">${q.hint||'Choose the correct answer'}</div> <div class="quiz-q-main jp">${q.q}</div> ${q.qSub?`<div class="quiz-q-sub">${q.qSub}</div>`:''} </div> <div class="mc-options"> ${q.options.map(opt=>{ let cls='mc-option'; if(state.qzAnswered){if(opt===q.ans)cls+=' correct';else if(opt===state.qzSelected)cls+=' wrong';} return`<button class=”${cls}” ${state.qzAnswered?‘disabled’:’’} onclick=“answerMC(’${opt.replace(/’/g,”\’”)}’,’${q.ans.replace(/’/g,”\’”)}’)”><span class="jp">${opt}</span></button>`; }).join('')} </div> ${state.qzAnswered?`<div class="btn-row"><button class="btn btn-primary" onclick="nextQ()">Next →</button></div>`:’’}
+
+  </div>`;
+}
+
+function buildMatchQuiz(){
+const left=state.qzMatchLeft, right=state.qzMatchRight, matched=state.qzMatchMatched;
+return`<div class="section"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;color:var(--text2);">Matching pairs</span> <span style="font-size:12px;color:var(--accent);">Score: ${state.qzScore}</span> </div> <div class="quiz-q" style="margin-bottom:12px;"><div class="quiz-q-label">Match each item to its pair</div></div> <div class="match-grid"> <div class="match-col">${left.map((p,i)=>{const isM=matched.includes(i),isS=state.qzMatchSelL===i; return`<button class=“match-item ${isM?‘matched’:’’} ${isS?‘selected’:’’}” id=“ml-${i}” ${isM?‘disabled’:’’} onclick=“selMatchL(${i})”><span class="jp">${p.q}</span></button>`;}).join('')}</div> <div class="match-col">${right.map((r,i)=>{const isM=matched.includes(r.origIdx),isS=state.qzMatchSelR===i; return`<button class=“match-item ${isM?‘matched’:’’} ${isS?‘selected’:’’}” id=“mr-${i}” ${isM?‘disabled’:’’} onclick=“selMatchR(${i})”><span class="jp">${r.ans}</span></button>`;}).join('')}</div> </div> ${matched.length===left.length?`<div class="btn-row">
+<button class="btn btn-primary" onclick="nextMatchRound()">Next round</button>
+<button class="btn btn-secondary" onclick="setState({qzDone:true})">Finish</button>
+</div>`:’’}
+
+  </div>`;
+}
+
+function buildQZResult(){
+const score=state.qzScore, total=state.qzQuestions.length||score;
+const pct=total>0?Math.round(score/total*100):100;
+return`<div class="result-screen">
+<div class="result-score">${score}/${total}</div>
+<div class="result-label">${pct>=80?‘Excellent work!’:pct>=50?‘Good effort.’:‘Keep studying.’}</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="startQuiz()">Try again</button>
+<button class="btn btn-secondary" onclick="setState({qzStarted:false,qzDone:false,qzScore:0,qzIdx:0,qzQuestions:[],qzVerb:null,qzSelectedConjs:[],selectedGroups:[]})">New settings</button>
+</div>
+
+  </div>`;
+}
+
+// ============================================================
+// CONJUGATION SELECTOR
+// ============================================================
+function buildConjSelector(sel, toggleFn, selectAllFn){
+function rowHTML(rows, group){
+return rows.map(row=>{
+if(row.single){
+const key=`${group}|${row.id}|pos`, s=sel.includes(key);
+return`<tr><td class="row-label">${row.label}</td><td colspan="2"><button class="sel-btn ${s?'active':''}" onclick="${toggleFn}('${group}','${row.id}','pos')">${s?'✓ Selected':'Select'}</button></td></tr>`;
+}
+const kP=`${group}|${row.id}|pos`, kN=`${group}|${row.id}|neg`, sP=sel.includes(kP), sN=sel.includes(kN);
+return`<tr><td class="row-label">${row.label}</td> <td><button class="sel-btn ${sP?'active':''}" onclick="${toggleFn}('${group}','${row.id}','pos')">${sP?'✓':'+'}</button></td> <td><button class="sel-btn ${sN?'active':''}" onclick="${toggleFn}('${group}','${row.id}','neg')">${sN?'✓':'+'}</button></td></tr>`;
+}).join(’’);
+}
+return`<div style="overflow-x:auto;margin-bottom:12px;">
+<div class="conj-section"><div class="conj-section-title">Plain forms</div>
+<table class="conj-table"><thead><tr><th>Form</th><th>Pos</th><th>Neg</th></tr></thead>
+<tbody>${rowHTML(PLAIN_ROWS,‘plain’)}</tbody></table></div>
+<div class="conj-section"><div class="conj-section-title">Polite forms</div>
+<table class="conj-table"><thead><tr><th>Form</th><th>Pos</th><th>Neg</th></tr></thead>
+<tbody>${rowHTML(POLITE_ROWS,‘polite’)}</tbody></table></div>
+
+  </div>
+  <button class="btn btn-secondary" style="font-size:12px;padding:7px 14px;margin-bottom:16px;" onclick="${selectAllFn}()">Select all</button>`;
+}
+
+// ============================================================
+// EVENT HANDLERS
+// ============================================================
+window.goHome = () => setState({screen:‘home’, fcCards:[], fcConjCards:[], fcIdx:0, fcFlipped:false, qzStarted:false, qzDone:false, selectedGroups:[]});
+window.goTo = (s) => setState({screen:s, fcCards:[], fcConjCards:[], fcIdx:0, fcFlipped:false, qzStarted:false, qzDone:false});
+
+window.toggleCompleted = (e, name, level) => {
+e.stopPropagation();
+const key = name+’|’+(level||state.level);
+const cg = state.completedGroups;
+setState({completedGroups: cg.includes(key) ? cg.filter(k=>k!==key) : […cg, key]});
+};
+
+window.toggleGroup = (name) => {
+const sel = state.selectedGroups;
+setState({selectedGroups: sel.includes(name) ? sel.filter(g=>g!==name) : […sel, name]});
+};
+window.selectAllGroups = () => {
+const groups = getGroupsForPOS(state.level, state.pos);
+setState({selectedGroups: groups.map(g=>g.name)});
+};
+
+// Flashcard
+window.startVocabFC = () => {
+const words = state.level===‘Working’
+? shuffle(state.workingList)
+: shuffle(getWordsForGroups(state.level, state.pos, state.selectedGroups));
+setState({fcCards:words, fcIdx:0, fcFlipped:false});
+};
+
+window.toggleWorkingWord = (e) => {
+e.stopPropagation();
+const card = state.fcCards[state.fcIdx];
+const key = card.k+’|’+card.r;
+const wl = state.workingList;
+const inList = wl.some(w=>w.k===card.k&&w.r===card.r);
+const newList = inList ? wl.filter(w=>!(w.k===card.k&&w.r===card.r)) : […wl, card];
+setState({workingList:newList});
+};
+window.fcNext = () => {
+const cards = state.fcMode===‘conj’ ? state.fcConjCards : state.fcCards;
+setState({fcIdx:Math.min(state.fcIdx+1, cards.length-1), fcFlipped:false});
+};
+window.fcPrev = () => setState({fcIdx:Math.max(state.fcIdx-1,0), fcFlipped:false});
+
+window.toggleConjGroup = (name, isFC) => {
+const key = isFC===‘true’ ? ‘conjSelectedVerbs’ : ‘qzConjSelectedVerbs’;
+const sel = state[key];
+setState({[key]: sel.includes(name) ? sel.filter(g=>g!==name) : […sel, name]});
+};
+
+window.selectAllConjGroups = (isFC) => {
+const lvKey = isFC===‘true’ ? ‘conjLevel’ : ‘qzConjLevel’;
+const selKey = isFC===‘true’ ? ‘conjSelectedVerbs’ : ‘qzConjSelectedVerbs’;
+const groups = getVerbGroups(state[lvKey]);
+setState({[selKey]: groups.map(g=>g.name)});
+};
+
+window.startConjQuiz = () => {
+// Build cards from selected verb groups
+const verbs = state.qzVerb
+? [state.qzVerb]
+: shuffle(getVerbsForConjGroups(state.qzConjLevel, state.qzConjSelectedVerbs));
+const conjs = state.qzVerb ? conjugate(state.qzVerb.k, state.qzVerb.r) : null;
+let cards = [];
+if(state.qzVerb) {
+cards = shuffle(state.qzSelectedConjs.map(key=>{
+const [g,row,col]=key.split(’|’);
+return{verb:state.qzVerb,val:conjs[key],label:getConjLabel(g,row,col)};
+}).filter(c=>c.val));
+} else {
+// For group-based: pick random conjugation forms from selected conj selector
+for(const verb of verbs.slice(0,10)) {
+const vc = conjugate(verb.k, verb.r);
+const keys = state.qzSelectedConjs.length>0
+? state.qzSelectedConjs
+: Object.keys(vc).filter(k=>vc[k]!==null).slice(0,4);
+const key = keys[Math.floor(Math.random()*keys.length)];
+if(vc[key]) {
+const [g,row,col]=key.split(’|’);
+cards.push({verb,val:vc[key],label:getConjLabel(g,row,col)});
+}
+}
+cards = shuffle(cards);
+}
+if(state.qzType===‘mc’) {
+const qs=cards.slice(0,10).map(c=>({q:c.verb.k, qSub:c.label, ans:c.val.r, options:makeConjDistractors(c.val.r,c.verb), hint:`${c.label} form?`}));
+setState({qzQuestions:qs, qzIdx:0, qzScore:0, qzDone:false, qzAnswered:false, qzSelected:null, qzStarted:true});
+} else {
+const pairs=shuffle(cards).slice(0,6).map(c=>({q:c.label+’ of ’+c.verb.k, ans:c.val.r}));
+const right=shuffle(pairs.map((p,i)=>({ans:p.ans,origIdx:i})));
+setState({qzMatchLeft:pairs,qzMatchRight:right,qzMatchMatched:[],qzMatchSelL:null,qzMatchSelR:null,qzScore:0,qzDone:false,qzQuestions:pairs,_matchCards:cards,_matchType:‘conj’,qzStarted:true});
+}
+};
+
+window.searchFCVerb = () => {
+const el = document.getElementById(‘fcVerbInput’);
+if(el) setState({fcVerbSearch:el.value});
+};
+window.selectFCVerb = (i) => setState({fcVerb:VERB_LIST[i], fcSelectedConjs:[], fcVerbSearch:’’});
+window.toggleFCConj = (g,row,col) => {
+const key=`${g}|${row}|${col}`, sel=state.fcSelectedConjs;
+setState({fcSelectedConjs:sel.includes(key)?sel.filter(k=>k!==key):[…sel,key]});
+};
+window.selectAllFCConjs = () => {
+const conjs=conjugate(state.fcVerb.k,state.fcVerb.r);
+setState({fcSelectedConjs:Object.entries(conjs).filter(([,v])=>v!==null).map(([k])=>k)});
+};
+window.startConjFC = () => {
+if(state.fcVerb) {
+// Single verb from search
+const conjs=conjugate(state.fcVerb.k,state.fcVerb.r);
+const cards=shuffle(state.fcSelectedConjs.map(key=>{
+const [g,row,col]=key.split(’|’);
+return{verb:state.fcVerb,group:g,row,col,val:conjs[key],label:getConjLabel(g,row,col)};
+}).filter(c=>c.val));
+setState({fcConjCards:cards, fcIdx:0, fcFlipped:false});
+} else {
+// Group-based: build cards from selected verb groups + selected conj forms
+const verbs = shuffle(getVerbsForConjGroups(state.conjLevel, state.conjSelectedVerbs));
+const cards = [];
+for(const verb of verbs) {
+const conjs = conjugate(verb.k, verb.r);
+const keys = state.fcSelectedConjs.length>0
+? state.fcSelectedConjs
+: Object.keys(conjs).filter(k=>conjs[k]!==null);
+for(const key of keys) {
+if(conjs[key]) {
+const [g,row,col]=key.split(’|’);
+cards.push({verb,group:g,row,col,val:conjs[key],label:getConjLabel(g,row,col)});
+}
+}
+}
+setState({fcConjCards:shuffle(cards), fcIdx:0, fcFlipped:false});
+}
+};
+
+// Quiz
+window.searchQZVerb = () => {
+const el = document.getElementById(‘qzVerbInput’);
+if(el) setState({qzVerbSearch:el.value});
+};
+window.selectQZVerb = (i) => setState({qzVerb:VERB_LIST[i], qzSelectedConjs:[], qzVerbSearch:’’});
+window.toggleQZConj = (g,row,col) => {
+const key=`${g}|${row}|${col}`, sel=state.qzSelectedConjs;
+setState({qzSelectedConjs:sel.includes(key)?sel.filter(k=>k!==key):[…sel,key]});
+};
+window.selectAllQZConjs = () => {
+const conjs=conjugate(state.qzVerb.k,state.qzVerb.r);
+setState({qzSelectedConjs:Object.entries(conjs).filter(([,v])=>v!==null).map(([k])=>k)});
+};
+
+window.startQuiz = () => {
+if(state.qzMode===‘vocab’) {
+const words = state.level===‘Working’
+? shuffle(state.workingList)
+: shuffle(getWordsForGroups(state.level, state.pos, state.selectedGroups));
+if(state.qzType===‘mc’) {
+const front=state.qzFront;
+const qs = words.slice(0,10).map(w=>{
+if(front===‘kanji’) return{q:w.k||w.r, ans:w.r, options:makeDistractors(w.r,words,‘r’), hint:‘What is the reading?’};
+if(front===‘kana’) return{q:w.r, ans:w.e, options:makeDistractors(w.e,words,‘e’), hint:‘What does this mean?’};
+return{q:w.e, ans:w.k||w.r, options:makeDistractors(w.k||w.r,words,‘k’), hint:‘What is the kanji?’};
+});
+setState({qzQuestions:qs, qzIdx:0, qzScore:0, qzDone:false, qzAnswered:false, qzSelected:null, qzStarted:true});
+} else {
+setupVocabMatch(words);
+}
+} else {
+const conjs=conjugate(state.qzVerb.k,state.qzVerb.r);
+const cards=shuffle(state.qzSelectedConjs.map(key=>{
+const [g,row,col]=key.split(’|’);
+return{verb:state.qzVerb,group:g,row,col,val:conjs[key],label:getConjLabel(g,row,col)};
+}).filter(c=>c.val));
+if(state.qzType===‘mc’) {
+const qs=cards.slice(0,10).map(c=>({q:c.verb.k, qSub:c.label, ans:c.val.r, options:makeConjDistractors(c.val.r,c.verb), hint:`What is the ${c.label} form?`}));
+setState({qzQuestions:qs, qzIdx:0, qzScore:0, qzDone:false, qzAnswered:false, qzSelected:null, qzStarted:true});
+} else {
+setupConjMatch(cards);
+}
+}
+};
+
+function setupVocabMatch(words) {
+const front=state.qzFront;
+const pairs=shuffle(words).slice(0,6).map(w=>{
+if(front===‘kanji’) return{q:w.k||w.r, ans:w.r};
+if(front===‘kana’) return{q:w.r, ans:w.e};
+return{q:w.e, ans:w.k||w.r};
+});
+const right=shuffle(pairs.map((p,i)=>({ans:p.ans,origIdx:i})));
+setState({qzMatchLeft:pairs, qzMatchRight:right, qzMatchMatched:[], qzMatchSelL:null, qzMatchSelR:null, qzScore:0, qzDone:false, qzQuestions:pairs, _matchWords:words, _matchType:‘vocab’, qzStarted:true});
+}
+function setupConjMatch(cards) {
+const pairs=shuffle(cards).slice(0,6).map(c=>({q:c.label, ans:c.val.r}));
+const right=shuffle(pairs.map((p,i)=>({ans:p.ans,origIdx:i})));
+setState({qzMatchLeft:pairs, qzMatchRight:right, qzMatchMatched:[], qzMatchSelL:null, qzMatchSelR:null, qzScore:0, qzDone:false, qzQuestions:pairs, _matchCards:cards, _matchType:‘conj’, qzStarted:true});
+}
+
+window.selMatchL = (i) => { setState({qzMatchSelL:i}); checkMatch(); };
+window.selMatchR = (i) => { setState({qzMatchSelR:i}); checkMatch(); };
+function checkMatch(){
+const {qzMatchSelL:l, qzMatchSelR:r, qzMatchRight:right, qzMatchMatched:matched} = state;
+if(l===null||r===null) return;
+if(right[r].origIdx===l) {
+setState({qzMatchMatched:[…matched,l], qzMatchSelL:null, qzMatchSelR:null, qzScore:state.qzScore+1});
+} else {
+const ml=document.getElementById(‘ml-’+l), mr=document.getElementById(‘mr-’+r);
+if(ml){ml.classList.add(‘wrong-flash’);setTimeout(()=>ml&&ml.classList.remove(‘wrong-flash’),500);}
+if(mr){mr.classList.add(‘wrong-flash’);setTimeout(()=>mr&&mr.classList.remove(‘wrong-flash’),500);}
+setState({qzMatchSelL:null, qzMatchSelR:null});
+}
+}
+window.nextMatchRound = () => {
+if(state._matchType===‘vocab’) setupVocabMatch(state._matchWords);
+else setupConjMatch(state._matchCards);
+};
+window.answerMC = (opt,ans) => setState({qzAnswered:true, qzSelected:opt, qzScore:opt===ans?state.qzScore+1:state.qzScore});
+window.nextQ = () => {
+const next=state.qzIdx+1;
+if(next>=state.qzQuestions.length) setState({qzDone:true, qzAnswered:false});
+else setState({qzIdx:next, qzAnswered:false, qzSelected:null});
+};
+
+render();
+</script>
+
+</body>
+</html>
